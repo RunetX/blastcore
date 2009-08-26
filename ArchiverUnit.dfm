@@ -1,5 +1,5 @@
 object MainForm: TMainForm
-  Left = 604
+  Left = 387
   Top = 245
   Width = 658
   Height = 572
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -167,14 +167,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -184,7 +184,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       Align = alRight
       BevelInner = bvLowered
       BiDiMode = bdLeftToRight
@@ -224,13 +224,13 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TLabel
         Left = 302
         Top = 8
@@ -270,7 +270,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom
@@ -3719,7 +3719,7 @@ object MainForm: TMainForm
     Left = 208
     Top = 128
     Bitmap = {
-      494C010108000900040010001000FFFFFFFFFF00FFFFFFFFFFFFFFFF424D3600
+      494C010108000900040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -4119,7 +4119,8 @@ object MainForm: TMainForm
       FE01C007C003E00FF80080078001C007C00080018001800300018001C0018003
       0003C001C00300010003E003E00300018007F007F0070001810FF80FFC1F0001
       C207FC1FF80F0001C007F80FF80F8003C007F80FF80F8003C10FF80FF80FC007
-      E3FFF80FF81FE00FFFFFFC1FFE3FF83F}
+      E3FFF80FF81FE00FFFFFFC1FFE3FF83F00000000000000000000000000000000
+      000000000000}
   end
   object LogTimer: TTimer
     Enabled = False
@@ -4653,6 +4654,7 @@ object MainForm: TMainForm
           8DC8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C9B8ADD4A789E4B99CEA
           C3ABEAC3ABE4B89DD3A68AC9B9AFC8C8C8C8C8C8C8C8C8C8C8C8}
         Caption = #1057#1087#1088#1072#1074#1082#1072
+        Enabled = False
         ShortCut = 112
       end
       object N17: TMenuItem
@@ -4699,7 +4701,7 @@ object MainForm: TMainForm
           40423E3929281E3A0A0A0A0A040333012B38322727261F3A0A0A0A0A0A040408
           08091C21201F3A0A040A0A0A0A0A0A04040412093A3A0A0A040A0A0A0A0A0A0A
           0A0A0A04030A0A0A040A0A0A0A0A0A0A0A0A0A0A0A0303040A0A}
-        Caption = #1055#1077#1088#1077#1081#1090#1080' '#1085#1072' '#1089#1072#1081#1090
+        Caption = #1040#1088#1093#1080#1074'...'
       end
       object N18: TMenuItem
         Caption = '-'

@@ -369,7 +369,6 @@ object OptionsForm: TOptionsForm
           Width = 129
           Height = 25
           Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
-          Enabled = False
           TabOrder = 4
           WordWrap = True
         end
@@ -3567,7 +3566,7 @@ object OptionsForm: TOptionsForm
         Top = 160
         Width = 121
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         Sorted = True
         TabOrder = 5
         Text = 'RoomCmbBox'

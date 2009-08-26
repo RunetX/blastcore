@@ -1042,7 +1042,7 @@ begin
   InBufer.SetNextLength;
 end
 else
-  //Reconnect;
+  Reconnect;
 end;
 
 procedure TMainForm.GetPrivate();    // 10
@@ -1424,8 +1424,25 @@ end;
 //-----------------------------------------------------------------
 
 procedure TMainForm.GetNewAltIP(); // 22
+var
+  NewIP: String;
+  sIniFile: TIniFile;
 begin
-    ShowMessage('New Alt IP: '+InBufer.Bufer);
+
+    NewIP := Format ('%d.%d.%d.%d', [byte (ord(InBufer.Bufer[1])),
+    byte (ord(InBufer.Bufer[2])),
+    byte (ord(InBufer.Bufer[3])),
+    byte (ord(InBufer.Bufer[4]))]);
+
+    if(SpeekerSettings.MainServerIP <> NewIP) then
+      begin
+        SpeekerSettings.AltServerIP := NewIP;
+        sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
+        sIniFile.WriteString( 'Servers', 'AltServerIP' ,  NewIP);
+        sIniFile.Free;
+      end
+    else
+      ShowMessage('Адреса основного и альтернативного сервера должны быть разными!');
     InBufer.isReadyForProc:=false;
     InBufer.CurrentOperation:=9;
     InBufer.HowmanyNeedRec := 1;
@@ -1456,7 +1473,8 @@ begin
   if(InBufer.CurrentOperation=19)then GetInfo         else   // 19. GetInfo
   if(InBufer.CurrentOperation=20)then GetChatMeslen   else   // 20. GetChatMeslen
   if(InBufer.CurrentOperation=21)then GetChatMessage  else   // 21. GetChatMessage
-  if((InBufer.CurrentOperation<1)or(InBufer.CurrentOperation>21))then
+  if(InBufer.CurrentOperation=22)then GetNewAltIP     else   // 22. Change Alternative Server IP
+  if((InBufer.CurrentOperation<1)or(InBufer.CurrentOperation>22))then
   begin
     if SpeekerSettings.Debug then
       LogVariable('CurrentOperation out of range', IntToStr(InBufer.CurrentOperation));
@@ -1574,6 +1592,7 @@ begin
       StatusBar1.Panels[0].Text:='Разъединено';
 
       //Reconnect;
+      ConDiscon.Execute;
   end;
   //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
 end;

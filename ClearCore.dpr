@@ -8,7 +8,11 @@ uses
   ChatYESNOUnit in 'BChat\ChatYESNOUnit.pas' {ChatYESNOForm},
   TryChatUnit in 'BChat\TryChatUnit.pas' {TryChatForm},
   OptionsUnit in 'Options\OptionsUnit.pas' {OptionsForm},
-  NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm};
+  NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm},
+  IgnorlistUnit in 'IgnoreManager\IgnorlistUnit.pas' {IgnorelistForm},
+  GroupInfoUnit in 'GroupInfo\GroupInfoUnit.pas' {GroupInfoForm},
+  SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm},
+  AboutUnit in 'About\AboutUnit.pas' {AboutForm};
 
 {$R *.res}
 
@@ -39,6 +43,10 @@ begin   {
   Application.CreateForm(TTryChatForm, TryChatForm);
   Application.CreateForm(TOptionsForm, OptionsForm);
   Application.CreateForm(TBChatForm, BChatForm);
+  Application.CreateForm(TIgnorelistForm, IgnorelistForm);
+  Application.CreateForm(TGroupInfoForm, GroupInfoForm);
+  Application.CreateForm(TSentMesForm, SentMesForm);
+  Application.CreateForm(TAboutForm, AboutForm);
   Application.Run;
   //end;
 end.

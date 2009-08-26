@@ -8,12 +8,15 @@ uses
   ChatYESNOUnit in 'BChat\ChatYESNOUnit.pas' {ChatYESNOForm},
   TryChatUnit in 'BChat\TryChatUnit.pas' {TryChatForm},
   OptionsUnit in 'Options\OptionsUnit.pas' {OptionsForm},
-  NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm};
+  NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm},
+  IgnorlistUnit in 'IgnoreManager\IgnorlistUnit.pas' {IgnorelistForm},
+  GroupInfoUnit in 'GroupInfo\GroupInfoUnit.pas' {GroupInfoForm},
+  SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm};
 
 {$R *.res}
 
-var
-  PrevWin: HWND;
+//var
+//  PrevWin: HWND;
 
 function TryCreateMutex: Boolean;
 var
@@ -39,6 +42,9 @@ begin   {
   Application.CreateForm(TTryChatForm, TryChatForm);
   Application.CreateForm(TOptionsForm, OptionsForm);
   Application.CreateForm(TBChatForm, BChatForm);
+  Application.CreateForm(TIgnorelistForm, IgnorelistForm);
+  Application.CreateForm(TGroupInfoForm, GroupInfoForm);
+  Application.CreateForm(TSentMesForm, SentMesForm);
   Application.Run;
   //end;
 end.

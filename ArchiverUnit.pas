@@ -72,7 +72,9 @@ type
       Meslen:      integer;
       Messag:      string;
 
-  end;
+// IgnoreList
+      IgnoreList:  TListBox;
+end;
 
   TProgSettings = class
   public
@@ -217,6 +219,14 @@ type
     GetGroupInfo: TAction;
     ActRCon1: TMenuItem;
     ReconnectTimer: TTimer;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N6: TMenuItem;
+    N11: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -286,6 +296,11 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure CoolTrayIconMouseMove(Sender: TObject; Shift: TShiftState; X,
       Y: Integer);
     procedure ReconnectTimerTimer(Sender: TObject);
+    procedure N3Click(Sender: TObject);
+    procedure N4Click(Sender: TObject);
+    procedure N6Click(Sender: TObject);
+    procedure MutePMUClick(Sender: TObject);
+    procedure N19Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -337,7 +352,8 @@ var
 
 implementation
 
-uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit;
+uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
+  GroupInfoUnit, IgnorlistUnit, SentMesUnit, AboutUnit;
 
 {$R *.dfm}
 
@@ -439,7 +455,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='ClearCore v0.0.001 alpha before';
+   ClientProperties.Version:='BlastCore v0.1.18-c-alpha';
 ////////////////////////////////////////////////////////////////////////////////
  with TRegistry.Create do
  try
@@ -763,9 +779,32 @@ end;
 procedure TMainForm.GetIP();      // 3
 var
   s: string;
+  tmpListItem: TListItem;
 begin
   InBufer.isReadyForProc:=false;
   if(InBufer.LastSEACommand=6)then
+    if(GroupInfoForm.Visible)then
+      begin
+        with GroupInfoForm.GrInfoListView do          //TListView
+          begin
+            tmpListItem := Items.Add;
+            tmpListItem.Caption := AlienInfo.UserName;
+            tmpListItem.SubItems.Add(AlienInfo.CompName);
+            if(AlienInfo.Faculty=1)then
+              tmpListItem.SubItems.Add('ABT')
+            else
+              tmpListItem.SubItems.Add('MC');
+            tmpListItem.SubItems.Add(AlienInfo.Room);
+            tmpListItem.SubItems.Add(AlienInfo.Info);
+            tmpListItem.SubItems.Add(AlienInfo.Version);
+            tmpListItem.SubItems.Add(InBufer.Bufer);
+
+          InBufer.CurrentOperation:=9;
+          InBufer.HowmanyNeedRec := 1;
+          InBufer.SetNextLength;
+          end;
+      end
+    else
       begin
           AlienInfo.IPAddress := InBufer.Bufer;
           if SpeekerSettings.Debug then
@@ -890,6 +929,7 @@ procedure TMainForm.GetCompname();// 8
 var
   tmpListItem: TListItem;
   TCPUsrs: string;
+  i: integer;
 begin
         ClientProperties.Compname := InBufer.Bufer;
         if SpeekerSettings.Debug then
@@ -901,7 +941,14 @@ begin
         tmpListItem := Items.Add;
         tmpListItem.Caption := ClientProperties.Username;
         tmpListItem.StateIndex:=1;
-
+    if(ClientProperties.IgnoreList.Items.Count>0)then
+        for i:=0 to  ClientProperties.IgnoreList.Items.Count-1 do
+            if(ClientProperties.IgnoreList.Items[i]=(ClientProperties.Username+'['+
+                                    ClientProperties.Compname+']'))then
+                                    begin
+                                        tmpListItem.StateIndex:=6;
+                                        break;
+                                    end;
         tmpListItem.SubItems.Add('['+ClientProperties.Compname+']');
         tmpListItem.SubItems.Add(IntToStr(ClientProperties.AlienID));
     end;
@@ -1048,8 +1095,16 @@ end;
 //-----------------------------------------------------------------
 
 function FoundInIgnored(UserComp: string): boolean;
+var
+  i: integer;
 begin
-  result := false;
+  result:=false;
+  for i:=0 to MainForm.ClientProperties.IgnoreList.Items.Count-1 do
+    if(MainForm.ClientProperties.IgnoreList.Items[i]=UserComp)then
+      begin
+        result:=true;
+        break;
+      end;
 end;
 
 procedure TMainForm.GetMessage();    // 13
@@ -1644,6 +1699,8 @@ end;
 //-----------------------------------------------------------------
 
 procedure TMainForm.FormCreate(Sender: TObject);
+var
+    ignorfile: TextFile;
 begin
   Application.ProcessMessages;
 
@@ -1668,9 +1725,30 @@ begin
   ClientProperties:= TClientProperties.Create;
   InBufer:= TInBufer.Create;
   AlienInfo:= TAlienInfo.Create;
-
-  //Caption:=ClientProperties.Version;
+  NullVaribles;
+  Caption:=ClientProperties.Version;
   if(SpeekerSettings.OptStartmin)then WindowState:= wsMinimized;
+
+  ClientProperties.IgnoreList := TListBox.Create(Self);
+    with ClientProperties.IgnoreList do
+        begin
+          Parent := MainForm;
+          Visible := false;
+        end;
+  if(FileExists(SpeekerSettings.UserAppdataDir+'\Ignorlist.txt'))then
+  begin
+    AssignFile(ignorfile, SpeekerSettings.UserAppdataDir+'\Ignorlist.txt');
+
+      with ClientProperties.IgnoreList do
+        begin
+          try
+            Items.LoadFromFile(SpeekerSettings.UserAppdataDir+'\Ignorlist.txt');
+          except
+            Rewrite(ignorfile);
+          end;
+        end;
+     //for i:=0 to ClientProperties.IgnoreList.Items.Count-1 do
+  end;
 
   // Debug Time
   if SpeekerSettings.Debug then
@@ -2122,6 +2200,7 @@ begin
     sIniFile.WriteBool('Programm', 'ShowPanel', PanelState);
     sIniFile.Free;
 
+    ClientProperties.IgnoreList.Items.SaveToFile(SpeekerSettings.UserAppdataDir + '\Ignorlist.txt');
     Close;
     //Application.Terminate;
 end;
@@ -2408,8 +2487,18 @@ begin
 end;
 
 function isIgnored(User: string): boolean;
+var
+  i: integer;
 begin
-  result := False;
+  result:=false;
+  for i:=0 to MainForm.ClientProperties.IgnoreList.Items.Count-1 do
+  begin
+      if(User=MainForm.ClientProperties.IgnoreList.Items[i])then
+          begin
+              result:=true;
+              break;
+          end;
+  end;
 end;
 
 procedure TMainForm.UserListPMPopup(Sender: TObject);
@@ -2490,6 +2579,56 @@ procedure TMainForm.ReconnectTimerTimer(Sender: TObject);
 begin
   ReconnectTimer.Enabled := False;
   ConDiscon.Execute;
+end;
+
+procedure TMainForm.N3Click(Sender: TObject);
+begin
+  if(FileExists(SpeekerSettings.UserAppdataDir+'\LastChat.txt'))then
+      begin
+          WhomEdit.Text:='Последний чат';
+          MessageMemo.Lines.LoadFromFile(SpeekerSettings.UserAppdataDir+'\LastChat.txt');
+      end
+  else
+    ShowMessage('Записи последнего чата отсутствуют.');
+
+end;
+
+procedure TMainForm.N4Click(Sender: TObject);
+begin
+  IgnorelistForm.Show;
+end;
+
+procedure TMainForm.N6Click(Sender: TObject);
+begin
+  SentMesForm.Show;
+end;
+
+procedure TMainForm.MutePMUClick(Sender: TObject);
+var
+  i: integer;
+begin
+  MutePMU.Checked:=not(MutePMU.Checked);
+  if(MutePMU.Checked)then // Если стало помечено, то добавить юзера в игнорлист
+    begin
+      ClientProperties.IgnoreList.Items.Add(UserList.Selected.Caption+UserList.Selected.SubItems[0]);
+      UserList.Selected.StateIndex:=6;
+    end
+  else
+    begin
+      for i:=0 to ClientProperties.IgnoreList.Items.Count-1 do
+        if(ClientProperties.IgnoreList.Items[i]=
+           UserList.Selected.Caption+UserList.Selected.SubItems[0])then
+          begin
+              ClientProperties.IgnoreList.Items.Delete(i);
+              UserList.Selected.StateIndex:=1;
+              break;
+          end;
+    end;
+end;
+
+procedure TMainForm.N19Click(Sender: TObject);
+begin
+  AboutForm.Show;
 end;
 
 end.

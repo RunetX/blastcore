@@ -38,7 +38,7 @@ var
 
 implementation
 
-uses ArchiverUnit;
+uses ArchiverUnit, SentMesUnit;
 
 
 
@@ -185,11 +185,11 @@ end;
 
 procedure TSendMessageForm.SendMessageExecute(Sender: TObject);
 var
-  //tmpListItem: TListItem;
+  tmpListItem: TListItem;
   s{, tmpStr}:string;
   i:integer;
   id:integer;
-  //index:integer;
+  index:integer;
 begin
 
   s:=Char(Length(Memo1.Lines.Text) div 256)+
@@ -203,6 +203,18 @@ begin
   i:=length(s);
   s:=#0+Char(i div 256)+Char(i mod 256)+s;
   MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
+
+      with SentMesForm.SentMesLV do
+          begin
+            tmpListItem := Items.Add;
+            tmpListItem.Caption:=DateToStr(Date);
+            tmpListItem.SubItems.Add(TimeToStr(Time));
+            tmpListItem.SubItems.Add(MainForm.UserList.Items[index].Caption);
+            tmpListItem.SubItems.Add(MainForm.UserList.Items[index].SubItems[0]);
+            tmpListItem.SubItems.Add(Memo1.Text);
+            tmpListItem.SubItems.Add(MainForm.UserList.Items[index].SubItems[1]);
+          end;
+          
   Memo1.Clear;
   Close;
 end;

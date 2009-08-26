@@ -214,7 +214,7 @@ begin
             tmpListItem.SubItems.Add(Memo1.Text);
             tmpListItem.SubItems.Add(MainForm.UserList.Items[index].SubItems[1]);
           end;
-          
+
   Memo1.Clear;
   Close;
 end;

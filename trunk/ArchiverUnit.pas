@@ -578,7 +578,7 @@ begin
         tmpListItem.Caption := ' Печатники';
         tmpListItem.StateIndex:=0;
         tmpListItem.SubItems.Add('[PRINTERS]');
-        tmpListItem.SubItems.Add(IntToStr(-1));
+        tmpListItem.SubItems.Add(IntToStr(65535));
     end;
        ClientProperties.ownID:=ClientProperties.AlienID;
 

@@ -72,6 +72,15 @@ object SendMessageForm: TSendMessageForm
     TabOrder = 3
     OnClick = Button1Click
   end
+  object Button2: TButton
+    Left = 248
+    Top = 264
+    Width = 75
+    Height = 25
+    Caption = 'Button2'
+    TabOrder = 4
+    OnClick = Button2Click
+  end
   object ActionList1: TActionList
     Left = 368
     Top = 272

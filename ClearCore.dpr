@@ -37,7 +37,8 @@ begin   {
   else  
   begin     }
     Application.Initialize;
-    Application.CreateForm(TMainForm, MainForm);
+    Application.Title := 'BlastCore Sender';
+  Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TSendMessageForm, SendMessageForm);
   Application.CreateForm(TChatYESNOForm, ChatYESNOForm);
   Application.CreateForm(TTryChatForm, TryChatForm);

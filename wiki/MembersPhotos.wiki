@@ -1,3 +1,4 @@
+#labels photos
 #Наши фотки
 
 = Участники проекта =
@@ -10,3 +11,6 @@ http://blastcore.googlecode.com/files/ia.jpg
 *Ketra*
 
 http://blastcore.googlecode.com/files/Kate.jpg
+
+Активист AVTF.Net.
+гр. 8960 ТПУ,  ГеоИнформационные системы и технологии

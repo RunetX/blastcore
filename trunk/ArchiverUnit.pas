@@ -227,6 +227,7 @@ end;
     N17: TMenuItem;
     N18: TMenuItem;
     N19: TMenuItem;
+    Pilingator: TTimer;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -268,7 +269,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure LastmesToolButtonClick(Sender: TObject);
     procedure FirsmesToolButtonClick(Sender: TObject);
     procedure DelallmesToolButtonClick(Sender: TObject);
-    procedure PingTimerTimer(Sender: TObject);
+    procedure SEAPingTimerTimer(Sender: TObject);
     procedure ConDisconToolBtnClick(Sender: TObject);
     procedure LogTimerTimer(Sender: TObject);
     procedure Exit2Click(Sender: TObject);
@@ -301,6 +302,8 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure N6Click(Sender: TObject);
     procedure MutePMUClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
+    procedure PilingatorTimer(Sender: TObject);
+    procedure GetGroupInfoExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -348,7 +351,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
 var
   MainForm: TMainForm;
   tmpChatForm: array[0..9] of TBChatForm;
-
+  noPong: boolean;
 
 implementation
 
@@ -1020,7 +1023,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('LastSEACommand', IntToStr(InBufer.LastSEACommand));
   InBufer.isReadyForProc := false;
-  if((InBufer.LastSEACommand<>6)and(InBufer.LastSEACommand<>13))then
+  if((InBufer.LastSEACommand<>5)and(InBufer.LastSEACommand<>6)and(InBufer.LastSEACommand<>13))then
       begin
           InBufer.CurrentOperation:=1;
           InBufer.HowmanyNeedRec := 2;
@@ -1032,7 +1035,12 @@ begin
           end
   else if(InBufer.LastSEACommand=5)then
           begin
-            ShowMessage('Pong!');
+            // Как я рад, что оно тут было :)
+            noPong := False;
+            Pilingator.Enabled := False;
+            Pilingator.Enabled := True;
+            InBufer.CurrentOperation := 9;
+            InBufer.HowmanyNeedRec   := 1;
           end
   else if(InBufer.LastSEACommand=13)then
           begin
@@ -1430,9 +1438,9 @@ var
 begin
 
     NewIP := Format ('%d.%d.%d.%d', [byte (ord(InBufer.Bufer[1])),
-    byte (ord(InBufer.Bufer[2])),
-    byte (ord(InBufer.Bufer[3])),
-    byte (ord(InBufer.Bufer[4]))]);
+                                     byte (ord(InBufer.Bufer[2])),
+                                     byte (ord(InBufer.Bufer[3])),
+                                     byte (ord(InBufer.Bufer[4]))]);
 
     if(SpeekerSettings.MainServerIP <> NewIP) then
       begin
@@ -1449,6 +1457,8 @@ begin
     InBufer.SetNextLength;
 end;
 //-----------------------------------------------------------------
+
+
 
 procedure TMainForm.ReceiveForProcessing(ReadyBufer: string);
 begin
@@ -1557,6 +1567,8 @@ begin
         StatusBar1.Panels[0].Text:=StatusBar1.Panels[0].Text+' [Основной]';
       end;
   //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
+  noPong := False;
+  Pilingator.Enabled := True;
 end;
 
 //-----------------------------------------------------------------
@@ -1595,6 +1607,7 @@ begin
       ConDiscon.Execute;
   end;
   //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
+  Pilingator.Enabled := false;
 end;
 
 //-----------------------------------------------------------------
@@ -2069,7 +2082,7 @@ begin
   DeleteAllMessages.Execute;
 end;
 
-procedure TMainForm.PingTimerTimer(Sender: TObject);
+procedure TMainForm.SEAPingTimerTimer(Sender: TObject);
 begin
   try
     PingTcpClient.RemotePort := '8732';
@@ -2648,6 +2661,26 @@ end;
 procedure TMainForm.N19Click(Sender: TObject);
 begin
   AboutForm.Show;
+end;
+
+procedure TMainForm.PilingatorTimer(Sender: TObject);
+var
+  s: String;
+begin
+  if noPong then
+    Reconnect
+  else
+    begin
+      s := #0#0#1#3;
+      ClientSocket1.Socket.SendBuf(s[1],length(s));
+      //ShowMessage('Ping?');
+      noPong := True;
+    end;
+end;
+
+procedure TMainForm.GetGroupInfoExecute(Sender: TObject);
+begin
+  GroupInfoForm.Show;
 end;
 
 end.

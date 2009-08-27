@@ -59,7 +59,7 @@ begin
     MainForm.AlienInfo.CompName := MainForm.UserList.Items[DelayTimer.Tag].SubItems[0];
     id := StrToInt(MainForm.UserList.Items[DelayTimer.Tag].SubItems[1]);
     s:=s + Char(id div 256)+ Char(id mod 256);
-    MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
+    if(MainForm.ClientSocket1.Active)then MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
     DelayTimer.Enabled:=true;
     DelayTimer.Tag := DelayTimer.Tag + 1;
     if(DelayTimer.Tag>MainForm.UserList.Items.Count-1)then

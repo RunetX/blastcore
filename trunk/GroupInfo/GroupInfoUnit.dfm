@@ -1,6 +1,6 @@
 object GroupInfoForm: TGroupInfoForm
-  Left = 148
-  Top = 62
+  Left = 485
+  Top = 43
   Width = 696
   Height = 480
   BorderStyle = bsSizeToolWin

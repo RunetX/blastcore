@@ -190,7 +190,6 @@ end;
     ReplyAuthor1: TMenuItem;
     ReplyGroup1: TMenuItem;
     N12: TMenuItem;
-    N13: TMenuItem;
     N14: TMenuItem;
     N1MessageBackward1: TMenuItem;
     N1MessageForward1: TMenuItem;
@@ -224,10 +223,12 @@ end;
     N6: TMenuItem;
     N11: TMenuItem;
     N16: TMenuItem;
-    N17: TMenuItem;
     N18: TMenuItem;
     N19: TMenuItem;
     Pilingator: TTimer;
+    N17: TMenuItem;
+    N22: TMenuItem;
+    N23: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -303,7 +304,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure MutePMUClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
     procedure PilingatorTimer(Sender: TObject);
-    procedure GetGroupInfoExecute(Sender: TObject);
+    procedure N23Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -338,6 +339,8 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
      procedure GetChatMeslen();
      procedure GetChatMessage();
      procedure GetNewAltIP();
+     procedure GetLinkLength();
+     procedure GetLink();
      procedure ReceiveForProcessing(ReadyBufer: string);
      procedure NullVaribles;
      procedure Reconnect;
@@ -356,7 +359,7 @@ var
 implementation
 
 uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
-  GroupInfoUnit, IgnorlistUnit, SentMesUnit, AboutUnit;
+  IgnorlistUnit, SentMesUnit, AboutUnit;
 
 {$R *.dfm}
 
@@ -786,7 +789,7 @@ var
 begin
   InBufer.isReadyForProc:=false;
   if(InBufer.LastSEACommand=6)then
-    if(GroupInfoForm.Visible)then
+    {if(GroupInfoForm.Visible)then
       begin
         with GroupInfoForm.GrInfoListView do          //TListView
           begin
@@ -807,7 +810,7 @@ begin
           InBufer.SetNextLength;
           end;
       end
-    else
+    else}
       begin
           AlienInfo.IPAddress := InBufer.Bufer;
           if SpeekerSettings.Debug then
@@ -1023,7 +1026,10 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('LastSEACommand', IntToStr(InBufer.LastSEACommand));
   InBufer.isReadyForProc := false;
-  if((InBufer.LastSEACommand<>5)and(InBufer.LastSEACommand<>6)and(InBufer.LastSEACommand<>13))then
+  if((InBufer.LastSEACommand<>5)and
+     (InBufer.LastSEACommand<>6)and
+     (InBufer.LastSEACommand<>9)and
+     (InBufer.LastSEACommand<>13))then
       begin
           InBufer.CurrentOperation:=1;
           InBufer.HowmanyNeedRec := 2;
@@ -1040,6 +1046,11 @@ begin
             Pilingator.Enabled := False;
             Pilingator.Enabled := True;
             InBufer.CurrentOperation := 9;
+            InBufer.HowmanyNeedRec   := 1;
+          end
+  else if(InBufer.LastSEACommand=9)then
+          begin
+            InBufer.CurrentOperation := 23;
             InBufer.HowmanyNeedRec   := 1;
           end
   else if(InBufer.LastSEACommand=13)then
@@ -1458,7 +1469,26 @@ begin
 end;
 //-----------------------------------------------------------------
 
+procedure TMainForm.GetLinkLength();  // 23
+begin
+  InBufer.isReadyForProc:=false;
+  InBufer.CurrentOperation := 24;
+  InBufer.HowmanyNeedRec   := ord(InBufer.Bufer[1]);
+  InBufer.SetNextLength;
+end;
+//-----------------------------------------------------------------
 
+procedure TMainForm.GetLink();       // 24
+var
+  wnd:HWND;
+begin
+  ShellExecute(wnd, 'open', PAnsiChar(InBufer.Bufer),
+  NIL, NIL, SW_SHOWMAXIMIZED);
+  InBufer.isReadyForProc:=false;
+  InBufer.CurrentOperation := 9;
+  InBufer.HowmanyNeedRec   := 1;
+  InBufer.SetNextLength;
+end;
 
 procedure TMainForm.ReceiveForProcessing(ReadyBufer: string);
 begin
@@ -1484,6 +1514,8 @@ begin
   if(InBufer.CurrentOperation=20)then GetChatMeslen   else   // 20. GetChatMeslen
   if(InBufer.CurrentOperation=21)then GetChatMessage  else   // 21. GetChatMessage
   if(InBufer.CurrentOperation=22)then GetNewAltIP     else   // 22. Change Alternative Server IP
+  if(InBufer.CurrentOperation=23)then GetLinkLength   else   // 23. GetLinkLength
+  if(InBufer.CurrentOperation=24)then GetLink         else   // 24. GetLink
   if((InBufer.CurrentOperation<1)or(InBufer.CurrentOperation>22))then
   begin
     if SpeekerSettings.Debug then
@@ -2678,9 +2710,12 @@ begin
     end;
 end;
 
-procedure TMainForm.GetGroupInfoExecute(Sender: TObject);
+procedure TMainForm.N23Click(Sender: TObject);
+var
+  s: String;
 begin
-  GroupInfoForm.Show;
+  s := #0#0#1#9;
+  ClientSocket1.Socket.SendBuf(s[1],length(s));
 end;
 
 end.

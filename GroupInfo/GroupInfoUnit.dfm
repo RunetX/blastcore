@@ -1,5 +1,5 @@
 object GroupInfoForm: TGroupInfoForm
-  Left = 485
+  Left = 349
   Top = 43
   Width = 696
   Height = 480
@@ -78,13 +78,5 @@ object GroupInfoForm: TGroupInfoForm
     Caption = #1054#1095#1080#1089#1090#1080#1090#1100
     TabOrder = 2
     OnClick = ClrGIBtnClick
-  end
-  object DelayTimer: TTimer
-    Tag = 2
-    Enabled = False
-    Interval = 1
-    OnTimer = DelayTimerTimer
-    Left = 48
-    Top = 424
   end
 end

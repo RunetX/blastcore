@@ -163,6 +163,8 @@ procedure TOptionsForm.SaveOptionsExecute(Sender: TObject);
 var
   sIniFile: TIniFile;
   Registry: TRegistry;
+  s, ns, room, info: String;
+  j: integer;
 begin
 // Save to varibles
   MainForm.SpeekerSettings.OptStartmin  := StartMinChkBox.Checked;
@@ -194,6 +196,20 @@ begin
   MainForm.SpeekerSettings.Room := IntToStr(RoomCmbBox.ItemIndex);
   //SetLength(MainForm.SpeekerSettings.Room, 5);
   MainForm.SpeekerSettings.Info := Memo1.Text;
+
+  // Send Info to Server (It's no cool do all this action without diff check)
+  room:=OptionsForm.RoomCmbBox.Items[StrToInt(MainForm.SpeekerSettings.Room)];
+  info:=MainForm.ClientProperties.Version+#13#10+MainForm.SpeekerSettings.Info;
+  ns:= Char(Length(info))+info;
+  ns:= room+ns+#98;//Версия
+  if(MainForm.SpeekerSettings.Faculty)then
+    ns:= #4+#1+ns
+  else
+    ns:= #4+#2+ns;
+  j:=length(ns);
+  ns:=#0+Char(j div 256)+Char(j mod 256)+ns;
+  MainForm.ClientSocket1.Socket.SendBuf(ns[1],length(ns));
+
 // Save to Ini
     if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
         CreateDir(MainForm.SpeekerSettings.UserAppdataDir);

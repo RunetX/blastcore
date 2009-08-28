@@ -33,7 +33,7 @@ object OptionsForm: TOptionsForm
         Top = 8
         Width = 269
         Height = 145
-        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1047#1074#1091#1082#1072
+        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1079#1074#1091#1082#1072
         TabOrder = 2
         object SpeedButton1: TSpeedButton
           Left = 184
@@ -294,7 +294,7 @@ object OptionsForm: TOptionsForm
           Height = 25
           Alignment = taCenter
           AutoSize = False
-          Caption = #1040#1083#1100#1090#1077#1088#1085#1072#1090#1080#1074#1085#1099#1081' '#1057#1077#1088#1074#1077#1088
+          Caption = #1040#1083#1100#1090#1077#1088#1085#1072#1090#1080#1074#1085#1099#1081' '#1089#1077#1088#1074#1077#1088
           WordWrap = True
         end
         object LabeledEdit1: TLabeledEdit
@@ -302,9 +302,9 @@ object OptionsForm: TOptionsForm
           Top = 32
           Width = 97
           Height = 21
-          EditLabel.Width = 90
+          EditLabel.Width = 89
           EditLabel.Height = 13
-          EditLabel.Caption = #1054#1089#1085#1086#1074#1085#1086#1081' '#1057#1077#1088#1074#1077#1088
+          EditLabel.Caption = #1054#1089#1085#1086#1074#1085#1086#1081' '#1089#1077#1088#1074#1077#1088
           TabOrder = 0
         end
         object Button5: TButton
@@ -329,7 +329,7 @@ object OptionsForm: TOptionsForm
         Top = 168
         Width = 409
         Height = 121
-        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1055#1086#1074#1077#1076#1077#1085#1080#1103' '#1080' '#1042#1080#1076#1072
+        Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1087#1086#1074#1077#1076#1077#1085#1080#1103' '#1080' '#1074#1080#1076#1072
         TabOrder = 1
         object StartMinChkBox: TCheckBox
           Left = 8
@@ -398,16 +398,16 @@ object OptionsForm: TOptionsForm
       object Label2: TLabel
         Left = 160
         Top = 130
-        Width = 121
+        Width = 119
         Height = 13
-        Caption = #1053#1077#1089#1082#1086#1083#1100#1082#1086' '#1057#1083#1086#1074' '#1086' '#1057#1077#1073#1077
+        Caption = #1053#1077#1089#1082#1086#1083#1100#1082#1086' '#1089#1083#1086#1074' '#1086' '#1089#1077#1073#1077
       end
       object Label4: TLabel
         Left = 24
         Top = 64
-        Width = 89
+        Width = 88
         Height = 13
-        Caption = #1048#1084#1103' '#1050#1086#1084#1087#1100#1102#1090#1077#1088#1072
+        Caption = #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
       end
       object Image1: TImage
         Left = 24
@@ -3517,9 +3517,9 @@ object OptionsForm: TOptionsForm
         Top = 40
         Width = 121
         Height = 21
-        EditLabel.Width = 98
+        EditLabel.Width = 96
         EditLabel.Height = 13
-        EditLabel.Caption = #1048#1084#1103' '#1055#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
+        EditLabel.Caption = #1048#1084#1103' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1103
         MaxLength = 127
         TabOrder = 0
       end
@@ -3566,7 +3566,7 @@ object OptionsForm: TOptionsForm
         Top = 160
         Width = 121
         Height = 21
-        ItemHeight = 0
+        ItemHeight = 13
         Sorted = True
         TabOrder = 5
         Text = 'RoomCmbBox'

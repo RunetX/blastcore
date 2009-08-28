@@ -11,10 +11,8 @@ type
     GrInfoListView: TListView;
     GetGIBtn: TButton;
     ClrGIBtn: TButton;
-    DelayTimer: TTimer;
     procedure ClrGIBtnClick(Sender: TObject);
     procedure GetGIBtnClick(Sender: TObject);
-    procedure DelayTimerTimer(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
@@ -37,43 +35,31 @@ begin
 end;
 
 procedure TGroupInfoForm.GetGIBtnClick(Sender: TObject);
+var
+    s: string;
+    i, id: integer;
 begin
     if(MainForm.ClientSocket1.Active)then
     begin
       GrInfoListView.Clear;
-      DelayTimer.Enabled:=true;
+      s := #0#0#3#5;
+      for i:=2 to MainForm.Userlist.Items.Count-1 do
+        begin
+          MainForm.AlienInfo.UserName := MainForm.UserList.Items[i].Caption;
+          MainForm.AlienInfo.CompName := MainForm.UserList.Items[i].SubItems[0];
+          id := StrToInt(MainForm.UserList.Items[i].SubItems[1]);
+          s:=s + Char(id div 256)+ Char(id mod 256);
+          if(MainForm.ClientSocket1.Active)then MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
+        end;
+      ShowMessage(IntToStr(i));
     end
     else
       ShowMessage('Нет соединения [ред. Мишаня]!');
 end;
 
-procedure TGroupInfoForm.DelayTimerTimer(Sender: TObject);
-var
-    s: string;
-    id: integer;
-
-begin
-      s := #0#0#3#5;
-
-    MainForm.AlienInfo.UserName := MainForm.UserList.Items[DelayTimer.Tag].Caption;
-    MainForm.AlienInfo.CompName := MainForm.UserList.Items[DelayTimer.Tag].SubItems[0];
-    id := StrToInt(MainForm.UserList.Items[DelayTimer.Tag].SubItems[1]);
-    s:=s + Char(id div 256)+ Char(id mod 256);
-    if(MainForm.ClientSocket1.Active)then MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
-    DelayTimer.Enabled:=true;
-    DelayTimer.Tag := DelayTimer.Tag + 1;
-    if(DelayTimer.Tag>MainForm.UserList.Items.Count-1)then
-    begin
-      DelayTimer.Enabled:=false;
-      DelayTimer.Tag:=2;
-    end;
-end;
-
 procedure TGroupInfoForm.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  DelayTimer.Enabled:=false;
-  DelayTimer.Tag:=2;
   GrInfoListView.Clear;
 end;
 

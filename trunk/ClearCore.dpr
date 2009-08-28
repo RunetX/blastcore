@@ -10,7 +10,6 @@ uses
   OptionsUnit in 'Options\OptionsUnit.pas' {OptionsForm},
   NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm},
   IgnorlistUnit in 'IgnoreManager\IgnorlistUnit.pas' {IgnorelistForm},
-  GroupInfoUnit in 'GroupInfo\GroupInfoUnit.pas' {GroupInfoForm},
   SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm},
   AboutUnit in 'About\AboutUnit.pas' {AboutForm};
 
@@ -45,7 +44,6 @@ begin   {
   Application.CreateForm(TOptionsForm, OptionsForm);
   Application.CreateForm(TBChatForm, BChatForm);
   Application.CreateForm(TIgnorelistForm, IgnorelistForm);
-  Application.CreateForm(TGroupInfoForm, GroupInfoForm);
   Application.CreateForm(TSentMesForm, SentMesForm);
   Application.CreateForm(TAboutForm, AboutForm);
   Application.Run;

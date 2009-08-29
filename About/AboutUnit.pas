@@ -5,17 +5,15 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdHTTP, PngImage1;
+  IdTCPConnection, IdTCPClient, IdHTTP, PngImage1, jpeg;
 
 type
   TAboutForm = class(TForm)
     Panel1: TPanel;
-    AboutLabel: TLabel;
     Image1: TImage;
-    Timer1: TTimer;
-    Label1: TLabel;
+    OkBtn: TButton;
     procedure FormCreate(Sender: TObject);
-    procedure Timer1Timer(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -24,7 +22,6 @@ type
 
 var
   AboutForm: TAboutForm;
-  deltaX, deltaY: integer;
 
 implementation
 
@@ -36,7 +33,7 @@ uses ArchiverUnit;
 
 procedure TAboutForm.FormCreate(Sender: TObject);
 begin
-  AboutLabel.Caption:=
+{
   'Оригинальная Идея:'+#13#10+
   'Александр Александров'+#13#10+#13#10+
   'Программирование и Дизайн'+#13#10+
@@ -45,22 +42,14 @@ begin
   'Nuclight aka [Гончаров Вадим]'+#13#10+#13#10+
   'Тестирование и Эргономика'+#13#10+
   'Mishanya aka [Логинов Михаил]'+#13#10+#13#10+
-  'Особая Благодарность Моей Девушке'+#13#10+
-  'Zebra aka [Соловьёва Мария]';
-  Label1.Caption:=MainForm.ClientProperties.Version;
-  deltaX:=3;
-  deltaY:=1;
+  'Особая благодарность моей половинке'+#13#10+
+  'Zebrе aka [Соловьёвой Марии]';  }
+  Caption:= Caption + MainForm.ClientProperties.Version;
 end;
 
-procedure TAboutForm.Timer1Timer(Sender: TObject);
+procedure TAboutForm.OkBtnClick(Sender: TObject);
 begin
-  if((AboutLabel.Left<0)or(AboutLabel.Left+AboutLabel.Width>Width-10))then
-    deltaX:=-deltaX;
-  if((AboutLabel.Top<80)or(AboutLabel.Top+AboutLabel.Height>Height-30))then
-    deltaY:=-deltaY;
-
-  AboutLabel.Left:=AboutLabel.Left+deltaX;
-  AboutLabel.Top:=AboutLabel.Top+deltaY;
+  Close;
 end;
 
 end.

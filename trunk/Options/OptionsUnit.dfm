@@ -1,6 +1,6 @@
 object OptionsForm: TOptionsForm
-  Left = 310
-  Top = 181
+  Left = 790
+  Top = 170
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -3566,7 +3566,7 @@ object OptionsForm: TOptionsForm
         Top = 160
         Width = 121
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         Sorted = True
         TabOrder = 5
         Text = 'RoomCmbBox'

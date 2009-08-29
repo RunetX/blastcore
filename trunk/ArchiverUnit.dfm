@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 217
-  Top = 192
+  Left = 529
+  Top = 266
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -167,14 +167,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -184,7 +184,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       Align = alRight
       BevelInner = bvLowered
       BiDiMode = bdLeftToRight
@@ -221,13 +221,13 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TLabel
         Left = 302
         Top = 8
@@ -267,7 +267,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom
@@ -4572,6 +4572,7 @@ object MainForm: TMainForm
         Caption = '-'
       end
       object N23: TMenuItem
+        Action = OpenSiteAction
         Bitmap.Data = {
           36050000424D3605000000000000360400002800000010000000100000000100
           0800000000000001000000000000000000000001000000010000F0D08F00EFD8
@@ -4615,8 +4616,6 @@ object MainForm: TMainForm
           40423E3929281E3A0A0A0A0A040333012B38322727261F3A0A0A0A0A0A040408
           08091C21201F3A0A040A0A0A0A0A0A04040412093A3A0A0A040A0A0A0A0A0A0A
           0A0A0A04030A0A0A040A0A0A0A0A0A0A0A0A0A0A0A0303040A0A}
-        Caption = #1040#1088#1093#1080#1074'...'
-        OnClick = N23Click
       end
       object N9: TMenuItem
         Caption = '-'

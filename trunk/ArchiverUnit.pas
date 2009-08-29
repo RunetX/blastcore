@@ -229,6 +229,7 @@ end;
     N17: TMenuItem;
     N22: TMenuItem;
     N23: TMenuItem;
+    EnDisButtons: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -304,6 +305,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure MutePMUClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
     procedure PilingatorTimer(Sender: TObject);
+    procedure EnDisButtonsExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1233,6 +1235,8 @@ begin
         ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
   end;
       end;
+
+    EnDisButtons.Execute;
     end
   else
     begin
@@ -1949,6 +1953,14 @@ begin
           CoolTrayIcon.IconIndex:=5
       else
           CoolTrayIcon.IconIndex:=4;
+
+      // Если нет "чеканных" сообщений, кнопку удалить выделенные делать неактивной
+      if CheckedNumber=0 then
+          DeleteAllChMessages.Enabled:=false
+      else
+          DeleteAllChMessages.Enabled:=true;
+
+      EnDisButtons.Execute;
   end
   else if(MessagesListView.Items.Count=0)then
   begin
@@ -1957,6 +1969,8 @@ begin
       if(SpeekerSettings.OptDelastmin)then Application.Minimize;
   end;
     StatusBar1.Panels[1].Text := 'Сообщений: '+IntToStr(MessagesListView.Items.Count);
+
+
 end;
 
 procedure TMainForm.CheckAllMessagesBtnClick(Sender: TObject);
@@ -1976,6 +1990,7 @@ begin
   CoolTrayIcon.IconIndex:=3;
   StatusBar1.Panels[1].Text := 'Сообщений: 0';
   if(SpeekerSettings.OptDelastmin)then Application.Minimize;
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.DeleteAllChMessagesExecute(Sender: TObject);
@@ -2012,6 +2027,7 @@ begin
         
   StatusBar1.Panels[1].Text := 'Сообщений: '+IntToStr(MessagesListView.Items.Count);
 
+  EnDisButtons.Execute;
   end;
 end;
 
@@ -2045,6 +2061,8 @@ begin
      StatusBar1.Panels[1].Text:='Сообщений: 0';
      if(SpeekerSettings.OptDelastmin)then Application.Minimize;
   end;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.DelcurmesToolButtonClick(Sender: TObject);
@@ -2063,6 +2081,8 @@ begin
   if UpIndex <= LastIndex then
       MessagesListView.Items[UpIndex].Selected:=true;
   end;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.JumpDownExecute(Sender: TObject);
@@ -2075,6 +2095,8 @@ begin
   if DownIndex >= 0 then
       MessagesListView.Items[DownIndex].Selected:=true;
   end;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.ForwardToolButtonClick(Sender: TObject);
@@ -2091,12 +2113,16 @@ procedure TMainForm.JumpToLastExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.JumpToFirstExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[0].Selected:=true;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.LastmesToolButtonClick(Sender: TObject);
@@ -2313,6 +2339,8 @@ begin
             'Пользователь не найден.', MB_OK)
           end;
       end;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.ReplyGroupExecute(Sender: TObject);
@@ -2326,6 +2354,8 @@ begin
    SendMessageForm := TSendMessageForm.Create(Self);
    SendMessageForm.Show;
   end;
+
+  EnDisButtons.Execute;
 end;
 
 procedure TMainForm.WriteNewMessageExecute(Sender: TObject);
@@ -2706,6 +2736,78 @@ begin
       s := #0#0#1#3;
       ClientSocket1.Socket.SendBuf(s[1],length(s));
       noPong := True;
+    end;
+end;
+
+procedure TMainForm.EnDisButtonsExecute(Sender: TObject);
+begin
+  if MessagesListView.Items.Count=0 then
+    begin
+      ReplyAuthorTB.Enabled         := false;
+      ReplyGroupTB.Enabled          := false;
+      FirsmesToolButton.Enabled     := false;
+      BackToolButton.Enabled        := false;
+      ForwardToolButton.Enabled     := false;
+      LastmesToolButton.Enabled     := false;
+      DeleteCurrentMessage.Enabled  := false;
+      DeleteAllChMessages.Enabled   := false;
+      DeleteAllMessages.Enabled     := false;
+    end;
+  if MessagesListView.Items.Count=1 then
+    begin
+      ReplyAuthorTB.Enabled         := true;
+      ReplyGroupTB.Enabled          := true;
+      FirsmesToolButton.Enabled     := false;
+      BackToolButton.Enabled        := false;
+      ForwardToolButton.Enabled     := false;
+      LastmesToolButton.Enabled     := false;
+      DeleteCurrentMessage.Enabled  := true;
+      DeleteAllChMessages.Enabled   := true;
+      DeleteAllMessages.Enabled     := true;
+    end;
+  if MessagesListView.Items.Count=2 then
+    begin
+      if MessagesListView.Selected.Index=0 then
+        begin
+          FirsmesToolButton.Enabled     := false;
+          BackToolButton.Enabled        := false;
+          ForwardToolButton.Enabled     := true;
+          LastmesToolButton.Enabled     := true;
+        end
+      else
+        begin
+          FirsmesToolButton.Enabled     := true;
+          BackToolButton.Enabled        := true;
+          ForwardToolButton.Enabled     := false;
+          LastmesToolButton.Enabled     := false;
+        end;
+    end;
+  if MessagesListView.Items.Count>2 then
+    begin
+      if MessagesListView.Selected.Index=0 then
+        begin
+          FirsmesToolButton.Enabled     := false;
+          BackToolButton.Enabled        := false;
+          ForwardToolButton.Enabled     := true;
+          LastmesToolButton.Enabled     := true;
+        end;
+
+      if MessagesListView.Selected.Index=MessagesListView.Items.Count-1 then
+        begin
+          FirsmesToolButton.Enabled     := true;
+          BackToolButton.Enabled        := true;
+          ForwardToolButton.Enabled     := false;
+          LastmesToolButton.Enabled     := false;
+        end;
+
+      if (MessagesListView.Selected.Index>0) and
+         (MessagesListView.Selected.Index<MessagesListView.Items.Count-1) then
+        begin
+          FirsmesToolButton.Enabled     := true;
+          BackToolButton.Enabled        := true;
+          ForwardToolButton.Enabled     := true;
+          LastmesToolButton.Enabled     := true;
+        end;
     end;
 end;
 

@@ -268,6 +268,10 @@ begin
     begin
       MainForm.SpeekerSettings.MainServerIP := LabeledEdit1.Text;
       MainForm.SpeekerSettings.AltServerIP  := LabeledEdit2.Text;
+
+      if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
+        CreateDir(MainForm.SpeekerSettings.UserAppdataDir);
+
       sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
       sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
       sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);

@@ -304,7 +304,6 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure MutePMUClick(Sender: TObject);
     procedure N19Click(Sender: TObject);
     procedure PilingatorTimer(Sender: TObject);
-    procedure N23Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1394,7 +1393,7 @@ begin
             end;
         end;
       InBufer.CurrentOperation:=9;
-      InBufer.HowmanyNeedRec := 1;    //TForm
+      InBufer.HowmanyNeedRec := 1;    
     end
   else
     begin
@@ -1856,10 +1855,11 @@ end;
 //-----------------------------------------------------------------
 
 procedure TMainForm.OpenSiteActionExecute(Sender: TObject);
-  var wnd:HWND;
+var
+  s: String;
 begin
-  ShellExecute(wnd, 'open', PAnsiChar(SpeekerSettings.ArchiveLink+'archive/'),
-  NIL, NIL, SW_SHOWMAXIMIZED);
+  s := #0#0#1#9;
+  ClientSocket1.Socket.SendBuf(s[1],length(s));
 end;
 
 //-----------------------------------------------------------------
@@ -2579,7 +2579,7 @@ begin
     else
     begin
       Chat.Enabled:=false;
-      NewMessagePMU.Enabled:=false;
+      //NewMessagePMU.Enabled:=false;
       MutePMU.Enabled:=false;
       UInfoPMU.Enabled:=false;
     end
@@ -2705,17 +2705,8 @@ begin
     begin
       s := #0#0#1#3;
       ClientSocket1.Socket.SendBuf(s[1],length(s));
-      //ShowMessage('Ping?');
       noPong := True;
     end;
-end;
-
-procedure TMainForm.N23Click(Sender: TObject);
-var
-  s: String;
-begin
-  s := #0#0#1#9;
-  ClientSocket1.Socket.SendBuf(s[1],length(s));
 end;
 
 end.

@@ -2749,9 +2749,9 @@ begin
       BackToolButton.Enabled        := false;
       ForwardToolButton.Enabled     := false;
       LastmesToolButton.Enabled     := false;
-      DeleteCurrentMessage.Enabled  := false;
-      DeleteAllChMessages.Enabled   := false;
-      DeleteAllMessages.Enabled     := false;
+      DelcurmesToolButton.Enabled   := false;
+      DelchmesToolButton.Enabled    := false;
+      DelallmesToolButton.Enabled   := false;
     end;
   if MessagesListView.Items.Count=1 then
     begin
@@ -2761,9 +2761,9 @@ begin
       BackToolButton.Enabled        := false;
       ForwardToolButton.Enabled     := false;
       LastmesToolButton.Enabled     := false;
-      DeleteCurrentMessage.Enabled  := true;
-      DeleteAllChMessages.Enabled   := true;
-      DeleteAllMessages.Enabled     := true;
+      DelcurmesToolButton.Enabled   := true;
+      DelchmesToolButton.Enabled    := true;
+      DelallmesToolButton.Enabled   := true;
     end;
   if MessagesListView.Items.Count=2 then
     begin

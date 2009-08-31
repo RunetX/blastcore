@@ -1,6 +1,6 @@
 object OptionsForm: TOptionsForm
-  Left = 310
-  Top = 181
+  Left = 790
+  Top = 170
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -363,7 +363,7 @@ object OptionsForm: TOptionsForm
           Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1091' '#1087#1088#1080' '#1089#1090#1072#1088#1090#1077' Windows'
           TabOrder = 3
         end
-        object CheckBox1: TCheckBox
+        object ShowPanelChkBox: TCheckBox
           Left = 264
           Top = 24
           Width = 129
@@ -372,14 +372,13 @@ object OptionsForm: TOptionsForm
           TabOrder = 4
           WordWrap = True
         end
-        object CheckBox2: TCheckBox
+        object SoundsEnableChkBox: TCheckBox
           Left = 264
           Top = 64
           Width = 105
           Height = 17
           Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082#1080
           Checked = True
-          Enabled = False
           State = cbChecked
           TabOrder = 5
         end
@@ -3566,7 +3565,7 @@ object OptionsForm: TOptionsForm
         Top = 160
         Width = 121
         Height = 21
-        ItemHeight = 13
+        ItemHeight = 0
         Sorted = True
         TabOrder = 5
         Text = 'RoomCmbBox'

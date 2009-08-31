@@ -67,8 +67,11 @@ begin
   Label1.Caption := 'Вы желаете ответить '+
   MainForm.UserList.Items[index].Caption +
   MainForm.UserList.Items[index].SubItems[0]+'?';
-  PlaySound(PChar(MainForm.SpeekerSettings.ChatSound),0,SND_FILENAME);
-  MainForm.ChatSoundTimer.Enabled := true;
+  if(MainForm.SpeekerSettings.OptEnablesounds)then
+    begin
+      PlaySound(PChar(MainForm.SpeekerSettings.ChatSound),0,SND_FILENAME);
+      MainForm.ChatSoundTimer.Enabled := true;
+    end;
 end;
 
 procedure TChatYESNOForm.FormClose(Sender: TObject;

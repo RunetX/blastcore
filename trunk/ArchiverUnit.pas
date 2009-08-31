@@ -230,6 +230,7 @@ end;
     N22: TMenuItem;
     N23: TMenuItem;
     EnDisButtons: TAction;
+    N13: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -306,6 +307,8 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure N19Click(Sender: TObject);
     procedure PilingatorTimer(Sender: TObject);
     procedure EnDisButtonsExecute(Sender: TObject);
+    procedure N13Click(Sender: TObject);
+    procedure TrayPopupMenuPopup(Sender: TObject);
   private
     { Private declarations }
   public
@@ -512,8 +515,8 @@ begin
 //    SpeekerSettings.OptShowpanel    := Ini.ReadBool( 'Options', 'Debug',  false);
     SpeekerSettings.OptEnablesounds := Ini.ReadBool( 'Options', 'EnableSounds',  false);
 //    SpeekerSettings.OptUpdate:    integer;  // from 1 to 6
-
-    PanelState :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
+    SpeekerSettings.OptShowpanel :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
+    PanelState := SpeekerSettings.OptShowpanel;
   finally
     Ini.Free;
   end;
@@ -1152,10 +1155,11 @@ begin
     // Если не найден в заигноренных
       begin
         if(SpeekerSettings.OptPopup)then CoolTrayIcon.ShowMainForm;
-        if(ClientProperties.Privat=1)then
-            PlaySound(PChar(SpeekerSettings.PrivateSound),0,SND_FILENAME)
-        else
-            PlaySound(PChar(SpeekerSettings.GroupSound),0,SND_FILENAME);
+        if(SpeekerSettings.OptEnablesounds)then
+          if(ClientProperties.Privat=1)then
+              PlaySound(PChar(SpeekerSettings.PrivateSound),0,SND_FILENAME)
+          else
+              PlaySound(PChar(SpeekerSettings.GroupSound),0,SND_FILENAME);
 
         with MessagesListView do          //TListView
           begin
@@ -1169,11 +1173,14 @@ begin
             tmpListItem.SubItems.Add(DateToStr(Date));
             tmpListItem.SubItems.Add(UserList.Items[tmpIndex].Caption);
             tmpListItem.SubItems.Add(UserList.Items[tmpIndex].SubItems[0]);
-
           end;
       if(MessagesListView.Items.Count=1)then
-        begin       //MessagesListView.Items[0].Selected:=true;
-          if(MainForm.Visible)then MessagesListView.Items[0].Selected:=true
+        begin
+          if(MainForm.Visible)then
+            begin
+              MessagesListView.Items[0].Selected:=true;
+              MessagesListView.Items[0].Checked:=true;
+            end
           else
             begin
      { MessageMemo.Clear;
@@ -1639,8 +1646,9 @@ begin
       StatusBar1.Panels[0].Text:='Разъединено';
 
       //Reconnect;
-      ConDiscon.Execute;
+
   end;
+  ConDiscon.Execute;
   //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
   Pilingator.Enabled := false;
 end;
@@ -1657,6 +1665,7 @@ end;
 procedure TMainForm.ShowArchiver1Click(Sender: TObject);
 begin
   CoolTrayIcon.ShowMainForm;
+  MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
     if(MessagesListView.Items.Count=1)then
       begin
         MessagesListView.ItemIndex:=0;
@@ -1664,11 +1673,17 @@ begin
       end;
 end;
 
+procedure TMainForm.TrayPopupMenuPopup(Sender: TObject);
+begin
+  N13.Checked := SpeekerSettings.OptEnablesounds;
+end;
+
 //-----------------------------------------------------------------
 
 procedure TMainForm.CoolTrayIconClick(Sender: TObject);
 begin
   CoolTrayIcon.ShowMainForm;
+  MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
   if(MessagesListView.Items.Count=1)then
       begin
         MessagesListView.ItemIndex:=0;
@@ -1723,41 +1738,49 @@ var
   tmp2: String;
 begin
 
+  // Мы подключены?
+  if(ClientSocket1.Active)then
+    begin
+      // Отключиться!
+      ClientSocket1.Close;
 
-    if(ClientSocket1.Active)then
-  begin
-    ClientSocket1.Close;
-    //ConDisconToolBtn.ImageIndex:=14;
-    ReconnectTimer.Enabled := True;
-  end
+      // Через две секунды опять вызвать ConDisconExecute
+      ReconnectTimer.Enabled := True;
+    end
+  // Не подключены
   else
-  begin
-  try
-    NullVaribles;
-    if Length(SpeekerSettings.UserName)=0 then
     begin
-      tmp:= 32767;
-      SetLength(tmp2, tmp);
-      GetUserName(PChar(tmp2), tmp);
-      SpeekerSettings.UserName := tmp2;
-      SetLength(SpeekerSettings.UserName,(pos(#0, tmp2)-1));
-    end;
-  if Length(SpeekerSettings.CompName)=0 then
-    begin
-      tmp:= 32767;
-      SetLength(tmp2, tmp);
-      GetComputerName(PChar(tmp2), tmp);
-      SpeekerSettings.CompName := tmp2;
-      SetLength(SpeekerSettings.CompName,(pos(#0, tmp2)-1));
-    end;
 
-    ClientSocket1.Address:=SpeekerSettings.MainServerIP;
-    ClientSocket1.Open;
-    //ConDisconToolBtn.ImageIndex:=13;
-  except
-    ClientSocket1.Close;
-    //ConDisconToolBtn.ImageIndex:=14;
-  end;
+      NullVaribles;
+
+      if Length(SpeekerSettings.UserName)=0 then
+        begin
+          tmp:= 32767;
+          SetLength(tmp2, tmp);
+          GetUserName(PChar(tmp2), tmp);
+          SpeekerSettings.UserName := tmp2;
+          SetLength(SpeekerSettings.UserName,(pos(#0, tmp2)-1));
+        end;
+
+      if Length(SpeekerSettings.CompName)=0 then
+        begin
+          tmp:= 32767;
+          SetLength(tmp2, tmp);
+          GetComputerName(PChar(tmp2), tmp);
+          SpeekerSettings.CompName := tmp2;
+          SetLength(SpeekerSettings.CompName,(pos(#0, tmp2)-1));
+        end;
+
+      if ClientSocket1.Address=SpeekerSettings.MainServerIP then
+        ClientSocket1.Address:=SpeekerSettings.AltServerIP
+      else
+        ClientSocket1.Address:=SpeekerSettings.MainServerIP;
+
+      try
+        ClientSocket1.Open;
+      except
+        ClientSocket1.Close;
+      end;
   end;
 end;
 
@@ -1833,6 +1856,8 @@ begin
 
   if SpeekerSettings.Debug then
       LogTimer.Enabled:=true;
+
+  //ClientSocket1.Address := SpeekerSettings.AltServerIP;
   ConDiscon.Execute;
 end;
 
@@ -1938,7 +1963,7 @@ begin
             WhomEdit.Text := WhomEdit.Text + ' Всем';
       WhomEdit.Text := WhomEdit.Text+' в '+ MessagesListView.Selected.SubItems[4]+
       ', '+ MessagesListView.Selected.SubItems[5];
-      MessagesListView.Items[MessagesListView.Selected.Index].Checked:=true;
+      //MessagesListView.Items[MessagesListView.Selected.Index].Checked:=true;
       MesnumberLabel.Caption:='Сообщение: '+IntToStr(MessagesListView.Selected.Index+1)+
                                     '/'+IntToStr(MessagesListView.Items.Count);
       CheckedNumber:=0;
@@ -2499,7 +2524,13 @@ end;
 
 procedure TMainForm.N5Click(Sender: TObject);
 begin
-  N5.Checked:=not(N5.Checked);
+  N5.Checked := not(N5.Checked);
+end;
+
+procedure TMainForm.N13Click(Sender: TObject);
+begin
+  N13.Checked := not(N13.Checked);
+  SpeekerSettings.OptEnablesounds := N13.Checked;
 end;
 
 procedure ShellExec(CmdStr: string);

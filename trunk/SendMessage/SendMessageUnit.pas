@@ -192,9 +192,9 @@ var
   index:integer;
 begin
 
-  s:=Char(Length(Memo1.Lines.Text) div 256)+
-     Char(Length(Memo1.Lines.Text) mod 256)+
-     Memo1.Lines.Text;
+  s := Memo1.Lines.Text;
+
+  s:=Char(Length(s) div 256) + Char(Length(s) mod 256) + s;
 
 
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));

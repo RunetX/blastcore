@@ -125,7 +125,7 @@ begin
       IgnoreList.ItemIndex:=SelectedItem+1;
   end
   else
-    ShowMessage('Select User!');
+    ShowMessage('Выберите пользователя!');
 end;
 
 procedure TIgnorelistForm.SpeedButton3Click(Sender: TObject);

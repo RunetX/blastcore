@@ -15,14 +15,12 @@ type
     SendMesCmbBox: TComboBoxEx;
     Button1: TButton;
     FillComboBox: TAction;
-    Button2: TButton;
     procedure Button4Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SendMessageExecute(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FillComboBoxExecute(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -194,9 +192,11 @@ var
   index:integer;
 begin
 
-  s:=Char(Length(Memo1.Lines.Text) div 256)+
-     Char(Length(Memo1.Lines.Text) mod 256)+
-     Memo1.Lines.Text;
+  s := Memo1.Lines.Text;
+
+  s:=Char(Length(s) div 256)+
+     Char(Length(s) mod 256)+
+     s;
 
 
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));
@@ -249,11 +249,6 @@ if Visible then
   end;
   SendMesCmbBox.ItemIndex:=MainForm.UserList.Selected.Index;
   end;
-end;
-
-procedure TSendMessageForm.Button2Click(Sender: TObject);
-begin
-  ShowMessage(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));
 end;
 
 end.

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 806
-  Top = 126
+  Left = 372
+  Top = 66
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 499
+    Top = 507
     Width = 650
     Height = 19
     Panels = <
@@ -61,6 +61,7 @@ object MainForm: TMainForm
     Images = IconsImageList
     ParentColor = False
     TabOrder = 1
+    Transparent = True
     object NewMesTB: TToolButton
       Left = 0
       Top = 0
@@ -176,14 +177,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 458
+    Height = 466
     Align = alClient
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 427
       Top = 1
       Width = 2
-      Height = 306
+      Height = 314
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -193,7 +194,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 306
+      Height = 314
       Align = alRight
       BevelInner = bvLowered
       BiDiMode = bdLeftToRight
@@ -230,13 +231,13 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 306
+      Height = 314
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       DesignSize = (
         426
-        306)
+        314)
       object MesnumberLabel: TLabel
         Left = 302
         Top = 8
@@ -276,7 +277,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TPanel
       Left = 1
-      Top = 307
+      Top = 315
       Width = 648
       Height = 150
       Align = alBottom
@@ -332,6 +333,7 @@ object MainForm: TMainForm
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         GridLines = True
+        HideSelection = False
         ReadOnly = True
         RowSelect = True
         ParentFont = False
@@ -375,6 +377,7 @@ object MainForm: TMainForm
   end
   object TrayPopupMenu: TPopupMenu
     TrackButton = tbLeftButton
+    OnPopup = TrayPopupMenuPopup
     Left = 144
     Top = 128
     object ShowArchiver1: TMenuItem
@@ -384,10 +387,15 @@ object MainForm: TMainForm
     end
     object OpenNETArchiver1: TMenuItem
       Action = OpenSiteAction
+      Caption = #1054#1090#1082#1088#1099#1090#1100' WEB-'#1072#1088#1093#1080#1074
     end
     object N5: TMenuItem
       Caption = #1042#1089#1087#1083#1099#1074#1072#1102#1097#1080#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1103
       OnClick = N5Click
+    end
+    object N13: TMenuItem
+      Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082#1080
+      OnClick = N13Click
     end
     object N1: TMenuItem
       Caption = '-'

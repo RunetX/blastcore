@@ -39,8 +39,8 @@ type
     Button4: TButton;
     Memo1: TMemo;
     Label2: TLabel;
-    CheckBox1: TCheckBox;
-    CheckBox2: TCheckBox;
+    ShowPanelChkBox: TCheckBox;
+    SoundsEnableChkBox: TCheckBox;
     SpeedButton7: TSpeedButton;
     SpeedButton8: TSpeedButton;
     SpeedButton9: TSpeedButton;
@@ -120,10 +120,12 @@ begin
         RoomCmbBox.ItemIndex:=0;
 
   Memo1.Text:=MainForm.SpeekerSettings.Info;
-  StartMinChkBox.Checked  := MainForm.SpeekerSettings.OptStartmin;
-  AutorunChkBox.Checked   := MainForm.SpeekerSettings.OptAutostart;
-  WinpopupChkBox.Checked  := MainForm.SpeekerSettings.OptPopup;
-  MinSTChkBox.Checked     := MainForm.SpeekerSettings.OptDelastmin;
+  StartMinChkBox.Checked     := MainForm.SpeekerSettings.OptStartmin;
+  AutorunChkBox.Checked      := MainForm.SpeekerSettings.OptAutostart;
+  WinpopupChkBox.Checked     := MainForm.SpeekerSettings.OptPopup;
+  MinSTChkBox.Checked        := MainForm.SpeekerSettings.OptDelastmin;
+  SoundsEnableChkBox.Checked := MainForm.SpeekerSettings.OptEnablesounds;
+  ShowPanelChkBox.Checked    := MainForm.SpeekerSettings.OptShowpanel;
 end;
 
 procedure TOptionsForm.SpeedButton2Click(Sender: TObject);
@@ -166,11 +168,25 @@ var
   s, ns, room, info: String;
   j: integer;
 begin
-// Save to varibles
+// Save to variables
+
+  // Start minimized
   MainForm.SpeekerSettings.OptStartmin  := StartMinChkBox.Checked;
+  // Start program when Windows starts
   MainForm.SpeekerSettings.OptAutostart := AutorunChkBox.Checked;
+  // Pop up when receive message
   MainForm.SpeekerSettings.OptPopup     := WinpopupChkBox.Checked;
+  // Hide program to systray when delete last message
   MainForm.SpeekerSettings.OptDelastmin := MinSTChkBox.Checked;
+  // Show\Hide Messages Panel
+  MainForm.SpeekerSettings.OptShowpanel := ShowPanelChkBox.Checked;
+  // Enable\Disable sounds
+  MainForm.SpeekerSettings.OptEnablesounds := SoundsEnableChkBox.Checked;
+
+  if MainForm.SpeekerSettings.OptShowpanel then
+        MainForm.DownPanel.Height := 150
+  else
+        MainForm.DownPanel.Height := 4;
 
   Registry := TRegistry.Create;
   Registry.RootKey := hkey_current_user;
@@ -216,6 +232,8 @@ begin
 
     sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
 
+    sIniFile.WriteBool( 'Programm', 'ShowPanel', ShowPanelChkBox.Checked);
+
     sIniFile.WriteString( 'User', 'UserName', LabeledEdit7.Text);
     sIniFile.WriteString( 'User', 'Room',     MainForm.SpeekerSettings.Room);
     sIniFile.WriteString( 'User', 'Info',     '"'+Memo1.Text+'"');
@@ -229,8 +247,9 @@ begin
     sIniFile.WriteBool( 'Options', 'AutoStart',       AutorunChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'WinPopup',        WinpopupChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'MinimizeWhenDelast',  MinSTChkBox.Checked);
-    sIniFile.Free;
+    sIniFile.WriteBool( 'Options', 'EnableSounds',  SoundsEnableChkBox.Checked);
 
+    sIniFile.Free;
 end;
 
 procedure TOptionsForm.Button3Click(Sender: TObject);

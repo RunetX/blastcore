@@ -1680,8 +1680,10 @@ end;
 procedure TMainForm.ShowArchiver1Click(Sender: TObject);
 begin
   CoolTrayIcon.ShowMainForm;
-  MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
-    if(MessagesListView.Items.Count=1)then
+  if MessagesListView.Items.Count>0 then
+    MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
+
+  if(MessagesListView.Items.Count=1)then
       begin
         MessagesListView.ItemIndex:=0;
         CoolTrayIcon.IconIndex:=5;
@@ -1698,7 +1700,8 @@ end;
 procedure TMainForm.CoolTrayIconClick(Sender: TObject);
 begin
   CoolTrayIcon.ShowMainForm;
-  MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
+  if MessagesListView.Items.Count>0 then
+    MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
   if(MessagesListView.Items.Count=1)then
       begin
         MessagesListView.ItemIndex:=0;
@@ -2073,7 +2076,7 @@ begin
         end;
         
   StatusBar1.Panels[1].Text := 'Сообщений: '+IntToStr(MessagesListView.Items.Count);
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
   end;
 end;
@@ -2108,7 +2111,7 @@ begin
      StatusBar1.Panels[1].Text:='Сообщений: 0';
      if(SpeekerSettings.OptDelastmin)then Application.Minimize;
   end;
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
 end;
 
@@ -2893,7 +2896,8 @@ end;
 
 procedure TMainForm.CheckSelectedExecute(Sender: TObject);
 begin
-  MessagesListView.Items.Item[MessagesListView.Selected.Index].Checked:=true;
+  if MessagesListView.Items.Count>0 then
+    MessagesListView.Items.Item[MessagesListView.Selected.Index].Checked:=true;
 end;
 
 end.

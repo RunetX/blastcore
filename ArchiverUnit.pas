@@ -231,6 +231,9 @@ end;
     N23: TMenuItem;
     EnDisButtons: TAction;
     N13: TMenuItem;
+    PingMSClientSocket: TClientSocket;
+    PingMSTimer: TTimer;
+    CheckSelected: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -309,6 +312,15 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure EnDisButtonsExecute(Sender: TObject);
     procedure N13Click(Sender: TObject);
     procedure TrayPopupMenuPopup(Sender: TObject);
+    procedure PingMSTimerTimer(Sender: TObject);
+    procedure PingMSClientSocketConnect(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure PingMSClientSocketError(Sender: TObject;
+      Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
+      var ErrorCode: Integer);
+    procedure PingMSClientSocketDisconnect(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure CheckSelectedExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -602,9 +614,6 @@ begin
   else if(InBufer.LastSEACommand=3)then
   begin
       DelUserByID;
-      InBufer.CurrentOperation:=9;
-      InBufer.HowmanyNeedRec := 1;
-      InBufer.SetNextLength;
   end
   else if(InBufer.LastSEACommand=4)then
   begin                         
@@ -789,7 +798,7 @@ end;
 procedure TMainForm.GetIP();      // 3
 var
   s: string;
-  tmpListItem: TListItem;
+//  tmpListItem: TListItem;
 begin
   InBufer.isReadyForProc:=false;
   if(InBufer.LastSEACommand=6)then
@@ -1016,8 +1025,13 @@ begin
              UserList.Items[i-1].Selected:=true; }
       end
    else
-       //Reconnect;
-       ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
+      begin //Reconnect;
+        ClientSocket1.Close;
+        ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
+      end;
+  InBufer.CurrentOperation:=9;
+  InBufer.HowmanyNeedRec := 1;
+  InBufer.SetNextLength;
 end;
 
 //-----------------------------------------------------------------
@@ -1646,9 +1660,10 @@ begin
       StatusBar1.Panels[0].Text:='Разъединено';
 
       //Reconnect;
-
+      //ConDiscon.Execute;
+      ReconnectTimer.Enabled := True;
   end;
-  ConDiscon.Execute;
+
   //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
   Pilingator.Enabled := false;
 end;
@@ -1698,7 +1713,7 @@ procedure TMainForm.ClientSocket1Error(Sender: TObject;
   var ErrorCode: Integer);
 begin
   ErrorCode:=0;
-
+{
   if(ClientSocket1.Address=SpeekerSettings.MainServerIP)then
   begin
     ClientSocket1.Close;
@@ -1718,7 +1733,8 @@ begin
   except
     ClientSocket1.Close;
   end;
-  end;
+  end;    }
+  ReconnectTimer.Enabled := true;
 end;
 
 //-----------------------------------------------------------------
@@ -1771,12 +1787,18 @@ begin
           SetLength(SpeekerSettings.CompName,(pos(#0, tmp2)-1));
         end;
 
-      if ClientSocket1.Address=SpeekerSettings.MainServerIP then
-        ClientSocket1.Address:=SpeekerSettings.AltServerIP
-      else
-        ClientSocket1.Address:=SpeekerSettings.MainServerIP;
+
 
       try
+        if ClientSocket1.Address=SpeekerSettings.MainServerIP then
+          begin
+            ClientSocket1.Address := SpeekerSettings.AltServerIP;
+            PingMSClientSocket.Address := SpeekerSettings.MainServerIP;
+            PingMSTimer.Enabled := true;
+          end
+        else
+          ClientSocket1.Address:=SpeekerSettings.MainServerIP;
+
         ClientSocket1.Open;
       except
         ClientSocket1.Close;
@@ -2106,7 +2128,7 @@ begin
   if UpIndex <= LastIndex then
       MessagesListView.Items[UpIndex].Selected:=true;
   end;
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
 end;
 
@@ -2120,7 +2142,7 @@ begin
   if DownIndex >= 0 then
       MessagesListView.Items[DownIndex].Selected:=true;
   end;
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
 end;
 
@@ -2138,7 +2160,7 @@ procedure TMainForm.JumpToLastExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
 end;
 
@@ -2146,7 +2168,7 @@ procedure TMainForm.JumpToFirstExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[0].Selected:=true;
-
+  CheckSelected.Execute;
   EnDisButtons.Execute;
 end;
 
@@ -2756,6 +2778,7 @@ begin
   AboutForm.Show;
 end;
 
+// Send "Ping" every 2 minutes
 procedure TMainForm.PilingatorTimer(Sender: TObject);
 var
   s: String;
@@ -2770,6 +2793,7 @@ begin
     end;
 end;
 
+// Enable\Disable ToolButtons when receive or delete messages
 procedure TMainForm.EnDisButtonsExecute(Sender: TObject);
 begin
   if MessagesListView.Items.Count=0 then
@@ -2840,6 +2864,36 @@ begin
           LastmesToolButton.Enabled     := true;
         end;
     end;
+end;
+
+procedure TMainForm.PingMSTimerTimer(Sender: TObject);
+begin
+  PingMSClientSocket.Open;
+end;
+
+procedure TMainForm.PingMSClientSocketConnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  PingMSTimer.Enabled := false;
+  Socket.Close;
+end;
+
+procedure TMainForm.PingMSClientSocketError(Sender: TObject;
+  Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
+  var ErrorCode: Integer);
+begin
+  ErrorCode := 0;
+end;
+
+procedure TMainForm.PingMSClientSocketDisconnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  ClientSocket1.Close;
+end;
+
+procedure TMainForm.CheckSelectedExecute(Sender: TObject);
+begin
+  MessagesListView.Items.Item[MessagesListView.Selected.Index].Checked:=true;
 end;
 
 end.

@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 372
-  Top = 66
+  Left = 369
+  Top = 171
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -177,14 +177,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -194,7 +194,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       Align = alRight
       BevelInner = bvLowered
       BiDiMode = bdLeftToRight
@@ -231,13 +231,13 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TLabel
         Left = 302
         Top = 8
@@ -277,7 +277,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom
@@ -550,6 +550,10 @@ object MainForm: TMainForm
     object EnDisButtons: TAction
       Caption = 'EnDisButtons'
       OnExecute = EnDisButtonsExecute
+    end
+    object CheckSelected: TAction
+      Caption = 'CheckSelected'
+      OnExecute = CheckSelectedExecute
     end
   end
   object IconsImageList: TImageList
@@ -4788,5 +4792,22 @@ object MainForm: TMainForm
     OnTimer = PilingatorTimer
     Left = 73
     Top = 234
+  end
+  object PingMSClientSocket: TClientSocket
+    Active = False
+    ClientType = ctNonBlocking
+    Port = 8732
+    OnConnect = PingMSClientSocketConnect
+    OnDisconnect = PingMSClientSocketDisconnect
+    OnError = PingMSClientSocketError
+    Left = 305
+    Top = 202
+  end
+  object PingMSTimer: TTimer
+    Enabled = False
+    Interval = 2000
+    OnTimer = PingMSTimerTimer
+    Left = 337
+    Top = 202
   end
 end

@@ -3,14 +3,14 @@ unit TryChatUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, StdCtrls, sButton, sLabel;
 
 type
   TTryChatForm = class(TForm)
-    Button1: TButton;
-    Label1: TLabel;
-    Label2: TLabel;
+    Button1: TsButton;
+    Label1: TsLabel;
+    Label2: TsLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private

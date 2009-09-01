@@ -22,7 +22,7 @@ object AboutForm: TAboutForm
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object Panel1: TsPanel
     Left = 0
     Top = 0
     Width = 304
@@ -31,6 +31,7 @@ object AboutForm: TAboutForm
     BevelInner = bvLowered
     Color = clFuchsia
     TabOrder = 0
+    SkinData.SkinSection = 'PANEL'
     object Image1: TImage
       Left = 2
       Top = 2
@@ -8482,7 +8483,7 @@ object AboutForm: TAboutForm
       Proportional = True
       Stretch = True
     end
-    object OkBtn: TButton
+    object OkBtn: TsButton
       Left = 120
       Top = 264
       Width = 75
@@ -8490,6 +8491,7 @@ object AboutForm: TAboutForm
       Caption = 'OK'
       TabOrder = 0
       OnClick = OkBtnClick
+      SkinData.SkinSection = 'BUTTON'
     end
   end
 end

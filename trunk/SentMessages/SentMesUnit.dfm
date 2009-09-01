@@ -17,7 +17,7 @@ object SentMesForm: TSentMesForm
   Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object Panel1: TsPanel
     Left = 0
     Top = 0
     Width = 540
@@ -25,16 +25,28 @@ object SentMesForm: TSentMesForm
     Align = alClient
     BorderStyle = bsSingle
     TabOrder = 0
+    SkinData.SkinSection = 'PANEL'
     DesignSize = (
       536
       346)
-    object SentMesLV: TListView
+    object SentMesLV: TsListView
       Left = 1
       Top = 1
       Width = 534
       Height = 309
+      BoundLabel.Indent = 0
+      BoundLabel.Font.Charset = DEFAULT_CHARSET
+      BoundLabel.Font.Color = clWindowText
+      BoundLabel.Font.Height = -11
+      BoundLabel.Font.Name = 'MS Sans Serif'
+      BoundLabel.Font.Style = []
+      BoundLabel.Layout = sclLeft
+      BoundLabel.MaxWidth = 0
+      BoundLabel.UseSkinColor = True
+      SkinData.SkinSection = 'EDIT'
       Align = alCustom
       Anchors = [akLeft, akTop, akRight, akBottom]
+      Color = clBlack
       Columns = <
         item
           Caption = #1044#1072#1090#1072
@@ -56,13 +68,19 @@ object SentMesForm: TSentMesForm
           AutoSize = True
           Caption = #1057#1086#1086#1073#1097#1077#1085#1080#1077
         end>
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLime
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
       ReadOnly = True
       RowSelect = True
+      ParentFont = False
       TabOrder = 0
       ViewStyle = vsReport
       OnDblClick = ReSendExecute
     end
-    object Button1: TButton
+    object Button1: TsButton
       Left = 296
       Top = 317
       Width = 75
@@ -70,8 +88,9 @@ object SentMesForm: TSentMesForm
       Action = ReSend
       Anchors = [akRight, akBottom]
       TabOrder = 1
+      SkinData.SkinSection = 'BUTTON'
     end
-    object Button2: TButton
+    object Button2: TsButton
       Left = 376
       Top = 317
       Width = 75
@@ -80,8 +99,9 @@ object SentMesForm: TSentMesForm
       Caption = #1054#1095#1080#1089#1090#1080#1090#1100
       TabOrder = 2
       OnClick = Button2Click
+      SkinData.SkinSection = 'BUTTON'
     end
-    object Button3: TButton
+    object Button3: TsButton
       Left = 456
       Top = 317
       Width = 75
@@ -90,6 +110,7 @@ object SentMesForm: TSentMesForm
       Caption = #1054#1090#1084#1077#1085#1072
       TabOrder = 3
       OnClick = Button3Click
+      SkinData.SkinSection = 'BUTTON'
     end
   end
   object ActionList1: TActionList

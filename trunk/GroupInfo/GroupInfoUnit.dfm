@@ -19,7 +19,7 @@ object GroupInfoForm: TGroupInfoForm
     453)
   PixelsPerInch = 96
   TextHeight = 13
-  object GrInfoListView: TListView
+  object GrInfoListView: TsListView
     Left = 8
     Top = 8
     Width = 673
@@ -59,7 +59,7 @@ object GroupInfoForm: TGroupInfoForm
     TabOrder = 0
     ViewStyle = vsReport
   end
-  object GetGIBtn: TButton
+  object GetGIBtn: TsButton
     Left = 488
     Top = 424
     Width = 91
@@ -69,7 +69,7 @@ object GroupInfoForm: TGroupInfoForm
     TabOrder = 1
     OnClick = GetGIBtnClick
   end
-  object ClrGIBtn: TButton
+  object ClrGIBtn: TsButton
     Left = 592
     Top = 424
     Width = 81

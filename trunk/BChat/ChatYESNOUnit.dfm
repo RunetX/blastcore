@@ -19,14 +19,20 @@ object ChatYESNOForm: TChatYESNOForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object Label1: TsLabel
     Left = 16
     Top = 16
     Width = 109
     Height = 13
     Caption = #1042#1099' '#1078#1077#1083#1072#1077#1090#1077' '#1086#1090#1074#1077#1090#1080#1090#1100
+    ParentFont = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
   end
-  object Button1: TButton
+  object Button1: TsButton
     Left = 40
     Top = 48
     Width = 75
@@ -34,8 +40,9 @@ object ChatYESNOForm: TChatYESNOForm
     Caption = #1044#1072
     TabOrder = 0
     OnClick = Button1Click
+    SkinData.SkinSection = 'BUTTON'
   end
-  object Button2: TButton
+  object Button2: TsButton
     Left = 136
     Top = 48
     Width = 75
@@ -43,5 +50,6 @@ object ChatYESNOForm: TChatYESNOForm
     Caption = #1053#1077#1090
     TabOrder = 1
     OnClick = Button2Click
+    SkinData.SkinSection = 'BUTTON'
   end
 end

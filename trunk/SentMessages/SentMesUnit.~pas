@@ -3,18 +3,18 @@ unit SentMesUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ExtCtrls, StdCtrls, ComCtrls, ActnList;
 
 type
   TSentMesForm = class(TForm)
-    Panel1: TPanel;
-    SentMesLV: TListView;
+    Panel1: TsPanel;
+    SentMesLV: TsListView;
     ActionList1: TActionList;
     ReSend: TAction;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
+    Button1: TsButton;
+    Button2: TsButton;
+    Button3: TsButton;
     procedure ReSendExecute(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -107,6 +107,7 @@ begin
           if(foundIndex>=0)then
             begin
               MainForm.UserList.Items[foundIndex].Selected:=true;
+              MainForm.SendMessageFlag := 3;
               SendMessageForm := TSendMessageForm.Create(Self);
               SendMessageForm.Memo1.Text:=SentMesLV.Selected.SubItems[3];
               SendMessageForm.Show;

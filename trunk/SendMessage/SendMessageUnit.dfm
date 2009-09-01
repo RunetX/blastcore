@@ -23,14 +23,15 @@ object SendMessageForm: TSendMessageForm
     313)
   PixelsPerInch = 96
   TextHeight = 13
-  object Memo1: TMemo
+  object Memo1: TsMemo
     Left = 6
     Top = 32
     Width = 449
     Height = 273
     Anchors = [akLeft, akTop, akRight, akBottom]
+    Color = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
+    Font.Color = clLime
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -38,8 +39,18 @@ object SendMessageForm: TSendMessageForm
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 0
+    BoundLabel.Indent = 0
+    BoundLabel.Font.Charset = DEFAULT_CHARSET
+    BoundLabel.Font.Color = clWindowText
+    BoundLabel.Font.Height = -11
+    BoundLabel.Font.Name = 'MS Sans Serif'
+    BoundLabel.Font.Style = []
+    BoundLabel.Layout = sclLeft
+    BoundLabel.MaxWidth = 0
+    BoundLabel.UseSkinColor = True
+    SkinData.SkinSection = 'EDIT'
   end
-  object Button4: TButton
+  object Button4: TsButton
     Left = 301
     Top = 5
     Width = 75
@@ -48,6 +59,7 @@ object SendMessageForm: TSendMessageForm
     Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100
     TabOrder = 2
     OnClick = Button4Click
+    SkinData.SkinSection = 'BUTTON'
   end
   object SendMesCmbBox: TComboBoxEx
     Left = 7
@@ -62,7 +74,7 @@ object SendMessageForm: TSendMessageForm
     Images = MainForm.ImageList1
     DropDownCount = 8
   end
-  object Button1: TButton
+  object Button1: TsButton
     Left = 380
     Top = 5
     Width = 75
@@ -71,6 +83,7 @@ object SendMessageForm: TSendMessageForm
     Caption = #1054#1095#1080#1089#1090#1080#1090#1100
     TabOrder = 3
     OnClick = Button1Click
+    SkinData.SkinSection = 'BUTTON'
   end
   object ActionList1: TActionList
     Left = 368

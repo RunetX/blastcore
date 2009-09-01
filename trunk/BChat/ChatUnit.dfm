@@ -23,7 +23,7 @@ object ChatForm: TChatForm
     360)
   PixelsPerInch = 96
   TextHeight = 13
-  object ChatEdit: TEdit
+  object ChatEdit: TsEdit
     Left = 0
     Top = 336
     Width = 433
@@ -32,7 +32,7 @@ object ChatForm: TChatForm
     MaxLength = 200
     TabOrder = 0
   end
-  object ChatMemo: TMemo
+  object ChatMemo: TsMemo
     Left = 0
     Top = 0
     Width = 433

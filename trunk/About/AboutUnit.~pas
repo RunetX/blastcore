@@ -3,16 +3,17 @@ unit AboutUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent, 
   IdTCPConnection, IdTCPClient, IdHTTP, PngImage1, jpeg;
 
 type
   TAboutForm = class(TForm)
-    Panel1: TPanel;
+    Panel1: TsPanel;
     Image1: TImage;
-    OkBtn: TButton;
+    OkBtn: TsButton;
     procedure FormCreate(Sender: TObject);
+    procedure OkBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -44,6 +45,11 @@ begin
   'Особая благодарность моей половинке'+#13#10+
   'Zebrе aka [Соловьёвой Марии]';  }
   Caption:= Caption + MainForm.ClientProperties.Version;
+end;
+
+procedure TAboutForm.OkBtnClick(Sender: TObject);
+begin
+  Close;
 end;
 
 end.

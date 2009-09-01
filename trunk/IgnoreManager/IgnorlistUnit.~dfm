@@ -18,7 +18,7 @@ object IgnorelistForm: TIgnorelistForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object SpeedButton1: TSpeedButton
+  object SpeedButton1: TsSpeedButton
     Left = 200
     Top = 112
     Width = 35
@@ -125,7 +125,7 @@ object IgnorelistForm: TIgnorelistForm
     Spacing = 0
     OnClick = SpeedButton1Click
   end
-  object SpeedButton2: TSpeedButton
+  object SpeedButton2: TsSpeedButton
     Left = 200
     Top = 168
     Width = 35
@@ -231,7 +231,7 @@ object IgnorelistForm: TIgnorelistForm
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     OnClick = SpeedButton2Click
   end
-  object Label1: TLabel
+  object Label1: TsLabel
     Left = 8
     Top = 8
     Width = 169
@@ -240,7 +240,7 @@ object IgnorelistForm: TIgnorelistForm
     Caption = #1057#1087#1080#1089#1086#1082' '#1079#1072#1080#1075#1085#1086#1088#1080#1088#1086#1074#1072#1085#1085#1099#1093' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081
     WordWrap = True
   end
-  object Label2: TLabel
+  object Label2: TsLabel
     Left = 252
     Top = 8
     Width = 169
@@ -250,7 +250,7 @@ object IgnorelistForm: TIgnorelistForm
     Caption = #1057#1087#1080#1089#1086#1082' '#1085#1077#1079#1072#1080#1075#1085#1086#1088#1080#1088#1086#1074#1072#1085#1085#1099#1093' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081
     WordWrap = True
   end
-  object SpeedButton3: TSpeedButton
+  object SpeedButton3: TsSpeedButton
     Left = 200
     Top = 225
     Width = 35
@@ -490,7 +490,7 @@ object IgnorelistForm: TIgnorelistForm
       FFFF}
     Transparent = True
   end
-  object SaveILBtn: TButton
+  object SaveILBtn: TsButton
     Left = 353
     Top = 352
     Width = 75
@@ -499,7 +499,7 @@ object IgnorelistForm: TIgnorelistForm
     TabOrder = 0
     OnClick = SaveILBtnClick
   end
-  object Userlist: TListBox
+  object Userlist: TsListBox
     Left = 248
     Top = 40
     Width = 177
@@ -510,7 +510,7 @@ object IgnorelistForm: TIgnorelistForm
     Sorted = True
     TabOrder = 1
   end
-  object IgnoreList: TListBox
+  object IgnoreList: TsListBox
     Left = 8
     Top = 40
     Width = 177
@@ -521,7 +521,7 @@ object IgnorelistForm: TIgnorelistForm
     Sorted = True
     TabOrder = 2
   end
-  object CancelBtn: TButton
+  object CancelBtn: TsButton
     Left = 271
     Top = 352
     Width = 75
@@ -530,7 +530,7 @@ object IgnorelistForm: TIgnorelistForm
     TabOrder = 3
     OnClick = CancelBtnClick
   end
-  object OKBtn: TButton
+  object OKBtn: TsButton
     Left = 188
     Top = 352
     Width = 75

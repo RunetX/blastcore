@@ -3,59 +3,60 @@ unit OptionsUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList,
-  IniFiles, MMSystem, Registry, PngImage1;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList, IniFiles, 
+  MMSystem, Registry, PngImage1, sDialogs, sMemo, sComboBox, sCheckBox,
+  sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl;
 
 type
   TOptionsForm = class(TForm)
-    OpenDialog1: TOpenDialog;
-    PageControl1: TPageControl;
-    TabSheet1: TTabSheet;
-    GroupBox1: TGroupBox;
+    OpenDialog1: TsOpenDialog;
+    PageControl1: TsPageControl;
+    TabSheet1: TsTabSheet;
+    GroupBox1: TsGroupBox;
     LabeledEdit1: TLabeledEdit;
-    GroupBox2: TGroupBox;
-    StartMinChkBox: TCheckBox;
-    MinSTChkBox: TCheckBox;
-    WinpopupChkBox: TCheckBox;
-    AutorunChkBox: TCheckBox;
-    TabSheet2: TTabSheet;
-    GroupBox3: TGroupBox;
+    GroupBox2: TsGroupBox;
+    StartMinChkBox: TsCheckBox;
+    MinSTChkBox: TsCheckBox;
+    WinpopupChkBox: TsCheckBox;
+    AutorunChkBox: TsCheckBox;
+    TabSheet2: TsTabSheet;
+    GroupBox3: TsGroupBox;
     LabeledEdit4: TLabeledEdit;
     LabeledEdit5: TLabeledEdit;
     LabeledEdit6: TLabeledEdit;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    SpeedButton3: TSpeedButton;
+    Button1: TsButton;
+    Button2: TsButton;
+    Button3: TsButton;
+    SpeedButton1: TsSpeedButton;
+    SpeedButton2: TsSpeedButton;
+    SpeedButton3: TsSpeedButton;
     LabeledEdit7: TLabeledEdit;
-    SpeedButton4: TSpeedButton;
-    SpeedButton5: TSpeedButton;
-    SpeedButton6: TSpeedButton;
-    ComboBox1: TComboBox;
-    Label1: TLabel;
-    Button4: TButton;
-    Memo1: TMemo;
-    Label2: TLabel;
-    ShowPanelChkBox: TCheckBox;
-    SoundsEnableChkBox: TCheckBox;
-    SpeedButton7: TSpeedButton;
-    SpeedButton8: TSpeedButton;
-    SpeedButton9: TSpeedButton;
+    SpeedButton4: TsSpeedButton;
+    SpeedButton5: TsSpeedButton;
+    SpeedButton6: TsSpeedButton;
+    ComboBox1: TsComboBox;
+    Label1: TsLabel;
+    Button4: TsButton;
+    Memo1: TsMemo;
+    Label2: TsLabel;
+    ShowPanelChkBox: TsCheckBox;
+    SoundsEnableChkBox: TsCheckBox;
+    SpeedButton7: TsSpeedButton;
+    SpeedButton8: TsSpeedButton;
+    SpeedButton9: TsSpeedButton;
     ActionList1: TActionList;
     SaveOptions: TAction;
-    Button5: TButton;
-    Label3: TLabel;
-    LabeledEdit8: TEdit;
-    Label4: TLabel;
+    Button5: TsButton;
+    Label3: TsLabel;
+    LabeledEdit8: TsEdit;
+    Label4: TsLabel;
     Image1: TImage;
     Image2: TImage;
     Image3: TImage;
-    LabeledEdit2: TEdit;
-    RoomCmbBox: TComboBox;
-    Label5: TLabel;
+    LabeledEdit2: TsEdit;
+    RoomCmbBox: TsComboBox;
+    Label5: TsLabel;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);

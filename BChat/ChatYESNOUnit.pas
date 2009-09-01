@@ -3,14 +3,14 @@ unit ChatYESNOUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, MMSystem, ArchiverUnit;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, StdCtrls, MMSystem, ArchiverUnit, sButton, sLabel;
 
 type
   TChatYESNOForm = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Label1: TLabel;
+    Button1: TsButton;
+    Button2: TsButton;
+    Label1: TsLabel;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);

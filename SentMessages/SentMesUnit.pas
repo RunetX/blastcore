@@ -3,18 +3,19 @@ unit SentMesUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, ComCtrls, ActnList;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, ExtCtrls, StdCtrls, ComCtrls, ActnList, sButton, sListView,
+  sPanel;
 
 type
   TSentMesForm = class(TForm)
-    Panel1: TPanel;
-    SentMesLV: TListView;
+    Panel1: TsPanel;
+    SentMesLV: TsListView;
     ActionList1: TActionList;
     ReSend: TAction;
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
+    Button1: TsButton;
+    Button2: TsButton;
+    Button3: TsButton;
     procedure ReSendExecute(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);

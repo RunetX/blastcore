@@ -3,21 +3,22 @@ unit IgnorlistUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Buttons, ActnList, ExtCtrls;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, StdCtrls, Buttons, ActnList, ExtCtrls, sAlphaListBox, sButton,
+  sLabel, sSpeedButton;
 
 type
   TIgnorelistForm = class(TForm)
-    SaveILBtn: TButton;
-    SpeedButton1: TSpeedButton;
-    Userlist: TListBox;
-    IgnoreList: TListBox;
-    SpeedButton2: TSpeedButton;
-    Label1: TLabel;
-    Label2: TLabel;
-    SpeedButton3: TSpeedButton;
-    CancelBtn: TButton;
-    OKBtn: TButton;
+    SaveILBtn: TsButton;
+    SpeedButton1: TsSpeedButton;
+    Userlist: TsListBox;
+    IgnoreList: TsListBox;
+    SpeedButton2: TsSpeedButton;
+    Label1: TsLabel;
+    Label2: TsLabel;
+    SpeedButton3: TsSpeedButton;
+    CancelBtn: TsButton;
+    OKBtn: TsButton;
     ActionList1: TActionList;
     SaveIL: TAction;
     Image1: TImage;

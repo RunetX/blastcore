@@ -20,7 +20,7 @@ object BChatForm: TBChatForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object StatusBar1: TStatusBar
+  object StatusBar1: TsStatusBar
     Left = 0
     Top = 304
     Width = 400
@@ -28,11 +28,11 @@ object BChatForm: TBChatForm
     Panels = <
       item
         Alignment = taCenter
-        Text = 'Copyright '#169' 2007 Peek. All rights reserved.'
+        Text = 'Copyright '#169' 2009 Peek. All rights reserved.'
         Width = 50
       end>
   end
-  object Panel1: TPanel
+  object Panel1: TsPanel
     Left = 0
     Top = 0
     Width = 400
@@ -40,7 +40,7 @@ object BChatForm: TBChatForm
     Align = alClient
     BevelOuter = bvLowered
     TabOrder = 1
-    object BChatMemo: TMemo
+    object BChatMemo: TsMemo
       Left = 1
       Top = 1
       Width = 398
@@ -50,7 +50,7 @@ object BChatForm: TBChatForm
       ScrollBars = ssVertical
       TabOrder = 0
     end
-    object Panel2: TPanel
+    object Panel2: TsPanel
       Left = 1
       Top = 274
       Width = 398
@@ -60,7 +60,7 @@ object BChatForm: TBChatForm
       DesignSize = (
         398
         29)
-      object BChatEdit: TEdit
+      object BChatEdit: TsEdit
         Left = 3
         Top = 4
         Width = 392
@@ -72,7 +72,7 @@ object BChatForm: TBChatForm
         OnKeyPress = BChatEditKeyPress
       end
     end
-    object ChatBufferLB: TListBox
+    object ChatBufferLB: TsListBox
       Left = 256
       Top = 8
       Width = 121

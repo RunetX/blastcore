@@ -3,17 +3,17 @@ unit SendMessageUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls, ActnList, ComCtrls;
 
 type
   TSendMessageForm = class(TForm)
-    Memo1: TMemo;
-    Button4: TButton;
+    Memo1: TsMemo;
+    Button4: TsButton;
     ActionList1: TActionList;
     SendMessage: TAction;
     SendMesCmbBox: TComboBoxEx;
-    Button1: TButton;
+    Button1: TsButton;
     FillComboBox: TAction;
     procedure Button4Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -194,9 +194,7 @@ begin
 
   s := Memo1.Lines.Text;
 
-  s:=Char(Length(s) div 256)+
-     Char(Length(s) mod 256)+
-     s;
+  s:=Char(Length(s) div 256) + Char(Length(s) mod 256) + s;
 
 
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));

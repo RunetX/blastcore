@@ -18,7 +18,7 @@ object IgnorelistForm: TIgnorelistForm
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object SpeedButton1: TSpeedButton
+  object SpeedButton1: TsSpeedButton
     Left = 200
     Top = 112
     Width = 35
@@ -124,8 +124,9 @@ object IgnorelistForm: TIgnorelistForm
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     Spacing = 0
     OnClick = SpeedButton1Click
+    SkinData.SkinSection = 'SPEEDBUTTON'
   end
-  object SpeedButton2: TSpeedButton
+  object SpeedButton2: TsSpeedButton
     Left = 200
     Top = 168
     Width = 35
@@ -230,17 +231,24 @@ object IgnorelistForm: TIgnorelistForm
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
     OnClick = SpeedButton2Click
+    SkinData.SkinSection = 'SPEEDBUTTON'
   end
-  object Label1: TLabel
+  object Label1: TsLabel
     Left = 8
     Top = 8
     Width = 169
     Height = 25
     AutoSize = False
     Caption = #1057#1087#1080#1089#1086#1082' '#1079#1072#1080#1075#1085#1086#1088#1080#1088#1086#1074#1072#1085#1085#1099#1093' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081
+    ParentFont = False
     WordWrap = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
   end
-  object Label2: TLabel
+  object Label2: TsLabel
     Left = 252
     Top = 8
     Width = 169
@@ -248,9 +256,15 @@ object IgnorelistForm: TIgnorelistForm
     Alignment = taCenter
     AutoSize = False
     Caption = #1057#1087#1080#1089#1086#1082' '#1085#1077#1079#1072#1080#1075#1085#1086#1088#1080#1088#1086#1074#1072#1085#1085#1099#1093' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081
+    ParentFont = False
     WordWrap = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clYellow
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
   end
-  object SpeedButton3: TSpeedButton
+  object SpeedButton3: TsSpeedButton
     Left = 200
     Top = 225
     Width = 35
@@ -382,6 +396,7 @@ object IgnorelistForm: TIgnorelistForm
       FFFFFFFFFFFFFFFFFFFF}
     Transparent = False
     OnClick = SpeedButton3Click
+    SkinData.SkinSection = 'SPEEDBUTTON'
   end
   object Image1: TImage
     Left = 150
@@ -490,7 +505,7 @@ object IgnorelistForm: TIgnorelistForm
       FFFF}
     Transparent = True
   end
-  object SaveILBtn: TButton
+  object SaveILBtn: TsButton
     Left = 353
     Top = 352
     Width = 75
@@ -498,30 +513,63 @@ object IgnorelistForm: TIgnorelistForm
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     TabOrder = 0
     OnClick = SaveILBtnClick
+    SkinData.SkinSection = 'BUTTON'
   end
-  object Userlist: TListBox
+  object Userlist: TsListBox
     Left = 248
     Top = 40
     Width = 177
     Height = 297
-    BevelKind = bkFlat
-    BevelOuter = bvSpace
+    AutoCompleteDelay = 500
+    BoundLabel.Indent = 0
+    BoundLabel.Font.Charset = DEFAULT_CHARSET
+    BoundLabel.Font.Color = clWindowText
+    BoundLabel.Font.Height = -11
+    BoundLabel.Font.Name = 'MS Sans Serif'
+    BoundLabel.Font.Style = []
+    BoundLabel.Layout = sclLeft
+    BoundLabel.MaxWidth = 0
+    BoundLabel.UseSkinColor = True
+    SkinData.SkinSection = 'EDIT'
     ItemHeight = 13
     Sorted = True
+    Color = clBlack
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clLime
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 1
   end
-  object IgnoreList: TListBox
+  object IgnoreList: TsListBox
     Left = 8
     Top = 40
     Width = 177
     Height = 297
-    BevelKind = bkFlat
-    BevelOuter = bvSpace
+    AutoCompleteDelay = 500
+    BoundLabel.Indent = 0
+    BoundLabel.Font.Charset = DEFAULT_CHARSET
+    BoundLabel.Font.Color = clWindowText
+    BoundLabel.Font.Height = -11
+    BoundLabel.Font.Name = 'MS Sans Serif'
+    BoundLabel.Font.Style = []
+    BoundLabel.Layout = sclLeft
+    BoundLabel.MaxWidth = 0
+    BoundLabel.UseSkinColor = True
+    SkinData.SkinSection = 'EDIT'
     ItemHeight = 13
     Sorted = True
+    Color = clBlack
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clLime
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 2
   end
-  object CancelBtn: TButton
+  object CancelBtn: TsButton
     Left = 271
     Top = 352
     Width = 75
@@ -529,8 +577,9 @@ object IgnorelistForm: TIgnorelistForm
     Caption = #1054#1090#1084#1077#1085#1072
     TabOrder = 3
     OnClick = CancelBtnClick
+    SkinData.SkinSection = 'BUTTON'
   end
-  object OKBtn: TButton
+  object OKBtn: TsButton
     Left = 188
     Top = 352
     Width = 75
@@ -538,6 +587,7 @@ object IgnorelistForm: TIgnorelistForm
     Caption = 'OK'
     TabOrder = 4
     OnClick = OKBtnClick
+    SkinData.SkinSection = 'BUTTON'
   end
   object ActionList1: TActionList
     Left = 208

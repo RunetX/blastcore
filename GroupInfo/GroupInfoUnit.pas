@@ -3,14 +3,14 @@ unit GroupInfoUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ComCtrls, StdCtrls, ExtCtrls;
 
 type
   TGroupInfoForm = class(TForm)
-    GrInfoListView: TListView;
-    GetGIBtn: TButton;
-    ClrGIBtn: TButton;
+    GrInfoListView: TsListView;
+    GetGIBtn: TsButton;
+    ClrGIBtn: TsButton;
     procedure ClrGIBtnClick(Sender: TObject);
     procedure GetGIBtnClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

@@ -3,32 +3,12 @@ unit ArchiverUnit;
 interface
 
 uses
-  Windows,
-  SysUtils,
-  Controls,
-  Forms,
-  Dialogs,
-  CoolTrayIcon,
-  Menus,
-  IdHTTP,
-  shellapi,
-  ToolWin,
-  ImgList,
-  IniFiles,
-  IdBaseComponent,
-  IdComponent,
-  IdTCPConnection,
-  IdTCPClient,
-  Classes,
-  StdCtrls,
-  ComCtrls,
-  ExtCtrls,
-  StdActns,
-  Messages,
-  Variants,
-  Graphics,
-   ScktComp, ActnList, Sockets, Registry, NewChatUnit, RichEdit, MMSystem,
-  Htmlview;
+  Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus, IdHTTP, 
+  shellapi, ToolWin, ImgList, IniFiles, IdBaseComponent, IdComponent, 
+  IdTCPConnection, IdTCPClient, Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages, 
+  Variants, Graphics, ScktComp, ActnList, Sockets, Registry, NewChatUnit, RichEdit, 
+  MMSystem, Htmlview, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
+  sListView, sSplitter, sPanel, sToolBar, sStatusBar;
 
 const
   UM_MYMESSSAGE = WM_USER+1;
@@ -91,6 +71,7 @@ end;
       PrintUser:    boolean;
       AwayStatus:   boolean;
       Debug:        boolean;
+      Skinned:      boolean;
 
 // Program Sounds
       PrivateSound: string;
@@ -125,7 +106,7 @@ end;
 
   TMainForm = class(TForm)
     ClientSocket1: TClientSocket;
-    StatusBar1: TStatusBar;
+    StatusBar1: TsStatusBar;
     TrayPopupMenu: TPopupMenu;
     ShowArchiver1: TMenuItem;
     Exit1: TMenuItem;
@@ -133,7 +114,7 @@ end;
     ConDiscon: TAction;
     OpenSiteAction: TAction;
     OpenNETArchiver1: TMenuItem;
-    ToolBar1: TToolBar;
+    ToolBar1: TsToolBar;
     IconsImageList: TImageList;
     DeleteAllMessages: TAction;
     DeleteAllChMessages: TAction;
@@ -199,16 +180,16 @@ end;
     GoToFromAway: TAction;
     GoToFromPrinter: TAction;
     ChatSoundTimer: TTimer;
-    BigPanel: TPanel;
-    UserList: TListView;
-    MiddlePanel: TPanel;
-    MesnumberLabel: TLabel;
-    WhomEdit: TEdit;
-    MessageMemo2: TMemo;
-    DownPanel: TPanel;
-    MessagesListView: TListView;
-    ChatListView: TListView;
-    Splitter1: TSplitter;
+    BigPanel: TsPanel;
+    UserList: TsListView;
+    MiddlePanel: TsPanel;
+    MesnumberLabel: TsLabel;
+    WhomEdit: TsEdit;
+    MessageMemo2: TsMemo;
+    DownPanel: TsPanel;
+    MessagesListView: TsListView;
+    ChatListView: TsListView;
+    Splitter1: TsSplitter;
     toTray: TAction;
     UInfoPMU: TMenuItem;
     NewMessagePMU: TMenuItem;
@@ -234,6 +215,8 @@ end;
     PingMSClientSocket: TClientSocket;
     PingMSTimer: TTimer;
     CheckSelected: TAction;
+    sSkinManager1: TsSkinManager;
+    sSkinProvider1: TsSkinProvider;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -318,8 +301,6 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure PingMSClientSocketError(Sender: TObject;
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
-    procedure PingMSClientSocketDisconnect(Sender: TObject;
-      Socket: TCustomWinSocket);
     procedure CheckSelectedExecute(Sender: TObject);
   private
     { Private declarations }
@@ -514,7 +495,8 @@ begin
     SpeekerSettings.Faculty     :=   Ini.ReadBool( 'User', 'Faculty', true);
     SpeekerSettings.PrintUser   :=   Ini.ReadBool( 'User', 'isPrinter', false);
     SpeekerSettings.Debug       :=   Ini.ReadBool( 'Programm', 'Debug',  false);
-
+    SpeekerSettings.OptShowpanel :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
+    SpeekerSettings.Skinned :=  Ini.ReadBool( 'Programm', 'Skinned', false);
 // Program Sounds
     SpeekerSettings.PrivateSound    := Ini.ReadString( 'Sounds', 'PrivateSound','Sounds\message.wav');
     SpeekerSettings.GroupSound      := Ini.ReadString( 'Sounds', 'GroupSound','Sounds\message.wav');
@@ -527,7 +509,7 @@ begin
 //    SpeekerSettings.OptShowpanel    := Ini.ReadBool( 'Options', 'Debug',  false);
     SpeekerSettings.OptEnablesounds := Ini.ReadBool( 'Options', 'EnableSounds',  false);
 //    SpeekerSettings.OptUpdate:    integer;  // from 1 to 6
-    SpeekerSettings.OptShowpanel :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
+
     PanelState := SpeekerSettings.OptShowpanel;
   finally
     Ini.Free;
@@ -1845,6 +1827,7 @@ begin
   AlienInfo:= TAlienInfo.Create;
   NullVaribles;
   Caption:=ClientProperties.Version;
+  sSkinManager1.Active := SpeekerSettings.Skinned;
   if(SpeekerSettings.OptStartmin)then WindowState:= wsMinimized;
 
   ClientProperties.IgnoreList := TListBox.Create(Self);
@@ -2882,6 +2865,7 @@ procedure TMainForm.PingMSClientSocketConnect(Sender: TObject;
 begin
   PingMSTimer.Enabled := false;
   Socket.Close;
+  ReconnectTimer.Enabled:=true;
 end;
 
 procedure TMainForm.PingMSClientSocketError(Sender: TObject;
@@ -2889,12 +2873,7 @@ procedure TMainForm.PingMSClientSocketError(Sender: TObject;
   var ErrorCode: Integer);
 begin
   ErrorCode := 0;
-end;
-
-procedure TMainForm.PingMSClientSocketDisconnect(Sender: TObject;
-  Socket: TCustomWinSocket);
-begin
-  ClientSocket1.Close;
+  PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
 end;
 
 procedure TMainForm.CheckSelectedExecute(Sender: TObject);

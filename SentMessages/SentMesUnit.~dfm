@@ -17,7 +17,7 @@ object SentMesForm: TSentMesForm
   Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object Panel1: TsPanel
     Left = 0
     Top = 0
     Width = 540
@@ -28,7 +28,7 @@ object SentMesForm: TSentMesForm
     DesignSize = (
       536
       346)
-    object SentMesLV: TListView
+    object SentMesLV: TsListView
       Left = 1
       Top = 1
       Width = 534
@@ -62,7 +62,7 @@ object SentMesForm: TSentMesForm
       ViewStyle = vsReport
       OnDblClick = ReSendExecute
     end
-    object Button1: TButton
+    object Button1: TsButton
       Left = 296
       Top = 317
       Width = 75
@@ -71,7 +71,7 @@ object SentMesForm: TSentMesForm
       Anchors = [akRight, akBottom]
       TabOrder = 1
     end
-    object Button2: TButton
+    object Button2: TsButton
       Left = 376
       Top = 317
       Width = 75
@@ -81,7 +81,7 @@ object SentMesForm: TSentMesForm
       TabOrder = 2
       OnClick = Button2Click
     end
-    object Button3: TButton
+    object Button3: TsButton
       Left = 456
       Top = 317
       Width = 75

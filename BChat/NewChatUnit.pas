@@ -3,17 +3,18 @@ unit NewChatUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ComCtrls, StdCtrls, ExtCtrls;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, ComCtrls, StdCtrls, ExtCtrls, sAlphaListBox, sEdit, sMemo,
+  sPanel, sStatusBar;
 
 type
   TBChatForm = class(TForm)
-    StatusBar1: TStatusBar;
-    Panel1: TPanel;
-    BChatMemo: TMemo;
-    Panel2: TPanel;
-    BChatEdit: TEdit;
-    ChatBufferLB: TListBox;
+    StatusBar1: TsStatusBar;
+    Panel1: TsPanel;
+    BChatMemo: TsMemo;
+    Panel2: TsPanel;
+    BChatEdit: TsEdit;
+    ChatBufferLB: TsListBox;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
     procedure BChatEditKeyPress(Sender: TObject; var Key: Char);

@@ -3,13 +3,13 @@ unit ChatUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls;
 
 type
   TChatForm = class(TForm)
-    ChatEdit: TEdit;
-    ChatMemo: TMemo;
+    ChatEdit: TsEdit;
+    ChatMemo: TsMemo;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormShow(Sender: TObject);
   private

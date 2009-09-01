@@ -3,15 +3,15 @@ unit AboutUnit;
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdHTTP, PngImage1, jpeg;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
+  Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent, 
+  IdTCPConnection, IdTCPClient, IdHTTP, PngImage1, jpeg, sButton, sPanel;
 
 type
   TAboutForm = class(TForm)
-    Panel1: TPanel;
+    Panel1: TsPanel;
     Image1: TImage;
-    OkBtn: TButton;
+    OkBtn: TsButton;
     procedure FormCreate(Sender: TObject);
     procedure OkBtnClick(Sender: TObject);
   private

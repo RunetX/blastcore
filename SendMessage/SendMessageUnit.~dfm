@@ -23,7 +23,7 @@ object SendMessageForm: TSendMessageForm
     313)
   PixelsPerInch = 96
   TextHeight = 13
-  object Memo1: TMemo
+  object Memo1: TsMemo
     Left = 6
     Top = 32
     Width = 449
@@ -39,7 +39,7 @@ object SendMessageForm: TSendMessageForm
     ScrollBars = ssVertical
     TabOrder = 0
   end
-  object Button4: TButton
+  object Button4: TsButton
     Left = 301
     Top = 5
     Width = 75
@@ -62,7 +62,7 @@ object SendMessageForm: TSendMessageForm
     Images = MainForm.ImageList1
     DropDownCount = 8
   end
-  object Button1: TButton
+  object Button1: TsButton
     Left = 380
     Top = 5
     Width = 75

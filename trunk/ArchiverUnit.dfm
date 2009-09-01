@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 499
+    Top = 507
     Width = 650
     Height = 19
     Panels = <
@@ -177,14 +177,14 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 458
+    Height = 466
     Align = alClient
     TabOrder = 2
     object Splitter1: TSplitter
       Left = 427
       Top = 1
       Width = 2
-      Height = 306
+      Height = 314
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -194,7 +194,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 306
+      Height = 314
       Align = alRight
       BevelInner = bvLowered
       BiDiMode = bdLeftToRight
@@ -231,13 +231,13 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 306
+      Height = 314
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       DesignSize = (
         426
-        306)
+        314)
       object MesnumberLabel: TLabel
         Left = 302
         Top = 8
@@ -277,7 +277,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TPanel
       Left = 1
-      Top = 307
+      Top = 315
       Width = 648
       Height = 150
       Align = alBottom

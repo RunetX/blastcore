@@ -1023,15 +1023,18 @@ begin
              UserList.Items[i].Selected:=true
          else
              UserList.Items[i-1].Selected:=true; }
+         InBufer.CurrentOperation:=9;
+         InBufer.HowmanyNeedRec := 1;
+         InBufer.SetNextLength;
       end
    else
       begin //Reconnect;
         ClientSocket1.Close;
         ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
+        InBufer.CurrentOperation:=-1;
+        InBufer.HowmanyNeedRec := 1;
+        InBufer.SetNextLength;
       end;
-  InBufer.CurrentOperation:=9;
-  InBufer.HowmanyNeedRec := 1;
-  InBufer.SetNextLength;
 end;
 
 //-----------------------------------------------------------------

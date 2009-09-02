@@ -15,37 +15,37 @@ uses
 
 {$R *.res}
 
-//var
-//  PrevWin: HWND;
+var
+  PrevWin: HWND;
 
 function TryCreateMutex: Boolean;
 var
   Mutex: THandle;
 begin
   Result:=true;
-  Mutex:=CreateMutex(nil,true,'любой текст');
+  Mutex:=CreateMutex(nil,true,'BlastCoreSender');
   if GetLastError = ERROR_ALREADY_EXISTS then Result:=false;
   ReleaseMutex(Mutex);
 end;
 
-begin   {
+begin
   if not TryCreateMutex then begin
     PrevWin:=FindWindow('TMainForm','MainForm');
     SendMessage(PrevWin,UM_MYMESSSAGE,0,0);
   end
   else  
-  begin     }
+  begin
     Application.Initialize;
     Application.Title := 'BlastCore Sender';
-  Application.CreateForm(TMainForm, MainForm);
-  Application.CreateForm(TSendMessageForm, SendMessageForm);
-  Application.CreateForm(TChatYESNOForm, ChatYESNOForm);
-  Application.CreateForm(TTryChatForm, TryChatForm);
-  Application.CreateForm(TOptionsForm, OptionsForm);
-  Application.CreateForm(TBChatForm, BChatForm);
-  Application.CreateForm(TIgnorelistForm, IgnorelistForm);
-  Application.CreateForm(TSentMesForm, SentMesForm);
-  Application.CreateForm(TAboutForm, AboutForm);
-  Application.Run;
-  //end;
+    Application.CreateForm(TMainForm, MainForm);
+    Application.CreateForm(TSendMessageForm, SendMessageForm);
+    Application.CreateForm(TChatYESNOForm, ChatYESNOForm);
+    Application.CreateForm(TTryChatForm, TryChatForm);
+    Application.CreateForm(TOptionsForm, OptionsForm);
+    Application.CreateForm(TBChatForm, BChatForm);
+    Application.CreateForm(TIgnorelistForm, IgnorelistForm);
+    Application.CreateForm(TSentMesForm, SentMesForm);
+    Application.CreateForm(TAboutForm, AboutForm);
+    Application.Run;
+  end;
 end.

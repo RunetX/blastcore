@@ -6670,7 +6670,7 @@ object MainForm: TMainForm
     MenuSupport.ExtraLineFont.Name = 'MS Sans Serif'
     MenuSupport.ExtraLineFont.Style = []
     SkinDirectory = 'D:\Distr\_SND\ClearCore[r26]skinned\AlphaSkins\acnt_reg7\Skins'
-    SkinName = 'FalloutStyle'
+    SkinName = 'FalloutStyle (internal)'
     SkinInfo = '6.4'
     ThirdParty.ThirdEdits = ' '
     ThirdParty.ThirdButtons = 'TButton'

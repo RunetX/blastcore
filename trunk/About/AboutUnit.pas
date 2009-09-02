@@ -4,8 +4,8 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, ExtCtrls, StdCtrls, Htmlview, IdBaseComponent, IdComponent, 
-  IdTCPConnection, IdTCPClient, IdHTTP, PngImage1, jpeg, sButton, sPanel;
+  Dialogs, ExtCtrls, StdCtrls, IdBaseComponent, IdComponent,
+  IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel;
 
 type
   TAboutForm = class(TForm)

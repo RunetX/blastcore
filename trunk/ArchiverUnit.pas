@@ -7,7 +7,7 @@ uses
   shellapi, ToolWin, ImgList, IniFiles, IdBaseComponent, IdComponent, 
   IdTCPConnection, IdTCPClient, Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages, 
   Variants, Graphics, ScktComp, ActnList, Sockets, Registry, NewChatUnit, RichEdit, 
-  MMSystem, Htmlview, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
+  MMSystem, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
   sListView, sSplitter, sPanel, sToolBar, sStatusBar;
 
 const
@@ -72,6 +72,8 @@ end;
       AwayStatus:   boolean;
       Debug:        boolean;
       Skinned:      boolean;
+
+      OwnID:        integer;
 
 // Program Sounds
       PrivateSound: string;
@@ -458,7 +460,9 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.1.18-c-alpha';
+   ClientProperties.Version:='BlastCore v0.1.19-alpha';
+
+   ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////
  with TRegistry.Create do
  try
@@ -605,16 +609,9 @@ begin
   end
   else if(InBufer.LastSEACommand=7)then
       begin
-       {  //PlayMediaTimer.Enabled:=true;
- onChat:=#8+Char(ClientProperties.AlienID div 256)+
-            Char(ClientProperties.AlienID mod 256);
- onChat:=#0+Char(Length(onChat) div 256)+
-            Char(Length(onChat) mod 256)+onChat;
- ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));}
          InBufer.CurrentOperation:=20;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
-
       end
   else if(InBufer.LastSEACommand=8)then
       begin
@@ -1254,6 +1251,7 @@ begin
     end;
 end;
 
+//-------  Интересно, а нахрена оно тут?  -------------------------
 //-----------------------------------------------------------------
 procedure TMainForm.GetZero(); // 14
 begin
@@ -2476,16 +2474,36 @@ end;
 
 procedure TMainForm.ChatClick(Sender: TObject);
 var
-  onChat: string;
-  id: integer;
+  Buf1, onChat: string;
+  i, id: integer;
+  itsnotactive: Boolean;
 begin
+
+  itsnotactive := true;
+
   id := StrToInt(MainForm.UserList.Selected.SubItems[1]);
-  onChat:=#7+Char(id div 256)+
-            Char(id mod 256)+#0;
-  onChat:=#0+Char(Length(onChat) div 256)+
-            Char(Length(onChat) mod 256)+onChat;
-  ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));
-  TryChatForm.Show;
+
+  for i:=0 to ChatListView.Items.Count-1 do
+  begin
+    Buf1 := ChatListView.Items[i].SubItems[0];
+    if(StrToInt(Buf1)=id) then
+      begin
+        itsnotactive := false;
+        break;
+      end;
+  end;
+
+  if itsnotactive then
+    begin
+      onChat:=#7+Char(id div 256)+
+                 Char(id mod 256)+#0;
+      onChat:=#0+Char(Length(onChat) div 256)+
+                 Char(Length(onChat) mod 256)+onChat;
+      ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));
+      TryChatForm.Show;
+    end
+  else
+    ShowMessage('Чат с этим пользователем уже установлен!');
 end;
 
 procedure TMainForm.SeaTimer1Timer(Sender: TObject);
@@ -2642,11 +2660,15 @@ begin
   if(UserList.Selected<>nil)then
     if(UserList.Selected.Index>1)then
     begin
-      Chat.Enabled:=true;
+      if ClientProperties.ownID<>StrToInt(UserList.Selected.SubItems[1]) then
+        Chat.Enabled:=true
+      else
+        Chat.Enabled:=false;
+
       NewMessagePMU.Enabled:=true;
       MutePMU.Enabled:=true;
       UInfoPMU.Enabled:=true;
-      MutePMU.Checked:=isIgnored(UserList.Selected.Caption+UserList.Selected.SubItems[0]);
+      MutePMU.Checked:=isIgnored(UserList.Selected.Caption+UserList.Selected.SubItems[0]); // Что за жесть?
     end
     else
     begin

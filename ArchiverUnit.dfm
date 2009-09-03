@@ -4802,8 +4802,8 @@ object MainForm: TMainForm
           8DC8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C8C9B8ADD4A789E4B99CEA
           C3ABEAC3ABE4B89DD3A68AC9B9AFC8C8C8C8C8C8C8C8C8C8C8C8}
         Caption = #1057#1087#1088#1072#1074#1082#1072
-        Enabled = False
         ShortCut = 112
+        OnClick = N16Click
       end
       object N18: TMenuItem
         Caption = '-'

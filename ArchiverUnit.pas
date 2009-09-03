@@ -304,6 +304,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
     procedure CheckSelectedExecute(Sender: TObject);
+    procedure N16Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -460,7 +461,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.1.19-alpha';
+   ClientProperties.Version:='BlastCore v0.2 beta';
 
    ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////
@@ -659,9 +660,10 @@ else if(TryChatForm.Visible)then
   end;
             end
          else
-            ShowMessage('Com11: Индекс вышел за границы!');
-            //Reconnect;
-
+            begin
+              ClientSocket1.Socket.Close;
+              ShowMessage('Com11: Индекс вышел за границы!');
+            end;
          InBufer.CurrentOperation:=9;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
@@ -693,10 +695,10 @@ else if(TryChatForm.Visible)then
             end
          else
             begin
+              ClientSocket1.Socket.Close;
               if SpeekerSettings.Debug then
                 LogVariable('LastSEACommand', IntToStr(InBufer.LastSEACommand));
               ShowMessage('Com10: Индекс вышел за границы!');
-            //Reconnect;
             end;
 
          InBufer.CurrentOperation:=9;
@@ -712,8 +714,10 @@ else if(TryChatForm.Visible)then
             
           end
          else
+          begin
+            ClientSocket1.Socket.Close;
             ShowMessage('Com11: Индекс вышел за границы!');
-            //Reconnect;
+          end;
 
          InBufer.CurrentOperation:=9;
          InBufer.HowmanyNeedRec := 1;
@@ -728,8 +732,10 @@ else if(TryChatForm.Visible)then
 
           end
          else
+          begin
+            ClientSocket1.Socket.Close;
             ShowMessage('Com12: Индекс вышел за границы!');
-            //Reconnect;
+          end;
 
          InBufer.CurrentOperation:=9;
          InBufer.HowmanyNeedRec := 1;
@@ -757,6 +763,7 @@ else if(TryChatForm.Visible)then
       InBufer.HowmanyNeedRec := 1;
       InBufer.SetNextLength;
       }
+      ClientSocket1.Socket.Close;
   end;
 end;
 
@@ -1008,7 +1015,7 @@ begin
       end
    else
       begin //Reconnect;
-        ClientSocket1.Close;
+        ClientSocket1.Socket.Close;
         ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
         InBufer.CurrentOperation:=-1;
         InBufer.HowmanyNeedRec := 1;
@@ -1077,7 +1084,7 @@ begin
       InBufer.SetNextLength;
     end
   else
-    //Reconnect;
+    ClientSocket1.Socket.Close;
 end;
 
 //-----------------------------------------------------------------
@@ -1095,7 +1102,7 @@ begin
       InBufer.SetNextLength;
     end
   else
-    //Reconnect;
+    ClientSocket1.Socket.Close;
 end;
 
 //-----------------------------------------------------------------
@@ -1243,7 +1250,7 @@ begin
     end
   else
     begin
-      //Reconnect;
+      ClientSocket1.Socket.Close;
       ShowMessage('Index out of range [GetMessage]. AlienID='
       +IntToStr(ClientProperties.AlienID));
       if SpeekerSettings.Debug then
@@ -1275,7 +1282,7 @@ begin                                    //TApplication
       InBufer.SetNextLength;
     end
   else
-    //Reconnect;
+    ClientSocket1.Socket.Close;
 end;
 //-----------------------------------------------------------------
 
@@ -2740,11 +2747,40 @@ begin
 end;
 
 procedure TMainForm.N3Click(Sender: TObject);
+var
+  tmpListItem: TListItem;
 begin
   if(FileExists(SpeekerSettings.UserAppdataDir+'\LastChat.txt'))then
       begin
-          WhomEdit.Text:='Последний чат';
           MessageMemo.Lines.LoadFromFile(SpeekerSettings.UserAppdataDir+'\LastChat.txt');
+
+          with MessagesListView do
+          begin
+            tmpListItem := Items.Add;
+            tmpListItem.Caption := 'NA';
+            tmpListItem.SubItems.Add('1');
+            tmpListItem.SubItems.Add('0');
+            tmpListItem.SubItems.Add('CHR');
+            tmpListItem.SubItems.Add(MessageMemo.Text);
+            tmpListItem.SubItems.Add(TimeToStr(Time));
+            tmpListItem.SubItems.Add(DateToStr(Date));
+            tmpListItem.SubItems.Add('Последний ');
+            tmpListItem.SubItems.Add('чат');
+          end;
+
+      if(MessagesListView.Items.Count=1)then
+          if(MainForm.Visible)then
+            begin
+              MessagesListView.Items[0].Checked:=true;
+            end
+          else
+            begin
+              MessagesListView.Items[0].Checked:=false;
+            end;
+       if(MessagesListView.Items.Count>0)then
+          MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
+
+          EnDisButtons.Execute;
       end
   else
     ShowMessage('Записи последнего чата отсутствуют.');
@@ -2902,6 +2938,13 @@ procedure TMainForm.CheckSelectedExecute(Sender: TObject);
 begin
   if MessagesListView.Items.Count>0 then
     MessagesListView.Items.Item[MessagesListView.Selected.Index].Checked:=true;
+end;
+
+procedure TMainForm.N16Click(Sender: TObject);
+var
+  wnd:HWND;
+begin
+  ShellExecute(wnd, 'open', PAnsiChar('Help/index.html'), NIL, NIL, SW_SHOWMAXIMIZED);
 end;
 
 end.

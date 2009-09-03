@@ -69,12 +69,23 @@ var
   index, j: integer;
   Potolok: integer;
   flag: integer;
-  Razdelitel: string;
+  MText, Razdelitel: string;
 
 begin
   flag:=0;
   Razdelitel:='-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
   Memo1.Text := MainForm.MessageMemo.Text;
+
+  MText := Memo1.Text;
+
+  if Length(MText)>2000 then
+    begin
+      delete(MText, 1, Length(MText)-2000);
+      MText:='...' + #13#10 + MText;
+    end;
+
+  Memo1.Text := MText;
+
   Potolok:=Memo1.Lines.Count-1;
   for index:=Potolok downto 0 do
   begin
@@ -153,7 +164,7 @@ begin
     if(MainForm.SendMessageFlag = 1)then
       begin
         foundIndex:=FindUser;
-        if(foundIndex>0)then
+        if((foundIndex>0)and(foundIndex<MainForm.UserList.Items.Count))then
           MainForm.UserList.Items[foundIndex].Selected:=true
         else
           begin
@@ -172,7 +183,7 @@ begin
   end;
   FillComboBox.Execute;
   Memo1.SelStart:=Length(Memo1.Text);
-  memo1.Perform(WM_VScroll, SB_BOTTOM,0);
+  Memo1.Perform(WM_VScroll, SB_BOTTOM,0);
   Memo1.SetFocus;
 end;
 

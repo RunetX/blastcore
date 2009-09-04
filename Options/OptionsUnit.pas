@@ -53,7 +53,6 @@ type
     Label4: TsLabel;
     Image1: TImage;
     Image2: TImage;
-    Image3: TImage;
     LabeledEdit2: TsEdit;
     RoomCmbBox: TsComboBox;
     Label5: TsLabel;

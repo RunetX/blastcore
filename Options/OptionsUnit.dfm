@@ -255,13 +255,6 @@ object OptionsForm: TOptionsForm
           OnClick = SpeedButton9Click
           SkinData.SkinSection = 'SPEEDBUTTON'
         end
-        object Image3: TImage
-          Left = 126
-          Top = 5
-          Width = 32
-          Height = 32
-          Transparent = True
-        end
         object LabeledEdit4: TLabeledEdit
           Left = 16
           Top = 32
@@ -312,7 +305,7 @@ object OptionsForm: TOptionsForm
           ParentFont = False
           WordWrap = True
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clYellow
+          Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -342,9 +335,8 @@ object OptionsForm: TOptionsForm
           Top = 88
           Width = 97
           Height = 21
-          Color = clBlack
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clLime
+          Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'MS Sans Serif'
           Font.Style = []
@@ -373,8 +365,8 @@ object OptionsForm: TOptionsForm
         object StartMinChkBox: TsCheckBox
           Left = 264
           Top = 24
-          Width = 137
-          Height = 19
+          Width = 132
+          Height = 20
           Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1089#1074#1105#1088#1085#1091#1090#1099#1084
           TabOrder = 0
           SkinData.SkinSection = 'CHECKBOX'
@@ -384,8 +376,8 @@ object OptionsForm: TOptionsForm
         object MinSTChkBox: TsCheckBox
           Left = 8
           Top = 96
-          Width = 318
-          Height = 19
+          Width = 313
+          Height = 20
           Caption = #1057#1074#1086#1088#1072#1095#1080#1074#1072#1090#1100' '#1074' '#1090#1088#1077#1081' '#1087#1088#1080' '#1091#1076#1072#1083#1077#1085#1080#1080' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
           TabOrder = 1
           SkinData.SkinSection = 'CHECKBOX'
@@ -395,8 +387,8 @@ object OptionsForm: TOptionsForm
         object WinpopupChkBox: TsCheckBox
           Left = 8
           Top = 72
-          Width = 235
-          Height = 19
+          Width = 230
+          Height = 20
           Caption = '"'#1042#1089#1087#1083#1099#1074#1072#1090#1100'", '#1082#1086#1075#1076#1072' '#1087#1088#1080#1093#1086#1076#1080#1090' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
           TabOrder = 2
           SkinData.SkinSection = 'CHECKBOX'
@@ -406,8 +398,8 @@ object OptionsForm: TOptionsForm
         object AutorunChkBox: TsCheckBox
           Left = 8
           Top = 48
-          Width = 242
-          Height = 19
+          Width = 237
+          Height = 20
           Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1091' '#1087#1088#1080' '#1089#1090#1072#1088#1090#1077' Windows'
           TabOrder = 3
           SkinData.SkinSection = 'CHECKBOX'
@@ -417,8 +409,8 @@ object OptionsForm: TOptionsForm
         object ShowPanelChkBox: TsCheckBox
           Left = 8
           Top = 24
-          Width = 187
-          Height = 19
+          Width = 182
+          Height = 20
           Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
           TabOrder = 4
           SkinData.SkinSection = 'CHECKBOX'
@@ -429,8 +421,8 @@ object OptionsForm: TOptionsForm
         object SoundsEnableChkBox: TsCheckBox
           Left = 264
           Top = 48
-          Width = 106
-          Height = 19
+          Width = 101
+          Height = 20
           Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082#1080
           Checked = True
           State = cbChecked
@@ -452,6 +444,12 @@ object OptionsForm: TOptionsForm
         Width = 56
         Height = 13
         Caption = #1060#1072#1082#1091#1083#1100#1090#1077#1090
+        ParentFont = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
       end
       object Label2: TsLabel
         Left = 160
@@ -459,6 +457,12 @@ object OptionsForm: TOptionsForm
         Width = 119
         Height = 13
         Caption = #1053#1077#1089#1082#1086#1083#1100#1082#1086' '#1089#1083#1086#1074' '#1086' '#1089#1077#1073#1077
+        ParentFont = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
       end
       object Label4: TsLabel
         Left = 24
@@ -466,6 +470,12 @@ object OptionsForm: TOptionsForm
         Width = 88
         Height = 13
         Caption = #1048#1084#1103' '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+        ParentFont = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
       end
       object Image1: TImage
         Left = 24
@@ -3569,6 +3579,12 @@ object OptionsForm: TOptionsForm
         Width = 44
         Height = 13
         Caption = #1050#1086#1084#1085#1072#1090#1072
+        ParentFont = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
       end
       object LabeledEdit7: TLabeledEdit
         Left = 24
@@ -3598,9 +3614,8 @@ object OptionsForm: TOptionsForm
         BoundLabel.UseSkinColor = True
         SkinData.SkinSection = 'COMBOBOX'
         Style = csDropDownList
-        Color = clBlack
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
+        Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -3627,7 +3642,6 @@ object OptionsForm: TOptionsForm
         Top = 146
         Width = 249
         Height = 145
-        Color = clBlack
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clLime
         Font.Height = -11
@@ -3652,9 +3666,8 @@ object OptionsForm: TOptionsForm
         Top = 79
         Width = 121
         Height = 21
-        Color = clBlack
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
+        Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
@@ -3688,9 +3701,8 @@ object OptionsForm: TOptionsForm
         BoundLabel.MaxWidth = 0
         BoundLabel.UseSkinColor = True
         SkinData.SkinSection = 'COMBOBOX'
-        Color = clBlack
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
+        Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []

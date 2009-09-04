@@ -219,6 +219,7 @@ end;
     CheckSelected: TAction;
     sSkinManager1: TsSkinManager;
     sSkinProvider1: TsSkinProvider;
+    WhomImage: TImage;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -1016,7 +1017,7 @@ begin
    else
       begin //Reconnect;
         ClientSocket1.Socket.Close;
-        ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
+        //ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
         InBufer.CurrentOperation:=-1;
         InBufer.HowmanyNeedRec := 1;
         InBufer.SetNextLength;
@@ -1873,7 +1874,7 @@ begin
   if SpeekerSettings.Debug then
       LogTimer.Enabled:=true;
 
-  //ClientSocket1.Address := SpeekerSettings.AltServerIP;
+  
   ConDiscon.Execute;
 end;
 
@@ -1972,11 +1973,23 @@ begin
                      + MessagesListView.Selected.SubItems[7];
       if(StrToInt(MessagesListView.Selected.SubItems[0])=1)then
         if(StrToInt(MessagesListView.Selected.SubItems[1])=0)then
-            WhomEdit.Text := WhomEdit.Text + ' -> ' + SpeekerSettings.UserName
+          begin
+            WhomEdit.Text := WhomEdit.Text + ' -> ' + SpeekerSettings.UserName;
+            WhomImage.Picture := nil;
+            ImageList1.GetBitmap(1, WhomImage.Picture.Bitmap);
+          end
         else
-            WhomEdit.Text := WhomEdit.Text + ' Печатникам'
+          begin
+            WhomEdit.Text := WhomEdit.Text + ' Печатникам';
+            WhomImage.Picture := nil;
+            ImageList1.GetBitmap(0, WhomImage.Picture.Bitmap);
+          end
       else
+          begin
             WhomEdit.Text := WhomEdit.Text + ' Всем';
+            WhomImage.Picture := nil;
+            ImageList1.GetBitmap(0, WhomImage.Picture.Bitmap);
+          end;
       WhomEdit.Text := WhomEdit.Text+' в '+ MessagesListView.Selected.SubItems[4]+
       ', '+ MessagesListView.Selected.SubItems[5];
       //MessagesListView.Items[MessagesListView.Selected.Index].Checked:=true;
@@ -2854,6 +2867,8 @@ begin
       DelcurmesToolButton.Enabled   := false;
       DelchmesToolButton.Enabled    := false;
       DelallmesToolButton.Enabled   := false;
+
+      WhomImage.Picture := nil;
     end;
   if MessagesListView.Items.Count=1 then
     begin

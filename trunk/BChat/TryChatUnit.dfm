@@ -30,7 +30,7 @@ object TryChatForm: TTryChatForm
     Caption = #1055#1086#1087#1099#1090#1082#1072' '#1091#1089#1090#1072#1085#1086#1074#1083#1077#1085#1080#1103' '#1095#1072#1090#1072' '#1089
     ParentFont = False
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clYellow
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -47,7 +47,7 @@ object TryChatForm: TTryChatForm
     ParentFont = False
     WordWrap = True
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clYellow
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []

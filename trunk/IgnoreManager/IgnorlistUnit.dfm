@@ -243,7 +243,7 @@ object IgnorelistForm: TIgnorelistForm
     ParentFont = False
     WordWrap = True
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clYellow
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -259,7 +259,7 @@ object IgnorelistForm: TIgnorelistForm
     ParentFont = False
     WordWrap = True
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clYellow
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -533,9 +533,8 @@ object IgnorelistForm: TIgnorelistForm
     SkinData.SkinSection = 'EDIT'
     ItemHeight = 13
     Sorted = True
-    Color = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clLime
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -560,9 +559,8 @@ object IgnorelistForm: TIgnorelistForm
     SkinData.SkinSection = 'EDIT'
     ItemHeight = 13
     Sorted = True
-    Color = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clLime
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []

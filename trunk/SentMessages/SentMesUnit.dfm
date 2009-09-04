@@ -46,7 +46,6 @@ object SentMesForm: TSentMesForm
       SkinData.SkinSection = 'EDIT'
       Align = alCustom
       Anchors = [akLeft, akTop, akRight, akBottom]
-      Color = clBlack
       Columns = <
         item
           Caption = #1044#1072#1090#1072
@@ -69,7 +68,7 @@ object SentMesForm: TSentMesForm
           Caption = #1057#1086#1086#1073#1097#1077#1085#1080#1077
         end>
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clLime
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []

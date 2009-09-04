@@ -48,9 +48,8 @@ object BChatForm: TBChatForm
       Width = 398
       Height = 280
       Align = alClient
-      Color = clBlack
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clLime
+      Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
@@ -86,9 +85,8 @@ object BChatForm: TBChatForm
         Width = 392
         Height = 21
         Anchors = [akLeft, akRight, akBottom]
-        Color = clBlack
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
+        Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []

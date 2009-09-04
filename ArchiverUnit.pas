@@ -2762,10 +2762,17 @@ end;
 procedure TMainForm.N3Click(Sender: TObject);
 var
   tmpListItem: TListItem;
+  ChatText: String;
 begin
   if(FileExists(SpeekerSettings.UserAppdataDir+'\LastChat.txt'))then
       begin
-          MessageMemo.Lines.LoadFromFile(SpeekerSettings.UserAppdataDir+'\LastChat.txt');
+          with TStringList.create do
+            try
+              LoadFromFile(SpeekerSettings.UserAppdataDir+'\LastChat.txt');
+              ChatText:=text;
+            finally
+              Free;
+            end;
 
           with MessagesListView do
           begin
@@ -2774,7 +2781,7 @@ begin
             tmpListItem.SubItems.Add('1');
             tmpListItem.SubItems.Add('0');
             tmpListItem.SubItems.Add('CHR');
-            tmpListItem.SubItems.Add(MessageMemo.Text);
+            tmpListItem.SubItems.Add(ChatText);
             tmpListItem.SubItems.Add(TimeToStr(Time));
             tmpListItem.SubItems.Add(DateToStr(Date));
             tmpListItem.SubItems.Add('Последний ');

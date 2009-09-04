@@ -29,9 +29,8 @@ object SendMessageForm: TSendMessageForm
     Width = 449
     Height = 273
     Anchors = [akLeft, akTop, akRight, akBottom]
-    Color = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clLime
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []

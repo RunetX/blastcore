@@ -27,7 +27,7 @@ object ChatYESNOForm: TChatYESNOForm
     Caption = #1042#1099' '#1078#1077#1083#1072#1077#1090#1077' '#1086#1090#1074#1077#1090#1080#1090#1100
     ParentFont = False
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clYellow
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []

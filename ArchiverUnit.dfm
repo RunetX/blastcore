@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TsStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -179,7 +179,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
@@ -187,7 +187,7 @@ object MainForm: TMainForm
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -198,7 +198,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
       BoundLabel.Font.Color = clWindowText
@@ -218,8 +218,8 @@ object MainForm: TMainForm
           Width = 90
         end
         item
+          AutoSize = True
           Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088
-          Width = 110
         end>
       ColumnClick = False
       Ctl3D = False
@@ -245,14 +245,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TsLabel
         Left = 326
         Top = 8
@@ -330,7 +330,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TsPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom

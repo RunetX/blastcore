@@ -11,7 +11,8 @@ uses
   NewChatUnit in 'BChat\NewChatUnit.pas' {BChatForm},
   IgnorlistUnit in 'IgnoreManager\IgnorlistUnit.pas' {IgnorelistForm},
   SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm},
-  AboutUnit in 'About\AboutUnit.pas' {AboutForm};
+  AboutUnit in 'About\AboutUnit.pas' {AboutForm},
+  DebugUnit in 'Debug\DebugUnit.pas' {DebugForm};
 
 {$R *.res}
 
@@ -38,14 +39,15 @@ begin
     Application.Initialize;
     Application.Title := 'BlastCore Sender';
     Application.CreateForm(TMainForm, MainForm);
-    Application.CreateForm(TSendMessageForm, SendMessageForm);
-    Application.CreateForm(TChatYESNOForm, ChatYESNOForm);
-    Application.CreateForm(TTryChatForm, TryChatForm);
-    Application.CreateForm(TOptionsForm, OptionsForm);
-    Application.CreateForm(TBChatForm, BChatForm);
-    Application.CreateForm(TIgnorelistForm, IgnorelistForm);
-    Application.CreateForm(TSentMesForm, SentMesForm);
-    Application.CreateForm(TAboutForm, AboutForm);
-    Application.Run;
+  Application.CreateForm(TSendMessageForm, SendMessageForm);
+  Application.CreateForm(TChatYESNOForm, ChatYESNOForm);
+  Application.CreateForm(TTryChatForm, TryChatForm);
+  Application.CreateForm(TOptionsForm, OptionsForm);
+  Application.CreateForm(TBChatForm, BChatForm);
+  Application.CreateForm(TIgnorelistForm, IgnorelistForm);
+  Application.CreateForm(TSentMesForm, SentMesForm);
+  Application.CreateForm(TAboutForm, AboutForm);
+  Application.CreateForm(TDebugForm, DebugForm);
+  Application.Run;
   end;
 end.

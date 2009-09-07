@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList, IniFiles, 
-  MMSystem, Registry, PngImage1, sDialogs, sMemo, sComboBox, sCheckBox,
+  MMSystem, Registry, sDialogs, sMemo, sComboBox, sCheckBox,
   sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl;
 
 type
@@ -165,7 +165,7 @@ procedure TOptionsForm.SaveOptionsExecute(Sender: TObject);
 var
   sIniFile: TIniFile;
   Registry: TRegistry;
-  s, ns, room, info: String;
+  ns, room, info: String;
   j: integer;
 begin
 // Save to variables

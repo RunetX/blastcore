@@ -59,7 +59,6 @@ end;
   TProgSettings = class
   public
       UserAppdataDir: string;
-      ArchiveLink:    string;
 
       MainServerIP: string;
       AltServerIP:  string;
@@ -126,7 +125,6 @@ end;
     JumpDown: TAction;
     JumpToFirst: TAction;
     ImageList1: TImageList;
-    LogTimer: TTimer;
     CloseProgamm: TAction;
     EditCut1: TEditCut;
     EditCopy1: TEditCopy;
@@ -220,6 +218,7 @@ end;
     sSkinManager1: TsSkinManager;
     sSkinProvider1: TsSkinProvider;
     WhomImage: TImage;
+    DebugAction: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -261,9 +260,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure LastmesToolButtonClick(Sender: TObject);
     procedure FirsmesToolButtonClick(Sender: TObject);
     procedure DelallmesToolButtonClick(Sender: TObject);
-    procedure SEAPingTimerTimer(Sender: TObject);
     procedure ConDisconToolBtnClick(Sender: TObject);
-    procedure LogTimerTimer(Sender: TObject);
     procedure Exit2Click(Sender: TObject);
     procedure DownPanelClick(Sender: TObject);
     procedure GroupBox1Click(Sender: TObject);
@@ -306,6 +303,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
       var ErrorCode: Integer);
     procedure CheckSelectedExecute(Sender: TObject);
     procedure N16Click(Sender: TObject);
+    procedure DebugActionExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -360,7 +358,7 @@ var
 implementation
 
 uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
-  IgnorlistUnit, SentMesUnit, AboutUnit;
+  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit;
 
 {$R *.dfm}
 
@@ -387,15 +385,17 @@ var
   logfile: TextFile;
   logstring: string;
 begin
-  AssignFile(logfile, 'clearlog.txt');
+  {AssignFile(logfile, 'clearlog.txt');
   try
     Append(logfile);
   except
     Rewrite(logfile);
-  end;
-  logstring:='['+DateToStr(Date)+']['+TimeToStr(Time)+']'+Varname+'='+Variable;
-  Writeln(logfile, logstring);
-  CloseFile(logfile);
+  end; }
+  logstring:='['+DateToStr(Date)+']['+TimeToStr(Time)+'] '+Varname+' = '+Variable;
+  {Writeln(logfile, logstring);
+  CloseFile(logfile);}
+
+  DebugForm.DebugMemo.Lines.Add(logstring);
 end;
 //-----------------------------------------------------------------
 
@@ -485,19 +485,18 @@ begin
     ProgramDirectory := SpeekerSettings.UserAppdataDir;
     Ini := TIniFile.Create( ProgramDirectory+'\Settings.ini' );
   try
-    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','82.117.64.184');
-    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'82.117.64.157');
+    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','195.208.177.107');
+    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'195.208.177.190');
 
     if(SpeekerSettings.MainServerIP=SpeekerSettings.AltServerIP)then
         begin
-            SpeekerSettings.MainServerIP:='82.117.64.184';
-            SpeekerSettings.AltServerIP:='82.117.64.157';
+            SpeekerSettings.MainServerIP:='195.208.177.107';
+            SpeekerSettings.AltServerIP:='195.208.177.190';
         end;
     SpeekerSettings.UserName    := Ini.ReadString( 'User', 'UserName','');
     SpeekerSettings.CompName    := Ini.ReadString( 'User', 'CompName','');
     SpeekerSettings.Room        := Ini.ReadString( 'User', 'Room','0');
     SpeekerSettings.Info        := Ini.ReadString( 'User', 'Info', ClientProperties.Version);
-    SpeekerSettings.ArchiveLink := Ini.ReadString( 'Programm', 'ArcLnk', 'http://peek.avtf.net/');
     SpeekerSettings.Faculty     :=   Ini.ReadBool( 'User', 'Faculty', true);
     SpeekerSettings.PrintUser   :=   Ini.ReadBool( 'User', 'isPrinter', false);
     SpeekerSettings.Debug       :=   Ini.ReadBool( 'Programm', 'Debug',  false);
@@ -1050,6 +1049,8 @@ begin
   else if(InBufer.LastSEACommand=5)then
           begin
             // Как я рад, что оно тут было :)
+            if SpeekerSettings.Debug then
+              LogVariable('Ping?', 'Pong!');
             noPong := False;
             Pilingator.Enabled := False;
             Pilingator.Enabled := True;
@@ -1271,7 +1272,7 @@ end;
 //-----------------------------------------------------------------
 
 procedure TMainForm.GetFaculty();   // 15
-begin                                    //TApplication
+begin
   AlienInfo.Faculty := ord(InBufer.Bufer[1]);
   if SpeekerSettings.Debug then
       LogVariable('Faculty', IntToStr(AlienInfo.Faculty));
@@ -1507,6 +1508,8 @@ end;
 
 procedure TMainForm.ReceiveForProcessing(ReadyBufer: string);
 begin
+  if SpeekerSettings.Debug then
+      LogVariable('Receive for processing', 'current operation ' + IntToStr(InBufer.CurrentOperation));
   if(InBufer.CurrentOperation=1)then GetID            else   // 1. GetID
   if(InBufer.CurrentOperation=2)then GetIPLen         else   // 2. GetIPLen
   if(InBufer.CurrentOperation=3)then GetIP            else   // 3. GetIP
@@ -1535,7 +1538,8 @@ begin
   begin
     if SpeekerSettings.Debug then
       LogVariable('CurrentOperation out of range', IntToStr(InBufer.CurrentOperation));
-    Reconnect;
+    //Reconnect;
+    ClientSocket1.Socket.Close;
   end;
 end;
 
@@ -1608,6 +1612,10 @@ begin
       begin
         //PingTimer.Enabled:=true;
         StatusBar1.Panels[0].Text:=StatusBar1.Panels[0].Text+' [Альтернативный]';
+
+        PingMSTimer.Enabled := true;
+        if SpeekerSettings.Debug then
+          LogVariable('Socket connect, pingMStimer', ' is on');
       end
   else
       begin
@@ -1707,28 +1715,9 @@ procedure TMainForm.ClientSocket1Error(Sender: TObject;
   var ErrorCode: Integer);
 begin
   ErrorCode:=0;
-{
-  if(ClientSocket1.Address=SpeekerSettings.MainServerIP)then
-  begin
-    ClientSocket1.Close;
-    ClientSocket1.Address:=SpeekerSettings.AltServerIP;
-  try
-    ClientSocket1.Open;
-  except
-    ClientSocket1.Close;
-  end;
-  end
-  else if(ClientSocket1.Address=SpeekerSettings.AltServerIP)then
-  begin
-    ClientSocket1.Close;
-    ClientSocket1.Address:=SpeekerSettings.MainServerIP;
-  try
-    ClientSocket1.Open;
-  except
-    ClientSocket1.Close;
-  end;
-  end;    }
-  ReconnectTimer.Enabled := true;
+  ClientSocket1.Socket.Close;
+  if SpeekerSettings.Debug then
+      LogVariable('Main socket', 'connect error');
 end;
 
 //-----------------------------------------------------------------
@@ -1752,7 +1741,7 @@ begin
   if(ClientSocket1.Active)then
     begin
       // Отключиться!
-      ClientSocket1.Close;
+      ClientSocket1.Socket.Close;
 
       // Через две секунды опять вызвать ConDisconExecute
       ReconnectTimer.Enabled := True;
@@ -1781,14 +1770,11 @@ begin
           SetLength(SpeekerSettings.CompName,(pos(#0, tmp2)-1));
         end;
 
-
-
       try
         if ClientSocket1.Address=SpeekerSettings.MainServerIP then
           begin
             ClientSocket1.Address := SpeekerSettings.AltServerIP;
             PingMSClientSocket.Address := SpeekerSettings.MainServerIP;
-            PingMSTimer.Enabled := true;
           end
         else
           ClientSocket1.Address:=SpeekerSettings.MainServerIP;
@@ -1871,10 +1857,6 @@ begin
 
   CoolTrayIcon.IconIndex:=3;
 
-  if SpeekerSettings.Debug then
-      LogTimer.Enabled:=true;
-
-  
   ConDiscon.Execute;
 end;
 
@@ -1932,7 +1914,7 @@ begin
       if (InBufer.isReadyForProc) then
       begin
         if SpeekerSettings.Debug then
-          LogVariable('Отправляем на обработку полученные данные', InBufer.Bufer);
+          LogVariable('Отправляем на обработку полученные данные ', InBufer.Bufer);
         ReceiveForProcessing(InBufer.Bufer);
       end;
     end;
@@ -2194,26 +2176,6 @@ begin
   DeleteAllMessages.Execute;
 end;
 
-procedure TMainForm.SEAPingTimerTimer(Sender: TObject);
-begin
-  try
-    PingTcpClient.RemotePort := '8732';
-    PingTcpClient.RemoteHost := SpeekerSettings.MainServerIP;
-    PingTcpClient.Active:=true;
-    if PingTcpClient.Connect then
-        begin
-          PingTcpClient.Close;
-          Reconnect;
-        end;
-    PingTcpClient.Close;
-  except
-    on E:Exception do
-      begin
-        ShowMessage('Exception: ' + E.Message);
-      end; // end on do begin
-  end;
-end;
-
 function TMainForm.StringCompare(s1, s2: string): boolean;
 var
   Len1, Len2, index: integer;
@@ -2239,60 +2201,6 @@ end;
 procedure TMainForm.ConDisconToolBtnClick(Sender: TObject);
 begin
     ConDiscon.Execute;
-end;
-
-procedure TMainForm.LogTimerTimer(Sender: TObject);
-var
-  logfile: TextFile;
-begin
-  AssignFile(logfile, 'log.txt');
-  try
-    Append(logfile);
-  except
-    Rewrite(logfile);
-  end;
-  Writeln(logfile, 'Caption: '+Caption);
-  Writeln(logfile, 'Date: '+DateToStr(Date));
-  Writeln(logfile, 'Time: '+TimeToStr(Time));
-  Writeln(logfile, 'HowmanyNeedRec '+IntToStr(InBufer.HowmanyNeedRec));
-  Writeln(logfile, 'CurrentOperation '+IntToStr(InBufer.CurrentOperation));
-  Writeln(logfile, 'LastSEACommand '+IntToStr(InBufer.LastSEACommand));
-  Writeln(logfile, 'isReadyForProc '+BoolToStr(InBufer.isReadyForProc));
-  Writeln(logfile, 'tmpBufer '+InBufer.tmpBufer);
-  Writeln(logfile, 'Bufer '+InBufer.Bufer);
-
-  Writeln(logfile, 'ClientIP '+ClientProperties.ClientIP);
-  Writeln(logfile, 'Username '+ClientProperties.Username);
-  Writeln(logfile, 'Compname '+ClientProperties.Compname);
-  Writeln(logfile, 'UsernameLen '+IntToStr(ClientProperties.UsernameLen));
-  Writeln(logfile, 'CompnameLen '+IntToStr(ClientProperties.CompnameLen));
-  Writeln(logfile, 'ClientIPLen '+IntToStr(ClientProperties.ClientIPLen));
-  Writeln(logfile, 'UserlistLen '+IntToStr(ClientProperties.UserlistLen));
-  Writeln(logfile, 'AddUserQuery '+IntToStr(ClientProperties.AddUserQuery));
-  Writeln(logfile, 'AlienID '+IntToStr(ClientProperties.AlienID));
-  Writeln(logfile, 'Listcount '+IntToStr(ClientProperties.Listcount));
-  Writeln(logfile, 'Users '+IntToStr(ClientProperties.Users));
-  Writeln(logfile, 'Privat '+IntToStr(ClientProperties.Privat));
-  Writeln(logfile, 'Printer '+IntToStr(ClientProperties.Printer));
-  Writeln(logfile, 'Meslen '+IntToStr(ClientProperties.Meslen));
-  Writeln(logfile, 'Messag '+ClientProperties.Messag);
-
-  Writeln(logfile, 'MainServerIP '+SpeekerSettings.MainServerIP);
-  Writeln(logfile, 'AltServerIP '+SpeekerSettings.AltServerIP);
-  Writeln(logfile, 'UserName '+SpeekerSettings.UserName);
-  Writeln(logfile, 'CompName '+SpeekerSettings.CompName);
-
-  Writeln(logfile, 'UserName '+AlienInfo.UserName);
-  Writeln(logfile, 'CompName '+AlienInfo.CompName);
-  Writeln(logfile, 'Room '+AlienInfo.Room);
-  Writeln(logfile, 'Info '+AlienInfo.Info);
-  Writeln(logfile, 'Faculty '+IntToStr(AlienInfo.Faculty));
-  Writeln(logfile, 'Version '+AlienInfo.Version);
-  Writeln(logfile, 'IPAddress '+AlienInfo.IPAddress);
-
-  Writeln(logfile, '----------------------------------------------------------------------');
-
-  CloseFile(logfile);
 end;
 
 procedure TMainForm.WMSYSCOMMAND(var msg: TMessage);
@@ -2757,6 +2665,8 @@ procedure TMainForm.ReconnectTimerTimer(Sender: TObject);
 begin
   ReconnectTimer.Enabled := False;
   ConDiscon.Execute;
+  if SpeekerSettings.Debug then
+          LogVariable('Reconnect timer ', 'timer off and condiscon execute');
 end;
 
 procedure TMainForm.N3Click(Sender: TObject);
@@ -2851,12 +2761,18 @@ var
   s: String;
 begin
   if noPong then
-    Reconnect
+    begin
+      if SpeekerSettings.Debug then
+          LogVariable('Pilingator ', 'Reconnect');
+      Reconnect;
+    end
   else
     begin
       s := #0#0#1#3;
       ClientSocket1.Socket.SendBuf(s[1],length(s));
       noPong := True;
+      if SpeekerSettings.Debug then
+          LogVariable('Pilingator ', 'Send Ping?');
     end;
 end;
 
@@ -2938,6 +2854,8 @@ end;
 procedure TMainForm.PingMSTimerTimer(Sender: TObject);
 begin
   PingMSClientSocket.Open;
+  if SpeekerSettings.Debug then
+          LogVariable('Ping main server timer ', 'Try to connect...');
 end;
 
 procedure TMainForm.PingMSClientSocketConnect(Sender: TObject;
@@ -2945,7 +2863,10 @@ procedure TMainForm.PingMSClientSocketConnect(Sender: TObject;
 begin
   PingMSTimer.Enabled := false;
   Socket.Close;
-  ReconnectTimer.Enabled:=true;
+  //ReconnectTimer.Enabled:=true;
+  ClientSocket1.Socket.Close;
+  if SpeekerSettings.Debug then
+      LogVariable('Ping MS server connect', 'timer off, sockets close');
 end;
 
 procedure TMainForm.PingMSClientSocketError(Sender: TObject;
@@ -2954,6 +2875,8 @@ procedure TMainForm.PingMSClientSocketError(Sender: TObject;
 begin
   ErrorCode := 0;
   PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
+  if SpeekerSettings.Debug then
+      LogVariable('Ping main server', 'socket error');
 end;
 
 procedure TMainForm.CheckSelectedExecute(Sender: TObject);
@@ -2967,6 +2890,14 @@ var
   wnd:HWND;
 begin
   ShellExecute(wnd, 'open', PAnsiChar('Help/index.html'), NIL, NIL, SW_SHOWMAXIMIZED);
+end;
+
+procedure TMainForm.DebugActionExecute(Sender: TObject);
+begin
+  if DebugForm.Visible then
+    DebugForm.Close
+  else
+    DebugForm.Show;
 end;
 
 end.

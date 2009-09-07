@@ -1,6 +1,6 @@
 object OptionsForm: TOptionsForm
-  Left = 609
-  Top = 170
+  Left = 871
+  Top = 435
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -3643,7 +3643,7 @@ object OptionsForm: TOptionsForm
         Width = 249
         Height = 145
         Font.Charset = DEFAULT_CHARSET
-        Font.Color = clLime
+        Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []

@@ -8,7 +8,7 @@ uses
   IdTCPConnection, IdTCPClient, Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages, 
   Variants, Graphics, ScktComp, ActnList, Sockets, Registry, NewChatUnit, RichEdit, 
   MMSystem, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
-  sListView, sSplitter, sPanel, sToolBar, sStatusBar;
+  sListView, sSplitter, sPanel, sToolBar, sStatusBar, Winsock;
 
 const
   UM_MYMESSSAGE = WM_USER+1;
@@ -374,6 +374,32 @@ function TwoBytesToInt(twobytes: string): integer;
 begin
    SetLength(twobytes, 2);
    result := 256*ord(twobytes[1])+ord(twobytes[2]);
+end;
+
+function FromEdit2Host(HostEdit: TEdit): Boolean;
+var
+  WSAData: TWSAData;
+  Host: PHostEnt;
+  Destino :in_addr;
+
+begin
+  WSAStartup($0101, WSAData);
+
+  Destino.S_addr := inet_addr(Pchar(HostEdit.text));
+  if (Destino.S_addr = -1) then
+    Host := GetHostbyName(PChar(HostEdit.text))
+  else
+    Host := GetHostbyAddr(@Destino,sizeof(in_addr), AF_INET);
+
+  if (host = nil) then
+  begin
+    Application.MessageBox('Host not found','Error', MB_OK);
+    WSACleanup();
+    exit;
+  end;
+
+  showmessage(inet_ntoa(PInAddr(Host.h_addr_list^)^));
+  WSACleanup;
 end;
 
 //-----------------------------------------------------------------
@@ -1960,9 +1986,13 @@ begin
             WhomEdit.Text := WhomEdit.Text + ' -> ' + SpeekerSettings.UserName;
             WhomImage.Picture := nil;
             if MessagesListView.Selected.SubItems[2]<>'CHR' then
-              ImageList1.GetBitmap(1, WhomImage.Picture.Bitmap)
+              if MessagesListView.Selected.SubItems[2]<>'NA' then
+                ImageList1.GetBitmap(1, WhomImage.Picture.Bitmap)
+              else
+                ImageList1.GetBitmap(7, WhomImage.Picture.Bitmap)
             else
-              ImageList1.GetBitmap(7, WhomImage.Picture.Bitmap);
+              ImageList1.GetBitmap(8, WhomImage.Picture.Bitmap)
+
           end
         else
           begin

@@ -219,6 +219,7 @@ end;
     sSkinProvider1: TsSkinProvider;
     WhomImage: TImage;
     DebugAction: TAction;
+    BigImages: TImageList;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -1958,7 +1959,10 @@ begin
           begin
             WhomEdit.Text := WhomEdit.Text + ' -> ' + SpeekerSettings.UserName;
             WhomImage.Picture := nil;
-            ImageList1.GetBitmap(1, WhomImage.Picture.Bitmap);
+            if MessagesListView.Selected.SubItems[2]<>'CHR' then
+              ImageList1.GetBitmap(1, WhomImage.Picture.Bitmap)
+            else
+              ImageList1.GetBitmap(7, WhomImage.Picture.Bitmap);
           end
         else
           begin

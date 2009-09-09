@@ -220,6 +220,7 @@ end;
     WhomImage: TImage;
     DebugAction: TAction;
     BigImages: TImageList;
+    KillSEA: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -391,14 +392,15 @@ begin
   else
     Host := GetHostbyAddr(@Destino,sizeof(in_addr), AF_INET);
 
-  if (host = nil) then
+  if (host <> nil) then
   begin
-    Application.MessageBox('Host not found','Error', MB_OK);
+    showmessage(inet_ntoa(PInAddr(Host.h_addr_list^)^));
+  end
+  else
+  begin
     WSACleanup();
     exit;
   end;
-
-  showmessage(inet_ntoa(PInAddr(Host.h_addr_list^)^));
   WSACleanup;
 end;
 
@@ -510,7 +512,10 @@ begin
 
   // TProgSettings.ReadSettings;
     ProgramDirectory := SpeekerSettings.UserAppdataDir;
-    Ini := TIniFile.Create( ProgramDirectory+'\Settings.ini' );
+    if ParamStr(1) = '' then
+      Ini := TIniFile.Create( ProgramDirectory+'\Settings.ini' )
+    else
+      Ini := TIniFile.Create( GetCurrentDir() + '\' + ParamStr(1) );
   try
     SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','195.208.177.107');
     SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'195.208.177.190');

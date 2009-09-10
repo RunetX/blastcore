@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 369
-  Top = 171
+  Left = 271
+  Top = 412
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -218,8 +218,8 @@ object MainForm: TMainForm
           Width = 90
         end
         item
-          AutoSize = True
           Caption = #1050#1086#1084#1087#1100#1102#1090#1077#1088
+          Width = 100
         end>
       ColumnClick = False
       Ctl3D = False
@@ -468,9 +468,21 @@ object MainForm: TMainForm
       Default = True
       OnClick = ShowArchiver1Click
     end
+    object NewmessageTPM: TMenuItem
+      Action = WriteNewMessage
+      Caption = #1053#1086#1074#1086#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1077'...'
+    end
     object OpenNETArchiver1: TMenuItem
       Action = OpenSiteAction
-      Caption = #1054#1090#1082#1088#1099#1090#1100' WEB-'#1072#1088#1093#1080#1074
+      Caption = #1054#1090#1082#1088#1099#1090#1100' WEB-'#1072#1088#1093#1080#1074'...'
+    end
+    object OptionsTPM: TMenuItem
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080'...'
+      ShortCut = 118
+      OnClick = OptionsTPMClick
+    end
+    object N20: TMenuItem
+      Caption = '-'
     end
     object N5: TMenuItem
       Caption = #1042#1089#1087#1083#1099#1074#1072#1102#1097#1080#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1103
@@ -479,6 +491,10 @@ object MainForm: TMainForm
     object N13: TMenuItem
       Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082#1080
       OnClick = N13Click
+    end
+    object AWAY1: TMenuItem
+      Action = GoToFromAway
+      Caption = #1071' '#1086#1090#1089#1091#1090#1089#1090#1074#1091#1102' (Away)'
     end
     object N1: TMenuItem
       Caption = '-'
@@ -5006,7 +5022,7 @@ object MainForm: TMainForm
   end
   object Pilingator: TTimer
     Enabled = False
-    Interval = 120000
+    Interval = 60000
     OnTimer = PilingatorTimer
     Left = 73
     Top = 234

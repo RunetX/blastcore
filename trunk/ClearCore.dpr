@@ -30,11 +30,11 @@ begin
 end;
 
 begin
-  {if not TryCreateMutex then begin
+  if not TryCreateMutex then begin
     PrevWin:=FindWindow('TMainForm','MainForm');
     SendMessage(PrevWin,UM_MYMESSSAGE,0,0);
   end
-  else  }
+  else
   begin
     Application.Initialize;
     Application.Title := 'BlastCore Sender';

@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=0
 MinorVer=2
 Release=0
-Build=0
+Build=40
 Debug=0
 PreRelease=1
 Special=0
@@ -125,15 +125,15 @@ Locale=1049
 CodePage=1251
 [Version Info Keys]
 CompanyName=Peek's Webware
-FileDescription=Just Another SEA Client
-FileVersion=0.2.0.0
+FileDescription=BlastCore Sender - SEA Protocol Client
+FileVersion=0.2.0.40
 InternalName=BlastCore
 LegalCopyright=Peek's Webware
-LegalTrademarks=
-OriginalFilename=
-ProductName=
-ProductVersion=0.2.0.0
-Comments=
+LegalTrademarks=BlastCore
+OriginalFilename=ClearCore.exe
+ProductName=BlastCore
+ProductVersion=0.2
+Comments=Alt SEA Client
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;

@@ -223,6 +223,10 @@ end;
     DebugAction: TAction;
     BigImages: TImageList;
     KillSEA: TAction;
+    OptionsTPM: TMenuItem;
+    NewmessageTPM: TMenuItem;
+    AWAY1: TMenuItem;
+    N20: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -308,6 +312,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure CheckSelectedExecute(Sender: TObject);
     procedure N16Click(Sender: TObject);
     procedure DebugActionExecute(Sender: TObject);
+    procedure OptionsTPMClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -1736,14 +1741,23 @@ end;
 
 procedure TMainForm.CoolTrayIconClick(Sender: TObject);
 begin
-  CoolTrayIcon.ShowMainForm;
-  if MessagesListView.Items.Count>0 then
-    MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
-  if(MessagesListView.Items.Count=1)then
-      begin
-        MessagesListView.ItemIndex:=0;
-        CoolTrayIcon.IconIndex:=5;
-      end;
+  if not(MainForm.Visible) then
+    begin
+      CoolTrayIcon.ShowMainForm;
+
+      if MessagesListView.Items.Count>0 then
+        MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
+
+      if(MessagesListView.Items.Count=1)then
+        begin
+          MessagesListView.ItemIndex:=0;
+          CoolTrayIcon.IconIndex:=5;
+        end;
+    end
+  else
+    begin
+      Application.Minimize;
+    end;
 end;
              
 //-----------------------------------------------------------------
@@ -2585,15 +2599,22 @@ procedure TMainForm.GoToFromAwayExecute(Sender: TObject);
 var
   s: string;
 begin
-     if AwayTB.Down then
-      begin
-         s := #0#0#1#11;
-         ClientSocket1.Socket.SendBuf(s[1],length(s));
-      end
-  else
+
+     if SpeekerSettings.AwayStatus then
       begin
          s := #0#0#1#12;
          ClientSocket1.Socket.SendBuf(s[1],length(s));
+         AwayTB.Down := false;
+         AWAY1.Checked := false;
+         SpeekerSettings.AwayStatus := false;
+      end
+  else
+      begin
+         s := #0#0#1#11;
+         ClientSocket1.Socket.SendBuf(s[1],length(s));
+         AwayTB.Down := true;
+         AWAY1.Checked := true;
+         SpeekerSettings.AwayStatus := true;
       end;
 end;
 
@@ -2943,6 +2964,11 @@ begin
     DebugForm.Close
   else
     DebugForm.Show;
+end;
+
+procedure TMainForm.OptionsTPMClick(Sender: TObject);
+begin
+  OptionsForm.Show;
 end;
 
 end.

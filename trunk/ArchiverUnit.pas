@@ -46,6 +46,8 @@ type
       Users:       integer;
       ownID:       integer;
 
+      TCPUserlistNotReceived: Boolean;
+
 // LastMessage
       Privat:      integer;
       Printer:     integer;
@@ -884,6 +886,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('UserlistLen', IntToStr(ClientProperties.UserlistLen));
   ClientProperties.AddUserQuery := ClientProperties.UserlistLen;
+  ClientProperties.TCPUserlistNotReceived := True;
   InBufer.isReadyForProc:=false;
 
   InBufer.CurrentOperation:=1;
@@ -1003,12 +1006,15 @@ begin
         end
       else
         begin
+          if(ClientProperties.TCPUserlistNotReceived)then
+            begin
+              SetLength(TCPUsrs, 2);
+              ClientSocket1.Socket.ReceiveBuf(TCPUsrs[1], 2);
+              ClientProperties.TCPUserlistNotReceived := False;
+            end;
 
-            SetLength(TCPUsrs, 2);
-            ClientSocket1.Socket.ReceiveBuf(TCPUsrs[1], 2);
             InBufer.CurrentOperation := 9;
             InBufer.HowmanyNeedRec   := 1;
-
         end;
    InBufer.SetNextLength;
 end;

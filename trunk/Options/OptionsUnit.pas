@@ -88,6 +88,25 @@ uses ArchiverUnit;
 
 {$R *.dfm}
 
+function ValidateUName(UName: String): Boolean;
+Const
+  A=['a'..'z','A'..'Z','а'..'п','ё','Ё','р'..'я','А'..'Я'];
+var
+  i: Integer;
+  isvalid: Boolean;
+begin
+  isvalid := true;
+  for i:=1 to length(UName) do  {Проверка ввода строки на недопустимые символы}
+   begin
+     if not(UName[i] in A) then
+      begin
+       isvalid := false;
+       exit;
+      end;
+   end;
+   result := isvalid;
+end;
+
 procedure TOptionsForm.Button2Click(Sender: TObject);
 begin
   Close;
@@ -169,7 +188,8 @@ var
   j: integer;
 begin
 // Save to variables
-
+if ValidateUName(LabeledEdit7.Text) then
+begin
   // Start minimized
   MainForm.SpeekerSettings.OptStartmin  := StartMinChkBox.Checked;
   // Start program when Windows starts
@@ -215,9 +235,9 @@ begin
 
   // Send Info to Server (It's no cool do all this action without diff check)
   room:=OptionsForm.RoomCmbBox.Items[StrToInt(MainForm.SpeekerSettings.Room)];
-  info:=MainForm.ClientProperties.Version+#13#10+MainForm.SpeekerSettings.Info;
+  info:=MainForm.SpeekerSettings.Info;
   ns:= Char(Length(info))+info;
-  ns:= room+ns+#98;//Версия
+  ns:= room+ns+#100;//Версия
   if(MainForm.SpeekerSettings.Faculty)then
     ns:= #4+#1+ns
   else
@@ -250,6 +270,9 @@ begin
     sIniFile.WriteBool( 'Options', 'EnableSounds',  SoundsEnableChkBox.Checked);
 
     sIniFile.Free;
+end
+else
+   ShowMessage('Новое имя содержит недопустимые символы!');
 end;
 
 procedure TOptionsForm.Button3Click(Sender: TObject);
@@ -260,7 +283,7 @@ end;
 procedure TOptionsForm.Button1Click(Sender: TObject);
 begin
     SaveOptions.Execute;
-    Close;
+    if ValidateUName(LabeledEdit7.Text) then Close;
 end;
 
 procedure TOptionsForm.SpeedButton4Click(Sender: TObject);
@@ -306,12 +329,17 @@ var
   sIniFile: TIniFile;
   toSend: string;
 begin
-  sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
-  sIniFile.WriteString( 'User', 'UserName', LabeledEdit7.Text);
-  sIniFile.Free;
-  toSend := #14 + Char(Length(LabeledEdit7.Text))+LabeledEdit7.Text;
-  toSend := #0+Char(Length(toSend) div 256)+Char(Length(toSend) mod 256)+toSend;
-  MainForm.ClientSocket1.Socket.SendBuf(toSend[1], Length(toSend));
+  if ValidateUName(LabeledEdit7.Text) then
+    begin
+      sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
+      sIniFile.WriteString( 'User', 'UserName', LabeledEdit7.Text);
+      sIniFile.Free;
+      toSend := #14 + Char(Length(LabeledEdit7.Text))+LabeledEdit7.Text;
+      toSend := #0+Char(Length(toSend) div 256)+Char(Length(toSend) mod 256)+toSend;
+      MainForm.ClientSocket1.Socket.SendBuf(toSend[1], Length(toSend));
+    end
+  else
+    ShowMessage('Новое имя содержит недопустимые символы!');
 end;
 
 procedure TOptionsForm.FormCreate(Sender: TObject);

@@ -1,5 +1,5 @@
 object MainForm: TMainForm
-  Left = 403
+  Left = 387
   Top = 267
   Width = 658
   Height = 572
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TsStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -179,7 +179,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
@@ -187,7 +187,7 @@ object MainForm: TMainForm
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -198,7 +198,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
       BoundLabel.Font.Color = clWindowText
@@ -246,14 +246,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TsLabel
         Left = 326
         Top = 8
@@ -331,7 +331,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TsPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom
@@ -538,28 +538,28 @@ object MainForm: TMainForm
       Caption = 'To Last Message'
       ImageIndex = 6
       SecondaryShortCuts.Strings = (
-        'ctrl+PgDwn')
+        'Alt+Right')
       OnExecute = JumpToLastExecute
     end
     object JumpUp: TAction
       Caption = #1053#1072' 1 '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '#1042#1087#1077#1088#1105#1076
       ImageIndex = 5
       SecondaryShortCuts.Strings = (
-        'Alt+right')
+        'ctrl+right')
       OnExecute = JumpUpExecute
     end
     object JumpDown: TAction
       Caption = #1053#1072' 1 '#1057#1086#1086#1073#1097#1077#1085#1080#1077' '#1053#1072#1079#1072#1076
       ImageIndex = 4
       SecondaryShortCuts.Strings = (
-        'Alt+left')
+        'ctrl+left')
       OnExecute = JumpDownExecute
     end
     object JumpToFirst: TAction
       Caption = 'To First Message'
       ImageIndex = 3
       SecondaryShortCuts.Strings = (
-        'ctrl+PgUp')
+        'Alt+Left')
       OnExecute = JumpToFirstExecute
     end
     object WriteNewMessage: TAction
@@ -4563,6 +4563,7 @@ object MainForm: TMainForm
       end
       object N1MessageBackward1: TMenuItem
         Action = JumpDown
+        AutoHotkeys = maAutomatic
         Bitmap.Data = {
           36030000424D3603000000000000360000002800000010000000100000000100
           1800000000000003000000000000000000000000000000000000BEBEBEBEBEBE
@@ -4591,6 +4592,7 @@ object MainForm: TMainForm
           C5BEBDBDBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBDBDC0C3C2BDC6C5BA
           BFBFB8BBBBBAC1C0BDC6C5C0C1C1BEBDBDBEBEBEBEBEBEBEBEBE}
         Caption = #1053#1072' '#1054#1076#1085#1086' '#1053#1072#1079#1072#1076
+        ShortCut = 16421
       end
       object N1MessageForward1: TMenuItem
         Action = JumpUp
@@ -4622,6 +4624,7 @@ object MainForm: TMainForm
           C5BFBDBDBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBEBFBDBDBFC4C4BBC4C4B7
           B8B8B6B2B3B7B9BABCC5C4BFC3C3BEBDBDBEBEBEBEBEBEBEBEBE}
         Caption = #1053#1072' '#1054#1076#1085#1086' '#1042#1087#1077#1088#1105#1076
+        ShortCut = 16423
       end
       object N15: TMenuItem
         Caption = '-'

@@ -1613,9 +1613,9 @@ begin
   {HueMoe}
   Socket.SendBuf(s[1],length(s));
   room:=OptionsForm.RoomCmbBox.Items[StrToInt(SpeekerSettings.Room)];
-  info:=ClientProperties.Version+#13#10+SpeekerSettings.Info;
+  info:=SpeekerSettings.Info;
   ns:= Char(Length(info))+info;
-  ns:= room+ns+#98;//Версия
+  ns:= room+ns+#100;//Версия
   if(SpeekerSettings.Faculty)then
     ns:= #4+#1+ns
   else
@@ -1900,10 +1900,10 @@ begin
       Caption := Caption + ' '+TimeToStr(Time)+' '+DateToStr(Date)+' [DEBUG MODE]';
   // Set Hints --------------
 
-  FirsmesToolButton.Hint   := FirsmesToolButton.Hint+' (Ctrl+PgUp)';
-  BackToolButton.Hint      := BackToolButton.Hint+' (Alt+<-)';
-  ForwardToolButton.Hint   := ForwardToolButton.Hint+' (Alt+->)';
-  LastmesToolButton.Hint   := LastmesToolButton.Hint+' (Ctrl+PgDwn)';
+  FirsmesToolButton.Hint   := FirsmesToolButton.Hint+' (Alt + <-)';
+  BackToolButton.Hint      := BackToolButton.Hint+' (Ctrl + <-)';
+  ForwardToolButton.Hint   := ForwardToolButton.Hint+' (Ctrl + ->)';
+  LastmesToolButton.Hint   := LastmesToolButton.Hint+' (Alt + ->)';
 
   //-------------------------
 

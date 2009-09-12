@@ -24,7 +24,7 @@ object OptionsForm: TOptionsForm
     Top = 1
     Width = 425
     Height = 329
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     TabOrder = 0
     SkinData.SkinSection = 'PAGECONTROL'
     object TabSheet1: TsTabSheet
@@ -3647,7 +3647,7 @@ object OptionsForm: TOptionsForm
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        MaxLength = 114
+        MaxLength = 255
         ParentFont = False
         TabOrder = 3
         BoundLabel.Indent = 0

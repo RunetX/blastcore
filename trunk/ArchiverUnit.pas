@@ -1683,6 +1683,8 @@ begin
     else
         PanelState:=false;
 
+    if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
+        CreateDir(MainForm.SpeekerSettings.UserAppdataDir);
     sIniFile := TIniFile.Create(SpeekerSettings.UserAppdataDir + '\Settings.ini');
 
     sIniFile.WriteBool('Programm', 'ShowPanel', PanelState);

@@ -24,7 +24,7 @@ object OptionsForm: TOptionsForm
     Top = 1
     Width = 425
     Height = 329
-    ActivePage = TabSheet1
+    ActivePage = TabSheet2
     TabOrder = 0
     SkinData.SkinSection = 'PAGECONTROL'
     object TabSheet1: TsTabSheet
@@ -3691,6 +3691,7 @@ object OptionsForm: TOptionsForm
         BoundLabel.MaxWidth = 0
         BoundLabel.UseSkinColor = True
         SkinData.SkinSection = 'COMBOBOX'
+        Style = csDropDownList
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -3698,10 +3699,10 @@ object OptionsForm: TOptionsForm
         Font.Style = []
         ItemHeight = 13
         ItemIndex = -1
+        MaxLength = 5
         ParentFont = False
         Sorted = True
         TabOrder = 5
-        Text = 'RoomCmbBox'
       end
     end
   end

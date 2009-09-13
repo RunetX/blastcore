@@ -47,7 +47,6 @@ type
     SpeedButton9: TsSpeedButton;
     ActionList1: TActionList;
     SaveOptions: TAction;
-    Button5: TsButton;
     Label3: TsLabel;
     LabeledEdit8: TsEdit;
     Label4: TsLabel;
@@ -70,7 +69,6 @@ type
     procedure SpeedButton4Click(Sender: TObject);
     procedure SpeedButton5Click(Sender: TObject);
     procedure SpeedButton6Click(Sender: TObject);
-    procedure Button5Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -269,7 +267,23 @@ begin
     sIniFile.WriteBool( 'Options', 'MinimizeWhenDelast',  MinSTChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'EnableSounds',  SoundsEnableChkBox.Checked);
 
+    sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
+    sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);
+
     sIniFile.Free;
+
+    if(MainForm.SpeekerSettings.MainServerIP <> LabeledEdit1.Text) or
+    (MainForm.SpeekerSettings.AltServerIP  <> LabeledEdit2.Text) then
+    begin
+      if(LabeledEdit1.Text<>LabeledEdit2.Text)then
+        begin
+          MainForm.SpeekerSettings.MainServerIP := LabeledEdit1.Text;
+          MainForm.SpeekerSettings.AltServerIP  := LabeledEdit2.Text;
+          MainForm.Reconnect;
+        end
+      else
+        ShowMessage('Адреса основного и альтернативного сервера должны быть разными!');
+    end;
 end
 else
    ShowMessage('Новое имя содержит недопустимые символы!');
@@ -299,29 +313,6 @@ end;
 procedure TOptionsForm.SpeedButton6Click(Sender: TObject);
 begin
     PlaySound(PChar(LabeledEdit6.Text),0,SND_FILENAME);
-end;
-
-procedure TOptionsForm.Button5Click(Sender: TObject);
-var
-  sIniFile: TIniFile;
-begin
-  // IPs
-  if(LabeledEdit1.Text<>LabeledEdit2.Text)then
-    begin
-      MainForm.SpeekerSettings.MainServerIP := LabeledEdit1.Text;
-      MainForm.SpeekerSettings.AltServerIP  := LabeledEdit2.Text;
-
-      if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
-        CreateDir(MainForm.SpeekerSettings.UserAppdataDir);
-
-      sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
-      sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
-      sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);
-      sIniFile.Free;
-      MainForm.Reconnect;
-    end
-  else
-    ShowMessage('Адреса основного и альтернативного сервера должны быть разными!');
 end;
 
 procedure TOptionsForm.Button4Click(Sender: TObject);

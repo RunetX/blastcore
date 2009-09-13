@@ -1,6 +1,6 @@
 object OptionsForm: TOptionsForm
-  Left = 390
-  Top = 272
+  Left = 269
+  Top = 258
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -24,7 +24,7 @@ object OptionsForm: TOptionsForm
     Top = 1
     Width = 425
     Height = 329
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     TabOrder = 0
     SkinData.SkinSection = 'PAGECONTROL'
     object TabSheet1: TsTabSheet
@@ -296,8 +296,8 @@ object OptionsForm: TOptionsForm
         SkinData.SkinSection = 'GROUPBOX'
         object Label3: TsLabel
           Left = 16
-          Top = 56
-          Width = 89
+          Top = 72
+          Width = 97
           Height = 25
           Alignment = taCenter
           AutoSize = False
@@ -312,7 +312,7 @@ object OptionsForm: TOptionsForm
         end
         object LabeledEdit1: TLabeledEdit
           Left = 16
-          Top = 32
+          Top = 40
           Width = 97
           Height = 21
           EditLabel.Width = 89
@@ -320,19 +320,9 @@ object OptionsForm: TOptionsForm
           EditLabel.Caption = #1054#1089#1085#1086#1074#1085#1086#1081' '#1089#1077#1088#1074#1077#1088
           TabOrder = 0
         end
-        object Button5: TsButton
-          Left = 16
-          Top = 112
-          Width = 97
-          Height = 25
-          Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-          TabOrder = 1
-          OnClick = Button5Click
-          SkinData.SkinSection = 'BUTTON'
-        end
         object LabeledEdit2: TsEdit
           Left = 16
-          Top = 88
+          Top = 104
           Width = 97
           Height = 21
           Font.Charset = DEFAULT_CHARSET
@@ -341,7 +331,7 @@ object OptionsForm: TOptionsForm
           Font.Name = 'MS Sans Serif'
           Font.Style = []
           ParentFont = False
-          TabOrder = 2
+          TabOrder = 1
           SkinData.SkinSection = 'EDIT'
           BoundLabel.Indent = 0
           BoundLabel.Font.Charset = DEFAULT_CHARSET

@@ -88,21 +88,20 @@ uses ArchiverUnit;
 
 function ValidateUName(UName: String): Boolean;
 Const
-  A=['a'..'z','A'..'Z','а'..'п','ё','Ё','р'..'я','А'..'Я'];
+  A = ['a'..'z','A'..'Z','0'..'9','а'..'п','ё','Ё','р'..'я','А'..'Я'];
+  B = A + ['!'..'~',chr(128)..chr(255)] - ['<','>','[','\',']'];
 var
   i: Integer;
-  isvalid: Boolean;
 begin
-  isvalid := true;
-  for i:=1 to length(UName) do  {Проверка ввода строки на недопустимые символы}
+  result := (length(UName) > 0) and (UName[1] in A);
+  for i:=2 to length(UName) do  {Проверка ввода строки на недопустимые символы}
    begin
-     if not(UName[i] in A) then
+     if not (UName[i] in B) then
       begin
-       isvalid := false;
+       result := false;
        exit;
       end;
    end;
-   result := isvalid;
 end;
 
 procedure TOptionsForm.Button2Click(Sender: TObject);

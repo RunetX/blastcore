@@ -3,15 +3,88 @@ unit ArchiverUnit;
 interface
 
 uses
-  Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus, IdHTTP, 
-  shellapi, ToolWin, ImgList, IniFiles, IdBaseComponent, IdComponent, 
-  IdTCPConnection, IdTCPClient, Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages, 
-  Variants, Graphics, ScktComp, ActnList, Sockets, Registry, NewChatUnit, RichEdit, 
+  Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus, 
+  shellapi, ToolWin, ImgList, IniFiles, RichEdit, sListView, 
+  Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages,
+  Variants, Graphics, ScktComp, ActnList, Sockets, Registry,
   MMSystem, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
-  sListView, sSplitter, sPanel, sToolBar, sStatusBar, Winsock;
+  sSplitter, sPanel, sToolBar, sStatusBar, Winsock, NewChatUnit;
 
 const
   UM_MYMESSSAGE = WM_USER+1;
+
+// Server to client commands
+  S2C_USERLIST 		      = 1;
+	S2C_ADDUSER			      = 2;
+	S2C_DELETEUSER		    = 3;
+	S2C_MESSAGE			      = 4;
+	S2C_PONG			        = 5;
+	S2C_USERINFO		      = 6;
+	S2C_CHATOK			      = 7;
+	S2C_CHATCANCEL		    = 8;
+	S2C_ARCHIVELINK		    = 9;
+	S2C_USERMUTEYOU		    = 10;
+	S2C_TOAWAY			      = 11;
+	S2C_FROMAWAY		      = 12;
+	S2C_CHANGEALTSERVERIP = 13;
+	S2C_CHANGEUSERNAME	  = 14;
+
+// Client to server commands
+	C2S_USERCOMP		      = #1;
+	C2S_MESSAGE			      = #2;
+	C2S_PING			        = #3;
+	C2S_USERINFO		      = #4;
+	C2S_GIVEMEUSERINFO	  = #5;
+	C2S_CHATOK			      = #7;
+	C2S_CHATCANCEL		    = #8;
+	C2S_GIVEMEARCHIVELINK = #9;
+	C2S_IMUTEYOU		      = #10;
+	C2S_TOAWAY			      = #11;
+	C2S_FROMAWAY		      = #12;
+	C2S_ICHANGENAME		    = #14;
+	C2S_TOPRINTERS		    =	#15;
+	C2S_FROMPRINTERS	    = #16;
+
+// SEA lengths
+	L_SEACOMMAND  = 1;
+	L_SEAID		    = 2;
+	L_SEASHORT	  = 1;
+	L_SEALONG	    = 2;
+	L_ULIST		    = 2;
+	L_ISPRIVATE	  = 1;
+	L_ISPRINTER	  = 2;
+	L_FACULTY	    = 1;
+	L_ROOM		    = 5;
+	L_SEAVERSION  = 1;
+	L_SEACHATBEEP = 8;
+	L_ALTSERVERIP = 4;
+
+// BlastCore states
+  BC_STATE_RECONNECT      = -1;
+  BC_STATE_GETID          = 1;
+	BC_STATE_GETIPLEN       = 2;
+	BC_STATE_GETIP          = 3;
+	BC_STATE_GETLISTLEN     = 4;
+	BC_STATE_GETUSERNAMELEN = 5;
+	BC_STATE_GETUSERNAMEMY  = 6;
+	BC_STATE_GETCOMPNAMELEN = 7;
+	BC_STATE_GETCOMPNAME    = 8;
+	BC_STATE_GETSEACOMMAND  = 9;
+	BC_STATE_GETPRIVATE     = 10;
+	BC_STATE_GETPRINTER     = 11;
+	BC_STATE_GETMESLEN      = 12;
+	BC_STATE_GETMESSAGE     = 13;
+	BC_STATE_GETZERO        = 14;
+	BC_STATE_GETFACULTY     = 15;
+	BC_STATE_GETROOM        = 16;
+	BC_STATE_GETVERSION     = 17;
+	BC_STATE_GETINFOLEN     = 18;
+	BC_STATE_GETINFO        = 19;
+	BC_STATE_GETCHATMESLEN  = 20;
+	BC_STATE_GETCHATMESSAGE = 21;
+	BC_STATE_GETNEWALTIP    = 22;
+	BC_STATE_GETLINKLENGTH  = 23;
+	BC_STATE_GETLINK        = 24;
 
 type
 
@@ -475,7 +548,7 @@ var
 begin
   // TInBufer
   InBufer.HowmanyNeedRec   := 1;
-  InBufer.CurrentOperation := 9;
+  InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
   InBufer.LastSEACommand   := -1;
   InBufer.isReadyForProc := false;
   InBufer.SetNextLength;
@@ -607,9 +680,9 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('AlienID', IntToStr(ClientProperties.AlienID));
 
-   if(InBufer.LastSEACommand=1)then
+   if(InBufer.LastSEACommand = S2C_USERLIST)then
   begin
-      InBufer.CurrentOperation:=2;
+      InBufer.CurrentOperation := BC_STATE_GETIPLEN;
       InBufer.HowmanyNeedRec := 1;
       InBufer.SetNextLength;
 
@@ -631,29 +704,29 @@ begin
        ClientProperties.ownID:=ClientProperties.AlienID;
 
   end
-  else if(InBufer.LastSEACommand=2)then
+  else if(InBufer.LastSEACommand = S2C_ADDUSER)then
   begin
-            InBufer.CurrentOperation := 5;
+            InBufer.CurrentOperation := BC_STATE_GETUSERNAMELEN;
             InBufer.HowmanyNeedRec := 1;
             InBufer.SetNextLength;
   end
-  else if(InBufer.LastSEACommand=3)then
+  else if(InBufer.LastSEACommand = S2C_DELETEUSER)then
   begin
       DelUserByID;
   end
-  else if(InBufer.LastSEACommand=4)then
+  else if(InBufer.LastSEACommand = S2C_MESSAGE)then
   begin                         
-      InBufer.CurrentOperation:=10;
+      InBufer.CurrentOperation := BC_STATE_GETPRIVATE;
       InBufer.HowmanyNeedRec := 1;
       InBufer.SetNextLength;
   end
-  else if(InBufer.LastSEACommand=7)then
+  else if(InBufer.LastSEACommand = S2C_CHATOK)then
       begin
-         InBufer.CurrentOperation:=20;
+         InBufer.CurrentOperation := BC_STATE_GETCHATMESLEN;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
-  else if(InBufer.LastSEACommand=8)then
+  else if(InBufer.LastSEACommand = S2C_CHATCANCEL)then
       begin
          tmpIndex := GetIndexByID(ClientProperties.AlienID);
          if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
@@ -703,11 +776,11 @@ else if(TryChatForm.Visible)then
               ClientSocket1.Socket.Close;
               ShowMessage('Com11: Индекс вышел за границы!');
             end;
-         InBufer.CurrentOperation:=9;
+         InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
-  else if(InBufer.LastSEACommand=10)then
+  else if(InBufer.LastSEACommand = S2C_USERMUTEYOU)then
       begin
          tmpIndex := GetIndexByID(ClientProperties.AlienID);
          if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
@@ -740,11 +813,11 @@ else if(TryChatForm.Visible)then
               ShowMessage('Com10: Индекс вышел за границы!');
             end;
 
-         InBufer.CurrentOperation:=9;
+         InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
-  else if(InBufer.LastSEACommand=11)then
+  else if(InBufer.LastSEACommand = S2C_TOAWAY)then
       begin
          tmpIndex := GetIndexByID(ClientProperties.AlienID);
          if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
@@ -758,11 +831,11 @@ else if(TryChatForm.Visible)then
             ShowMessage('Com11: Индекс вышел за границы!');
           end;
 
-         InBufer.CurrentOperation:=9;
+         InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
-  else  if(InBufer.LastSEACommand=12)then
+  else  if(InBufer.LastSEACommand = S2C_FROMAWAY)then
       begin
          tmpIndex := GetIndexByID(ClientProperties.AlienID);
          if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
@@ -776,19 +849,19 @@ else if(TryChatForm.Visible)then
             ShowMessage('Com12: Индекс вышел за границы!');
           end;
 
-         InBufer.CurrentOperation:=9;
+         InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
-  else if(InBufer.LastSEACommand=13)then
+  else if(InBufer.LastSEACommand = S2C_CHANGEALTSERVERIP)then
       begin
-        InBufer.CurrentOperation:=22;
+        InBufer.CurrentOperation := BC_STATE_GETNEWALTIP;
         InBufer.HowmanyNeedRec := 4;
         InBufer.SetNextLength;
       end
-  else if(InBufer.LastSEACommand=14)then
+  else if(InBufer.LastSEACommand = S2C_CHANGEUSERNAME)then
   begin
-      InBufer.CurrentOperation:=5;
+      InBufer.CurrentOperation := BC_STATE_GETUSERNAMELEN;
       InBufer.HowmanyNeedRec := 1;
       InBufer.SetNextLength;
   end
@@ -814,7 +887,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('ClientIPLen', IntToStr(ClientProperties.ClientIPLen));
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation:=3;
+  InBufer.CurrentOperation := BC_STATE_GETIP;
   InBufer.HowmanyNeedRec := ClientProperties.ClientIPLen;
   InBufer.SetNextLength;
 end;
@@ -826,7 +899,7 @@ var
 //  tmpListItem: TListItem;
 begin
   InBufer.isReadyForProc:=false;
-  if(InBufer.LastSEACommand=6)then
+  if(InBufer.LastSEACommand = S2C_USERINFO)then
     {if(GroupInfoForm.Visible)then
       begin
         with GroupInfoForm.GrInfoListView do          //TListView
@@ -853,7 +926,7 @@ begin
           AlienInfo.IPAddress := InBufer.Bufer;
           if SpeekerSettings.Debug then
             LogVariable('IPAddress', AlienInfo.IPAddress);
-          InBufer.CurrentOperation:=9;
+          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
           InBufer.HowmanyNeedRec := 1;
           InBufer.SetNextLength;
 
@@ -878,7 +951,7 @@ begin
           if SpeekerSettings.Debug then
             LogVariable('ClientIP', ClientProperties.ClientIP);
           StatusBar1.Panels[2].Text := 'Ваш IP-адрес: '+ClientProperties.ClientIP;
-          InBufer.CurrentOperation:=4;
+          InBufer.CurrentOperation := BC_STATE_GETLISTLEN;
           InBufer.HowmanyNeedRec := 2;
           InBufer.SetNextLength;
       end;
@@ -894,7 +967,7 @@ begin
   ClientProperties.TCPUserlistNotReceived := True;
   InBufer.isReadyForProc:=false;
 
-  InBufer.CurrentOperation:=1;
+  InBufer.CurrentOperation := BC_STATE_GETID;
   InBufer.LastSEACommand := 2;
   InBufer.HowmanyNeedRec := 2;
   InBufer.SetNextLength;
@@ -907,7 +980,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('UsernameLen', IntToStr(ClientProperties.UsernameLen));
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation:=6;
+  InBufer.CurrentOperation := BC_STATE_GETUSERNAMEMY;
   InBufer.HowmanyNeedRec := ClientProperties.UsernameLen;
   InBufer.SetNextLength;
 end;
@@ -942,15 +1015,15 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('Username', ClientProperties.Username);
   InBufer.isReadyForProc:=false;
-  if(InBufer.LastSEACommand=14)then
+  if(InBufer.LastSEACommand = S2C_CHANGEUSERNAME)then
       begin
           tmpIndex := GetIndexByID(ClientProperties.AlienID);
           UserList.Items[tmpIndex].Caption:=ClientProperties.Username;
-          InBufer.CurrentOperation:=9;
+          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
       end
   else
       begin
-          InBufer.CurrentOperation:=7;
+          InBufer.CurrentOperation := BC_STATE_GETCOMPNAMELEN;
       end;
 
   InBufer.HowmanyNeedRec := 1;
@@ -964,7 +1037,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('CompnameLen', IntToStr(ClientProperties.CompnameLen));
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation:=8;
+  InBufer.CurrentOperation := BC_STATE_GETCOMPNAME;
   InBufer.HowmanyNeedRec := ClientProperties.CompnameLen;
   InBufer.SetNextLength;
 end;
@@ -1006,7 +1079,7 @@ begin
 
   if(ClientProperties.AddUserQuery>0)then
         begin
-            InBufer.CurrentOperation := 1;
+            InBufer.CurrentOperation := BC_STATE_GETID;
             InBufer.HowmanyNeedRec   := 2;
         end
       else
@@ -1018,7 +1091,7 @@ begin
               ClientProperties.TCPUserlistNotReceived := False;
             end;
 
-            InBufer.CurrentOperation := 9;
+            InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
             InBufer.HowmanyNeedRec   := 1;
         end;
    InBufer.SetNextLength;
@@ -1052,7 +1125,7 @@ begin
              UserList.Items[i].Selected:=true
          else
              UserList.Items[i-1].Selected:=true; }
-         InBufer.CurrentOperation:=9;
+         InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
          InBufer.SetNextLength;
       end
@@ -1060,7 +1133,7 @@ begin
       begin //Reconnect;
         ClientSocket1.Socket.Close;
         //ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
-        InBufer.CurrentOperation:=-1;
+        InBufer.CurrentOperation := BC_STATE_RECONNECT;
         InBufer.HowmanyNeedRec := 1;
         InBufer.SetNextLength;
       end;
@@ -1076,20 +1149,13 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('LastSEACommand', IntToStr(InBufer.LastSEACommand));
   InBufer.isReadyForProc := false;
-  if((InBufer.LastSEACommand<>5)and
-     (InBufer.LastSEACommand<>6)and
-     (InBufer.LastSEACommand<>9)and
-     (InBufer.LastSEACommand<>13))then
-      begin
-          InBufer.CurrentOperation:=1;
-          InBufer.HowmanyNeedRec := 2;
-      end
-  else if(InBufer.LastSEACommand=6)then
+
+  if(InBufer.LastSEACommand = S2C_USERINFO)then
           begin
-            InBufer.CurrentOperation:=15;
+            InBufer.CurrentOperation := BC_STATE_GETFACULTY;
             InBufer.HowmanyNeedRec := 1;
           end
-  else if(InBufer.LastSEACommand=5)then
+  else if(InBufer.LastSEACommand = S2C_PONG)then
           begin
             // Как я рад, что оно тут было :)
             if SpeekerSettings.Debug then
@@ -1097,18 +1163,23 @@ begin
             noPong := False;
             Pilingator.Enabled := False;
             Pilingator.Enabled := True;
-            InBufer.CurrentOperation := 9;
+            InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
             InBufer.HowmanyNeedRec   := 1;
           end
-  else if(InBufer.LastSEACommand=9)then
+  else if(InBufer.LastSEACommand = S2C_ARCHIVELINK)then
           begin
-            InBufer.CurrentOperation := 23;
+            InBufer.CurrentOperation := BC_STATE_GETLINKLENGTH;
             InBufer.HowmanyNeedRec   := 1;
           end
-  else if(InBufer.LastSEACommand=13)then
+  else if(InBufer.LastSEACommand = S2C_CHANGEALTSERVERIP)then
           begin
-            InBufer.CurrentOperation:=22;
+            InBufer.CurrentOperation := BC_STATE_GETNEWALTIP;
             InBufer.HowmanyNeedRec := 4;
+          end
+  else
+          begin
+            InBufer.CurrentOperation := BC_STATE_GETID;
+            InBufer.HowmanyNeedRec := 2;
           end;
   InBufer.SetNextLength;
 end
@@ -1124,7 +1195,7 @@ begin
   if((ClientProperties.Privat=0)or(ClientProperties.Privat=1))then
     begin
       InBufer.isReadyForProc := false;
-      InBufer.CurrentOperation:=11;
+      InBufer.CurrentOperation := BC_STATE_GETPRINTER;
       InBufer.HowmanyNeedRec := 2;
       InBufer.SetNextLength;
     end
@@ -1142,7 +1213,7 @@ begin
   if((ClientProperties.Printer=0)or(ClientProperties.Printer=1))then
     begin
       InBufer.isReadyForProc := false;
-      InBufer.CurrentOperation:=12;
+      InBufer.CurrentOperation := BC_STATE_GETMESLEN;
       InBufer.HowmanyNeedRec := 2;
       InBufer.SetNextLength;
     end
@@ -1158,7 +1229,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('Meslen', IntToStr(ClientProperties.Meslen));
   InBufer.isReadyForProc := false;
-  InBufer.CurrentOperation:=13;
+  InBufer.CurrentOperation := BC_STATE_GETMESSAGE;
   InBufer.HowmanyNeedRec := ClientProperties.Meslen;
   InBufer.SetNextLength;
 end;
@@ -1190,7 +1261,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('Message', ClientProperties.Messag);
   InBufer.isReadyForProc := false;
-  InBufer.CurrentOperation:=14;
+  InBufer.CurrentOperation := BC_STATE_GETZERO;
   InBufer.HowmanyNeedRec := 1;
   InBufer.SetNextLength;
 
@@ -1308,7 +1379,7 @@ end;
 procedure TMainForm.GetZero(); // 14
 begin
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation:=9;
+  InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
   InBufer.HowmanyNeedRec := 1;
   InBufer.SetNextLength;
 end;
@@ -1322,7 +1393,7 @@ begin
   if((AlienInfo.Faculty=1)or(AlienInfo.Faculty=2))then
     begin
       InBufer.isReadyForProc := false;
-      InBufer.CurrentOperation:=16;
+      InBufer.CurrentOperation := BC_STATE_GETROOM;
       InBufer.HowmanyNeedRec := 5;
       InBufer.SetNextLength;
     end
@@ -1346,7 +1417,7 @@ begin
   end;
 
   InBufer.isReadyForProc := false;
-  InBufer.CurrentOperation:=18;
+  InBufer.CurrentOperation := BC_STATE_GETINFOLEN;
   InBufer.HowmanyNeedRec := 1;
   InBufer.SetNextLength;
 end;
@@ -1362,7 +1433,7 @@ begin
                          chr(48 + (ver mod 100) div 10) + '.' +
                          chr(48 + ver mod 10);
     InBufer.isReadyForProc:=false;
-    InBufer.CurrentOperation:= 2;
+    InBufer.CurrentOperation:= BC_STATE_GETIPLEN;
     InBufer.HowmanyNeedRec  := 1;
     InBufer.SetNextLength;
 end;
@@ -1375,12 +1446,12 @@ begin
   if(ord(InBufer.Bufer[1])=0)then
     begin
       AlienInfo.Info := '';
-      InBufer.CurrentOperation:=17;
+      InBufer.CurrentOperation := BC_STATE_GETVERSION;
       InBufer.HowmanyNeedRec := 1;
     end
   else
     begin
-      InBufer.CurrentOperation:=19;
+      InBufer.CurrentOperation := BC_STATE_GETINFO;
       InBufer.HowmanyNeedRec := ord(InBufer.Bufer[1]);
       if SpeekerSettings.Debug then
           LogVariable('Infolen', IntToStr(InBufer.HowmanyNeedRec));
@@ -1395,7 +1466,7 @@ begin
     if SpeekerSettings.Debug then
           LogVariable('Info', AlienInfo.Info);
     InBufer.isReadyForProc:=false;
-    InBufer.CurrentOperation:=17;
+    InBufer.CurrentOperation := BC_STATE_GETVERSION;
     InBufer.HowmanyNeedRec := 1;
     InBufer.SetNextLength;
 end;
@@ -1452,14 +1523,14 @@ begin
 
             end;
         end;
-      InBufer.CurrentOperation:=9;
+      InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
       InBufer.HowmanyNeedRec := 1;    
     end
   else
     begin
       if(ChatListView.Items.Count>0)then
         begin
-          InBufer.CurrentOperation:=21;
+          InBufer.CurrentOperation := BC_STATE_GETCHATMESSAGE;
           InBufer.HowmanyNeedRec := ord(InBufer.Bufer[1]);
         end
       else
@@ -1495,7 +1566,7 @@ begin
     BChatMemo.Lines.Add('['+TimeToStr(Time)+']['+
     ChatListView.Items[i].SubItems[1]+'] '+InBufer.Bufer);
     InBufer.isReadyForProc:=false;
-    InBufer.CurrentOperation:=9;
+    InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
     InBufer.HowmanyNeedRec := 1;
     InBufer.SetNextLength;
 end;
@@ -1522,7 +1593,7 @@ begin
     else
       ShowMessage('Адреса основного и альтернативного сервера должны быть разными!');
     InBufer.isReadyForProc:=false;
-    InBufer.CurrentOperation:=9;
+    InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
     InBufer.HowmanyNeedRec := 1;
     InBufer.SetNextLength;
 end;
@@ -1531,7 +1602,7 @@ end;
 procedure TMainForm.GetLinkLength();  // 23
 begin
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation := 24;
+  InBufer.CurrentOperation := BC_STATE_GETLINK;
   InBufer.HowmanyNeedRec   := ord(InBufer.Bufer[1]);
   InBufer.SetNextLength;
 end;
@@ -1544,7 +1615,7 @@ begin
   ShellExecute(wnd, 'open', PAnsiChar(InBufer.Bufer),
   NIL, NIL, SW_SHOWMAXIMIZED);
   InBufer.isReadyForProc:=false;
-  InBufer.CurrentOperation := 9;
+  InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
   InBufer.HowmanyNeedRec   := 1;
   InBufer.SetNextLength;
 end;

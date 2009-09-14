@@ -731,50 +731,57 @@ begin
          tmpIndex := GetIndexByID(ClientProperties.AlienID);
          if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
             begin
-if(ChatListView.Items.Count>0)then
-  begin
-    for i:=0 to ChatListView.Items.Count-1 do
-      begin
-        Buf1 := ChatListView.Items[i].SubItems[0];
-        if(StrToInt(Buf1)=ClientProperties.AlienID) then
-          begin
-            break;
-          end;
-        end;
-    tmpChatForm[i].Close;
-  end
-else if(ChatYESNOForm.Visible)then
-  begin
-    ChatYESNOForm.Close;
-//---------------------------------------------------------------
-   toBalloonHint:= 'Incoming chat request, you not answer and he hung up...';
-   with MessagesListView do
-    begin
-        tmpListItem := Items.Add;
-        tmpListItem.Caption := IntToStr(ClientProperties.AlienID);
-        tmpListItem.SubItems.Add('1');
-        tmpListItem.SubItems.Add('0');
-        tmpListItem.SubItems.Add('CHR');
-        tmpListItem.SubItems.Add(toBalloonHint);
-        tmpListItem.SubItems.Add(TimeToStr(Time));
-        tmpListItem.SubItems.Add(DateToStr(Date));
-        tmpListItem.SubItems.Add(UserList.Items[tmpIndex].Caption);
-        tmpListItem.SubItems.Add(UserList.Items[tmpIndex].SubItems[0]);
-    end;
-  CoolTrayIcon.ShowBalloonHint(UserList.Items[tmpIndex].Caption+' '+
-  UserList.Items[tmpIndex].SubItems[0], toBalloonHint, bitWarning, 10);
-  MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
-//---------------------------------------------------------------
-  end
-else if(TryChatForm.Visible)then
-  begin
-    TryChatForm.Close;
-  end;
+            // Имеются активные чаты в списке
+              if(ChatListView.Items.Count>0)then
+                begin
+                  for i:=0 to ChatListView.Items.Count-1 do
+                    begin
+                      Buf1 := ChatListView.Items[i].SubItems[0];
+                      if(StrToInt(Buf1)=ClientProperties.AlienID) then
+                        begin
+                          break;
+                        end;
+                    end;
+                    tmpChatForm[i].Close;
+                end
+            // Если список активных чатов пуст,
+            // то проверяем открыт ли диалог "Ответить на чат?"
+              else if(ChatYESNOForm.Visible)then
+                begin
+                  ChatYESNOForm.Close;
+            //---------------------------------------------------------------
+                  toBalloonHint:= 'Incoming chat request, you not answer and he hung up...';
+
+                  with MessagesListView do
+                    begin
+                      tmpListItem := Items.Add;
+                      tmpListItem.Caption := IntToStr(ClientProperties.AlienID);
+                      tmpListItem.SubItems.Add('1');
+                      tmpListItem.SubItems.Add('0');
+                      tmpListItem.SubItems.Add('CHR');
+                      tmpListItem.SubItems.Add(toBalloonHint);
+                      tmpListItem.SubItems.Add(TimeToStr(Time));
+                      tmpListItem.SubItems.Add(DateToStr(Date));
+                      tmpListItem.SubItems.Add(UserList.Items[tmpIndex].Caption);
+                      tmpListItem.SubItems.Add(UserList.Items[tmpIndex].SubItems[0]);
+                    end;
+
+                  CoolTrayIcon.ShowBalloonHint(UserList.Items[tmpIndex].Caption+' '+
+                  UserList.Items[tmpIndex].SubItems[0], toBalloonHint, bitWarning, 10);
+                  MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
+            //---------------------------------------------------------------
+                end
+              else if(TryChatForm.Visible)then
+                begin
+                  TryChatForm.Close;
+                end;
             end
          else
             begin
               ClientSocket1.Socket.Close;
-              ShowMessage('Com11: Индекс вышел за границы!');
+              MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
+                         '] рассинхронизация с сервером!'+#13#10+
+            'Индекс пользователя, отправившего SEA_CHAT_CANCEL, вышел за границы.',mtWarning, [mbOK], 0);
             end;
          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
          InBufer.HowmanyNeedRec := 1;
@@ -810,7 +817,9 @@ else if(TryChatForm.Visible)then
               ClientSocket1.Socket.Close;
               if SpeekerSettings.Debug then
                 LogVariable('LastSEACommand', IntToStr(InBufer.LastSEACommand));
-              ShowMessage('Com10: Индекс вышел за границы!');
+              MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
+                         '] рассинхронизация с сервером!'+#13#10+
+            'Индекс пользователя, который Вас игнорирует, вышел за границы.',mtWarning, [mbOK], 0);
             end;
 
          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
@@ -828,7 +837,9 @@ else if(TryChatForm.Visible)then
          else
           begin
             ClientSocket1.Socket.Close;
-            ShowMessage('Com11: Индекс вышел за границы!');
+            MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
+            '] рассинхронизация с сервером!'+#13#10+
+            'Индекс пользователя, поставившего away, вышел за границы.',mtWarning, [mbOK], 0);
           end;
 
          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
@@ -846,7 +857,9 @@ else if(TryChatForm.Visible)then
          else
           begin
             ClientSocket1.Socket.Close;
-            ShowMessage('Com12: Индекс вышел за границы!');
+            MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
+            '] рассинхронизация с сервером!'+#13#10+
+            'Индекс пользователя, снявшего away, вышел за границы.',mtWarning, [mbOK], 0);
           end;
 
          InBufer.CurrentOperation := BC_STATE_GETSEACOMMAND;
@@ -876,6 +889,9 @@ else if(TryChatForm.Visible)then
       InBufer.SetNextLength;
       }
       ClientSocket1.Socket.Close;
+      MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
+            '] рассинхронизация с сервером!'+#13#10+
+            'Неизвестная SEA-команда.',mtWarning, [mbOK], 0);
   end;
 end;
 
@@ -1795,7 +1811,7 @@ end;
 procedure TMainForm.ShowArchiver1Click(Sender: TObject);
 begin
   CoolTrayIcon.ShowMainForm;
-  if MessagesListView.Items.Count>0 then
+  if MessagesListView.Selected <> nil then
     MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
 
   if(MessagesListView.Items.Count=1)then
@@ -1818,7 +1834,7 @@ begin
     begin
       CoolTrayIcon.ShowMainForm;
 
-      if MessagesListView.Items.Count>0 then
+      if (MessagesListView.Selected <> nil) then
         MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
 
       if(MessagesListView.Items.Count=1)then

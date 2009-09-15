@@ -165,12 +165,14 @@ object MainForm: TMainForm
     object AwayTB: TToolButton
       Left = 422
       Top = 0
+      Hint = #1057#1084#1077#1085#1080#1090#1100' '#1089#1090#1072#1090#1091#1089' '#1085#1072' "'#1085#1077' '#1072#1082#1090#1080#1074#1077#1085'"'
       Action = GoToFromAway
       Style = tbsCheck
     end
     object PrinterTB: TToolButton
       Left = 461
       Top = 0
+      Hint = #1042#1086#1081#1090#1080' '#1074' '#1075#1088#1091#1087#1087#1091' "'#1055#1077#1095#1072#1090#1085#1080#1082#1080'"'
       Action = GoToFromPrinter
       Style = tbsCheck
     end
@@ -406,6 +408,7 @@ object MainForm: TMainForm
         TabOrder = 0
         ViewStyle = vsReport
         OnChange = MessagesListViewChange
+        OnClick = MessagesListViewClick
       end
       object ChatListView: TsListView
         Left = 8

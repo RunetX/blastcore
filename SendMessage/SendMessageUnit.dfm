@@ -34,7 +34,7 @@ object SendMessageForm: TSendMessageForm
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
-    MaxLength = 30000
+    MaxLength = 65000
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 0

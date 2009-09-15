@@ -386,6 +386,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure N16Click(Sender: TObject);
     procedure DebugActionExecute(Sender: TObject);
     procedure OptionsTPMClick(Sender: TObject);
+    procedure MessagesListViewClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2226,15 +2227,20 @@ var
 begin
   if MessagesListView.Items.Count<>0 then
   begin
-    i:= MessagesListView.Selected.Index;
-    j:= MessagesListView.Items.Count-1;
-    MessagesListView.Items.Delete(i);
-    //MessagesListView.Items[i].Free;
-    if MessagesListView.Items.Count<>0 then
-        if i=j then
-          MessagesListView.Items[i-1].Selected:=true
-        else
-          MessagesListView.Items[i].Selected:=true;
+    if MessagesListView.Selected <> nil then
+      begin
+        i:= MessagesListView.Selected.Index;
+        j:= MessagesListView.Items.Count-1;
+        MessagesListView.Items.Delete(i);
+
+        if MessagesListView.Items.Count<>0 then
+          if i=j then
+            MessagesListView.Items[i-1].Selected:=true
+          else
+            MessagesListView.Items[i].Selected:=true;
+      end
+    else
+      ShowMessage('Ни одно сообщение не выбрано!');
   end;
   if MessagesListView.Items.Count=0 then
   begin
@@ -2473,11 +2479,13 @@ var
     SendMessageForm: TSendMessageForm;
 begin
   if(UserList.Selected<>nil)then
-  begin
-    SendMessageFlag := 3;
-    SendMessageForm := TSendMessageForm.Create(Self);
-    SendMessageForm.Show;
-  end;
+    begin
+      SendMessageFlag := 3;
+      SendMessageForm := TSendMessageForm.Create(Self);
+      SendMessageForm.Show;
+    end
+  else
+    ShowMessage('Выберите пользователя из списка для отправки нового сообщения!');
 end;
 
 procedure TMainForm.UserListDblClick(Sender: TObject);
@@ -2696,6 +2704,7 @@ begin
          AwayTB.Down := false;
          AWAY1.Checked := false;
          SpeekerSettings.AwayStatus := false;
+         AwayTB.Hint := 'Сменить статус на "не активен"';
       end
   else
       begin
@@ -2704,6 +2713,7 @@ begin
          AwayTB.Down := true;
          AWAY1.Checked := true;
          SpeekerSettings.AwayStatus := true;
+         AwayTB.Hint := 'Сменить статус на "активен"';
       end;
 end;
 
@@ -2715,11 +2725,13 @@ begin
       begin
          s := #0#0#1#15;
          ClientSocket1.Socket.SendBuf(s[1],length(s));
+         PrinterTB.Hint := 'Выйти из группы "Печатники"';
       end
   else
       begin
          s := #0#0#1#16;
          ClientSocket1.Socket.SendBuf(s[1],length(s));
+         PrinterTB.Hint := 'Войти в группу "Печатники"';
       end;
 end;
 
@@ -3036,7 +3048,7 @@ end;
 
 procedure TMainForm.CheckSelectedExecute(Sender: TObject);
 begin
-  if MessagesListView.Items.Count>0 then
+  if MessagesListView.Selected <> nil then
     MessagesListView.Items.Item[MessagesListView.Selected.Index].Checked:=true;
 end;
 
@@ -3058,6 +3070,14 @@ end;
 procedure TMainForm.OptionsTPMClick(Sender: TObject);
 begin
   OptionsForm.Show;
+end;
+
+procedure TMainForm.MessagesListViewClick(Sender: TObject);
+begin
+  if MessagesListView.Selected = nil then
+    begin
+      //MessagesListView.Items[MessagesListView.ItemFocused.Index].Selected:=true;
+    end;
 end;
 
 end.

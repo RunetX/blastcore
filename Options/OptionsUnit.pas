@@ -329,7 +329,7 @@ begin
       MainForm.ClientSocket1.Socket.SendBuf(toSend[1], Length(toSend));
     end
   else
-    ShowMessage('Новое имя содержит недопустимые символы!');
+    ShowMessage('Новое имя содержит недопустимые символы!');  
 end;
 
 procedure TOptionsForm.FormCreate(Sender: TObject);

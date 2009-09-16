@@ -2753,7 +2753,7 @@ end;
 procedure TMainForm.UserListPMPopup(Sender: TObject);
 begin
   if(UserList.Selected<>nil)then
-    if(UserList.Selected.Index>1)then
+    if((UserList.Selected.SubItems[1]<>'0')and(UserList.Selected.SubItems[1]<>'65535'))then
     begin
       if ClientProperties.ownID<>StrToInt(UserList.Selected.SubItems[1]) then
         Chat.Enabled:=true
@@ -2768,7 +2768,7 @@ begin
     else
     begin
       Chat.Enabled:=false;
-      //NewMessagePMU.Enabled:=false;
+      NewMessagePMU.Enabled:=true;
       MutePMU.Enabled:=false;
       UInfoPMU.Enabled:=false;
     end
@@ -2946,8 +2946,94 @@ end;
 // Enable\Disable ToolButtons when receive or delete messages
 procedure TMainForm.EnDisButtonsExecute(Sender: TObject);
 begin
-  if MessagesListView.Items.Count=0 then
+  if MessagesListView.Selected <> nil then
     begin
+      if MessagesListView.Items.Count=0 then
+        begin
+          ReplyAuthorTB.Enabled         := false;
+          ReplyGroupTB.Enabled          := false;
+          FirsmesToolButton.Enabled     := false;
+          BackToolButton.Enabled        := false;
+          ForwardToolButton.Enabled     := false;
+          LastmesToolButton.Enabled     := false;
+          DelcurmesToolButton.Enabled   := false;
+          DelchmesToolButton.Enabled    := false;
+          DelallmesToolButton.Enabled   := false;
+
+          WhomImage.Picture := nil;
+        end;
+      if MessagesListView.Items.Count=1 then
+        begin
+          ReplyAuthorTB.Enabled         := true;
+          ReplyGroupTB.Enabled          := true;
+          FirsmesToolButton.Enabled     := false;
+          BackToolButton.Enabled        := false;
+          ForwardToolButton.Enabled     := false;
+          LastmesToolButton.Enabled     := false;
+          DelcurmesToolButton.Enabled   := true;
+          DelchmesToolButton.Enabled    := true;
+          DelallmesToolButton.Enabled   := true;
+        end;
+      if MessagesListView.Items.Count=2 then
+        begin
+          ReplyAuthorTB.Enabled         := true;
+          ReplyGroupTB.Enabled          := true;
+          DelcurmesToolButton.Enabled   := true;
+          DelchmesToolButton.Enabled    := true;
+          DelallmesToolButton.Enabled   := true;
+
+          if MessagesListView.Selected.Index=0 then
+            begin
+              FirsmesToolButton.Enabled     := false;
+              BackToolButton.Enabled        := false;
+              ForwardToolButton.Enabled     := true;
+              LastmesToolButton.Enabled     := true;
+            end
+          else
+            begin
+              FirsmesToolButton.Enabled     := true;
+              BackToolButton.Enabled        := true;
+              ForwardToolButton.Enabled     := false;
+              LastmesToolButton.Enabled     := false;
+            end;
+        end;
+      if MessagesListView.Items.Count>2 then
+        begin
+          ReplyAuthorTB.Enabled         := true;
+          ReplyGroupTB.Enabled          := true;
+          DelcurmesToolButton.Enabled   := true;
+          DelchmesToolButton.Enabled    := true;
+          DelallmesToolButton.Enabled   := true;
+
+          if MessagesListView.Selected.Index=0 then
+            begin
+              FirsmesToolButton.Enabled     := false;
+              BackToolButton.Enabled        := false;
+              ForwardToolButton.Enabled     := true;
+              LastmesToolButton.Enabled     := true;
+            end;
+
+          if MessagesListView.Selected.Index=MessagesListView.Items.Count-1 then
+            begin
+              FirsmesToolButton.Enabled     := true;
+              BackToolButton.Enabled        := true;
+              ForwardToolButton.Enabled     := false;
+              LastmesToolButton.Enabled     := false;
+            end;
+
+          if (MessagesListView.Selected.Index>0) and
+             (MessagesListView.Selected.Index<MessagesListView.Items.Count-1) then
+            begin
+              FirsmesToolButton.Enabled     := true;
+              BackToolButton.Enabled        := true;
+              ForwardToolButton.Enabled     := true;
+              LastmesToolButton.Enabled     := true;
+            end;
+        end;
+    end
+  else
+    begin
+    // if selected = nil
       ReplyAuthorTB.Enabled         := false;
       ReplyGroupTB.Enabled          := false;
       FirsmesToolButton.Enabled     := false;
@@ -2959,62 +3045,6 @@ begin
       DelallmesToolButton.Enabled   := false;
 
       WhomImage.Picture := nil;
-    end;
-  if MessagesListView.Items.Count=1 then
-    begin
-      ReplyAuthorTB.Enabled         := true;
-      ReplyGroupTB.Enabled          := true;
-      FirsmesToolButton.Enabled     := false;
-      BackToolButton.Enabled        := false;
-      ForwardToolButton.Enabled     := false;
-      LastmesToolButton.Enabled     := false;
-      DelcurmesToolButton.Enabled   := true;
-      DelchmesToolButton.Enabled    := true;
-      DelallmesToolButton.Enabled   := true;
-    end;
-  if MessagesListView.Items.Count=2 then
-    begin
-      if MessagesListView.Selected.Index=0 then
-        begin
-          FirsmesToolButton.Enabled     := false;
-          BackToolButton.Enabled        := false;
-          ForwardToolButton.Enabled     := true;
-          LastmesToolButton.Enabled     := true;
-        end
-      else
-        begin
-          FirsmesToolButton.Enabled     := true;
-          BackToolButton.Enabled        := true;
-          ForwardToolButton.Enabled     := false;
-          LastmesToolButton.Enabled     := false;
-        end;
-    end;
-  if MessagesListView.Items.Count>2 then
-    begin
-      if MessagesListView.Selected.Index=0 then
-        begin
-          FirsmesToolButton.Enabled     := false;
-          BackToolButton.Enabled        := false;
-          ForwardToolButton.Enabled     := true;
-          LastmesToolButton.Enabled     := true;
-        end;
-
-      if MessagesListView.Selected.Index=MessagesListView.Items.Count-1 then
-        begin
-          FirsmesToolButton.Enabled     := true;
-          BackToolButton.Enabled        := true;
-          ForwardToolButton.Enabled     := false;
-          LastmesToolButton.Enabled     := false;
-        end;
-
-      if (MessagesListView.Selected.Index>0) and
-         (MessagesListView.Selected.Index<MessagesListView.Items.Count-1) then
-        begin
-          FirsmesToolButton.Enabled     := true;
-          BackToolButton.Enabled        := true;
-          ForwardToolButton.Enabled     := true;
-          LastmesToolButton.Enabled     := true;
-        end;
     end;
 end;
 
@@ -3076,8 +3106,12 @@ procedure TMainForm.MessagesListViewClick(Sender: TObject);
 begin
   if MessagesListView.Selected = nil then
     begin
-      //MessagesListView.Items[MessagesListView.ItemFocused.Index].Selected:=true;
+      MessageMemo.Clear;
+      WhomEdit.Text:='';
+      if MessagesListView.Items.Count > 0 then
+        MesnumberLabel.Caption:='Не выбрано';
     end;
+  EnDisButtons.Execute;
 end;
 
 end.

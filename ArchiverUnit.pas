@@ -2000,7 +2000,7 @@ begin
   //-------------------------
 
   CoolTrayIcon.IconIndex:=3;
-
+  SendMessageFlag := 3;
   ConDiscon.Execute;
 end;
 

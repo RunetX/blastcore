@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TsStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -67,7 +67,10 @@ object MainForm: TMainForm
     object NewMesTB: TToolButton
       Left = 0
       Top = 0
-      Action = WriteNewMessage
+      Hint = #1053#1086#1074#1086#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
+      Caption = #1053#1086#1074#1086#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1077
+      ImageIndex = 0
+      OnClick = NewMesTBClick
     end
     object ToolButton2: TToolButton
       Left = 39
@@ -181,7 +184,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
@@ -189,7 +192,7 @@ object MainForm: TMainForm
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -200,7 +203,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
       BoundLabel.Font.Color = clWindowText
@@ -248,14 +251,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TsLabel
         Left = 326
         Top = 8
@@ -333,7 +336,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TsPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom

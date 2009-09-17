@@ -387,6 +387,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure DebugActionExecute(Sender: TObject);
     procedure OptionsTPMClick(Sender: TObject);
     procedure MessagesListViewClick(Sender: TObject);
+    procedure NewMesTBClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2480,7 +2481,6 @@ var
 begin
   if(UserList.Selected<>nil)then
     begin
-      SendMessageFlag := 3;
       SendMessageForm := TSendMessageForm.Create(Self);
       SendMessageForm.Show;
     end
@@ -2490,6 +2490,7 @@ end;
 
 procedure TMainForm.UserListDblClick(Sender: TObject);
 begin
+     SendMessageFlag := 4;
      WriteNewMessageExecute(Sender);
 end;
 
@@ -3112,6 +3113,12 @@ begin
         MesnumberLabel.Caption:='Не выбрано';
     end;
   EnDisButtons.Execute;
+end;
+
+procedure TMainForm.NewMesTBClick(Sender: TObject);
+begin
+  SendMessageFlag := 3;
+  WriteNewMessageExecute(Sender);
 end;
 
 end.

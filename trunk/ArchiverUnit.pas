@@ -1379,7 +1379,8 @@ begin
         ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
   end;
       end;
-
+    if ClientProperties.ownID = ClientProperties.AlienID then
+      JumpToLast.Execute;
     EnDisButtons.Execute;
     end
   else

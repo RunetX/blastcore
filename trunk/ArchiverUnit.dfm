@@ -68,7 +68,6 @@ object MainForm: TMainForm
       Left = 0
       Top = 0
       Action = WriteNewMessage
-      OnClick = NewMesTBClick
     end
     object ToolButton2: TToolButton
       Left = 39

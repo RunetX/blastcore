@@ -159,28 +159,34 @@ var
 begin
 
   if(MainForm.SendMessageFlag < 3)then
-  begin
-    InsertLastName;
-    if(MainForm.SendMessageFlag = 1)then
-      begin
-        foundIndex:=FindUser;
-        if((foundIndex>0)and(foundIndex<MainForm.UserList.Items.Count))then
-          MainForm.UserList.Items[foundIndex].Selected:=true
-        else
-          begin
-          // insert dialog 'Answer to Group?'
-            if(Application.MessageBox('Пользователь не найден. Ответить всем?',
-            'Пользователь не найден.', MB_YESNO)=IDYES)then
-              MainForm.UserList.Items[0].Selected:=true
-            else
-              Close;
-          end;
-      end
-    else if(MainForm.SendMessageFlag = 2)then
-      begin
-        MainForm.UserList.Items[0].Selected:=true;
-      end;
-  end;
+    begin
+      InsertLastName;
+
+      if(MainForm.SendMessageFlag = 1)then
+        begin
+          foundIndex:=FindUser;
+
+          if((foundIndex>0)and(foundIndex<MainForm.UserList.Items.Count))then
+            MainForm.UserList.Items[foundIndex].Selected:=true
+          else
+            begin
+              // insert dialog 'Answer to Group?'
+              if(Application.MessageBox('Пользователь не найден. Ответить всем?',
+                  'Пользователь не найден.', MB_YESNO)=IDYES)then
+                MainForm.UserList.Items[0].Selected:=true
+              else
+                Close;
+            end;
+        end
+      else if(MainForm.SendMessageFlag = 2)then
+        begin
+          MainForm.UserList.Items[0].Selected:=true;
+        end;
+    end
+  else if MainForm.SendMessageFlag = 3 then
+    begin
+      MainForm.UserList.Items[0].Selected:=true;
+    end;
   FillComboBox.Execute;
   Memo1.SelStart:=Length(Memo1.Text);
   Memo1.Perform(WM_VScroll, SB_BOTTOM,0);

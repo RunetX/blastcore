@@ -387,7 +387,6 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure DebugActionExecute(Sender: TObject);
     procedure OptionsTPMClick(Sender: TObject);
     procedure MessagesListViewClick(Sender: TObject);
-    procedure NewMesTBClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -2000,7 +1999,7 @@ begin
   //-------------------------
 
   CoolTrayIcon.IconIndex:=3;
-  SendMessageFlag := 3;
+
   ConDiscon.Execute;
 end;
 
@@ -2482,6 +2481,7 @@ var
 begin
   if(UserList.Selected<>nil)then
     begin
+      SendMessageFlag := 3;
       SendMessageForm := TSendMessageForm.Create(Self);
       SendMessageForm.Show;
     end
@@ -2491,8 +2491,14 @@ end;
 
 procedure TMainForm.UserListDblClick(Sender: TObject);
 begin
-     SendMessageFlag := 4;
-     WriteNewMessageExecute(Sender);
+  if(UserList.Selected<>nil)then
+    begin
+      SendMessageFlag := 4;
+      SendMessageForm := TSendMessageForm.Create(Self);
+      SendMessageForm.Show;
+    end
+  else
+    ShowMessage('Выберите пользователя из списка для отправки нового сообщения!');
 end;
 
 function TMainForm.AssignIndex:integer;
@@ -3114,12 +3120,6 @@ begin
         MesnumberLabel.Caption:='Не выбрано';
     end;
   EnDisButtons.Execute;
-end;
-
-procedure TMainForm.NewMesTBClick(Sender: TObject);
-begin
-  SendMessageFlag := 3;
-  WriteNewMessageExecute(Sender);
 end;
 
 end.

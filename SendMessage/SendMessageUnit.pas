@@ -4,7 +4,14 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, ActnList, ComCtrls, sButton, sMemo;
+  Dialogs, StdCtrls, ActnList, ComCtrls, sButton, sMemo, StrUtils;
+
+const
+  REPLY_TO_AUTHOR     = 1;
+  REPLY_TO_GROUP      = 2;
+  NEWMESSAGE_GROUP    = 3;
+  NEWMESSAGE_PRIVATE  = 4;
+
 
 type
   TSendMessageForm = class(TForm)
@@ -67,42 +74,41 @@ end;
 procedure  TSendMessageForm.InsertLastName;
 var
   index, j: integer;
-  Potolok: integer;
+  tmpShift, Shift, LinesEndIndex: integer;
   flag: integer;
-  MText, Razdelitel: string;
+  Text2Quote, MText, Delimiter, AuthorName: string;
 
 begin
-  flag:=0;
-  Razdelitel:='-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
+  flag := 0;
+  Delimiter  := '-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
   Memo1.Text := MainForm.MessageMemo.Text;
-
+  AuthorName := MainForm.MessagesListView.Selected.SubItems[6];
   MText := Memo1.Text;
 
-  if Length(MText)>2000 then
+  if Length(MText) > 2000 then
     begin
       delete(MText, 1, Length(MText)-2000);
       MText:='...' + #13#10 + MText;
     end;
 
-  Memo1.Text := MText;
+  tmpShift := PosEx(Delimiter, MText, 1);
+  Shift := tmpShift;
 
-  Potolok:=Memo1.Lines.Count-1;
-  for index:=Potolok downto 0 do
-  begin
-    if(StringCompare(Memo1.Lines.Strings[index], Razdelitel))then
-      BEGIN
-        flag := index+1;
-        break;
-      END
-  end;
+  while tmpShift <> 0 do
+    begin
+      Shift := tmpShift + Length(Delimiter) + 2;
+      tmpShift := PosEx(Delimiter, MText, Shift);
+    end;
 
-  for j:=flag to Potolok+1 do
-  begin
-      Memo1.Lines.Strings[j]:=
-      MainForm.MessagesListView.Selected.SubItems[6] +'> '+
-      Memo1.Lines.Strings[j];
-  end;
-  Memo1.Text := Memo1.Text + #13#10 + Razdelitel + #13#10;
+  if Shift = 0 then Shift := 1;
+
+  Text2Quote := Copy(MText, Shift, Length(MText)-Shift+1);
+  Delete(MText, Shift, Length(MText)-Shift+1);
+
+  Text2Quote := AuthorName + '> ' + stringReplace(Text2Quote, #13#10,
+       #13#10 + AuthorName + '> ', [rfReplaceAll]);
+
+  Memo1.Text := MText + Text2Quote + #13#10 + Delimiter + #13#10;
 end;
 
 function  TSendMessageForm.FindUser(): integer;
@@ -162,7 +168,7 @@ begin
     begin
       InsertLastName;
 
-      if(MainForm.SendMessageFlag = 1)then
+      if(MainForm.SendMessageFlag = REPLY_TO_AUTHOR)then
         begin
           foundIndex:=FindUser;
 
@@ -178,12 +184,12 @@ begin
                 Close;
             end;
         end
-      else if(MainForm.SendMessageFlag = 2)then
+      else if(MainForm.SendMessageFlag = REPLY_TO_GROUP)then
         begin
           MainForm.UserList.Items[0].Selected:=true;
         end;
     end
-  else if MainForm.SendMessageFlag = 3 then
+  else if MainForm.SendMessageFlag = NEWMESSAGE_GROUP then
     begin
       MainForm.UserList.Items[0].Selected:=true;
     end;
@@ -221,6 +227,8 @@ begin
   s:=#0+Char(i div 256)+Char(i mod 256)+s;
   MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
 
+  index := MainForm.GetIndexByID(id);
+  if index <> -1 then
       with SentMesForm.SentMesLV do
           begin
             tmpListItem := Items.Add;

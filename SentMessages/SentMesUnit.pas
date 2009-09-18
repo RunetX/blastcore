@@ -108,7 +108,7 @@ begin
           if(foundIndex>=0)then
             begin
               MainForm.UserList.Items[foundIndex].Selected:=true;
-              MainForm.SendMessageFlag := 3;
+              MainForm.SendMessageFlag := 4;
               SendMessageForm := TSendMessageForm.Create(Self);
               SendMessageForm.Memo1.Text:=SentMesLV.Selected.SubItems[3];
               SendMessageForm.Show;

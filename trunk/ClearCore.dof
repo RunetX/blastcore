@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=0
 MinorVer=2
 Release=0
-Build=51
+Build=53
 Debug=0
 PreRelease=1
 Special=0
@@ -126,7 +126,7 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=Peek's Webware
 FileDescription=BlastCore Sender - SEA Protocol Client
-FileVersion=0.2.0.51
+FileVersion=0.2.0.53
 InternalName=BlastCore
 LegalCopyright=Peek's Webware
 LegalTrademarks=BlastCore

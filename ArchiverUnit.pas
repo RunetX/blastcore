@@ -572,7 +572,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.2 beta';
+   ClientProperties.Version:='BlastCore v0.21 beta';
 
    ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////

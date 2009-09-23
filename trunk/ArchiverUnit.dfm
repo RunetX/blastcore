@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 240
-  Top = 336
+  Left = 789
+  Top = 220
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -24,7 +24,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TsStatusBar
     Left = 0
-    Top = 507
+    Top = 499
     Width = 650
     Height = 19
     Panels = <
@@ -181,7 +181,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 466
+    Height = 458
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
@@ -189,7 +189,7 @@ object MainForm: TMainForm
       Left = 427
       Top = 1
       Width = 2
-      Height = 314
+      Height = 306
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -200,7 +200,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 314
+      Height = 306
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
       BoundLabel.Font.Color = clWindowText
@@ -248,14 +248,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 314
+      Height = 306
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
         426
-        314)
+        306)
       object MesnumberLabel: TsLabel
         Left = 326
         Top = 8
@@ -333,7 +333,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TsPanel
       Left = 1
-      Top = 315
+      Top = 307
       Width = 648
       Height = 150
       Align = alBottom
@@ -4446,7 +4446,11 @@ object MainForm: TMainForm
     Left = 208
     Top = 232
     object NewMessagePMU: TMenuItem
-      Action = WriteNewMessage
+      Caption = #1053#1086#1074#1086#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1077
+      Hint = #1053#1086#1074#1086#1077' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
+      ImageIndex = 0
+      ShortCut = 16462
+      OnClick = UserListDblClick
     end
     object Chat: TMenuItem
       Caption = #1042#1099#1079#1074#1072#1090#1100' '#1085#1072' '#1063#1072#1090

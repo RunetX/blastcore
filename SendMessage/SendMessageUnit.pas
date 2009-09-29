@@ -115,16 +115,25 @@ function  TSendMessageForm.FindUser(): integer;
 var
   i: integer;
   ccNumber: integer;
-  tmpWhomID: string;
+  tmpWhomID, MeslistCompname, UserlistCompname: string;
   ccIndexes: array[1..3] of integer;
 
 begin
   ccNumber:=0;
   Result := -1;
+
+  MeslistCompname  := MainForm.MessagesListView.Selected.SubItems[7];
+  UserlistCompname := MainForm.UserList.Items[i].SubItems[0];
+
+  // ѕробегаем по всему списку пользователей
   for i:=0 to MainForm.UserList.Items.Count-1 do
-      if(StringCompare(MainForm.MessagesListView.Selected.SubItems[7],
-                       MainForm.UserList.Items[i].SubItems[0]))then
+      // —равниваем им€ компьютера автора сообщени€ (поле в списке сообщений)
+      // с именем компьютера текущего пользовател€ из списка
+      if(StringCompare(MeslistCompname, UserlistCompname))then
       begin
+        // ¬ случае совпадени€ увеличиваем количество найденных на 1
+        // и заносим найденный индекс в массив
+        // при условии, что количество найденных меньше 4
         if(ccNumber<4)then
         begin
           ccNumber:=ccNumber+1;
@@ -136,11 +145,14 @@ begin
       result:=-1;
   end
   else if(ccNumber=1)then
+  // ≈сли найденных 1, то возвращаем первый элемент
+  // из массива найденных элементов
   begin
       result:=ccIndexes[1];
   end
   else if((ccNumber>1) and (ccNumber<4))then
   begin
+  // ≈сли найденных больше одного, то пытаемс€ найти автора по ID
       for i:=1 to ccNumber do
       begin
         tmpWhomID:=MainForm.MessagesListView.Selected.Caption;

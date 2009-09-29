@@ -510,22 +510,12 @@ end;
 //-----------------------------------------------------------------
 
 procedure TInBufer.GetInputBytes(i: integer);
-var
-  kusok: integer;
 begin
   HowmanyNeedRec := HowmanyNeedRec - i;
   SetLength(tmpBufer, i);
   Bufer := Bufer + tmpBufer;
   if(HowmanyNeedRec=0) then
      isReadyForProc := true;
-  if(HowmanyNeedRec<0) then
-    begin
-      // Сколько приняли лишнего
-      kusok := Length(Bufer)+HowmanyNeedRec;
-      tmpBufer := copy(Bufer, kusok, 0-HowmanyNeedRec);
-      SetLength(Bufer, kusok);
-      isReadyForProc := true;
-    end;
   if(HowmanyNeedRec>0) then
     begin
       // Не всё еще приняли и обработку запрещаем
@@ -537,6 +527,27 @@ procedure   TInBufer.SetNextLength;
 begin
   SetLength(tmpBufer, HowmanyNeedRec);
   Bufer:='';
+end;
+
+//-----------------------------------------------------------------
+
+function  TMainForm.GetIndexByID(ID: integer): integer;
+var
+  Buf1: string;
+  i:   integer;
+begin
+  result:=-1;
+  for i:=2 to Userlist.Items.Count-1 do
+  begin
+    Buf1 := Userlist.Items[i].SubItems[1];
+    if(StrToInt(Buf1)=ID) then
+      begin
+        result:=i;
+        break;
+      end;
+  end;
+  if SpeekerSettings.Debug then
+      LogVariable('GetIndexByID', IntToStr(result));
 end;
 
 //-----------------------------------------------------------------
@@ -881,14 +892,6 @@ begin
   end
   else
   begin
-      //ClientSocket1.Socket.ReceiveBuf(InBufer.Bufer,
-      //ClientSocket1.Socket.ReceiveLength);
-      //Reconnect;
-      {
-      InBufer.CurrentOperation:=9;
-      InBufer.HowmanyNeedRec := 1;
-      InBufer.SetNextLength;
-      }
       ClientSocket1.Socket.Close;
       MessageDlg('['+DateToStr(Date)+']['+TimeToStr(Time)+
             '] рассинхронизация с сервером!'+#13#10+
@@ -917,28 +920,6 @@ var
 begin
   InBufer.isReadyForProc:=false;
   if(InBufer.LastSEACommand = S2C_USERINFO)then
-    {if(GroupInfoForm.Visible)then
-      begin
-        with GroupInfoForm.GrInfoListView do          //TListView
-          begin
-            tmpListItem := Items.Add;
-            tmpListItem.Caption := AlienInfo.UserName;
-            tmpListItem.SubItems.Add(AlienInfo.CompName);
-            if(AlienInfo.Faculty=1)then
-              tmpListItem.SubItems.Add('ABT')
-            else
-              tmpListItem.SubItems.Add('MC');
-            tmpListItem.SubItems.Add(AlienInfo.Room);
-            tmpListItem.SubItems.Add(AlienInfo.Info);
-            tmpListItem.SubItems.Add(AlienInfo.Version);
-            tmpListItem.SubItems.Add(InBufer.Bufer);
-
-          InBufer.CurrentOperation:=9;
-          InBufer.HowmanyNeedRec := 1;
-          InBufer.SetNextLength;
-          end;
-      end
-    else}
       begin
           AlienInfo.IPAddress := InBufer.Bufer;
           if SpeekerSettings.Debug then
@@ -947,18 +928,18 @@ begin
           InBufer.HowmanyNeedRec := 1;
           InBufer.SetNextLength;
 
-          s:='Имя пользователя: '+AlienInfo.UserName+#13#10;
-          s:=s+'Компьютер: '+AlienInfo.CompName+#13#10;
+          s:=  'Имя пользователя: ' + AlienInfo.UserName + #13#10;
+          s:=s+'Компьютер: '        + AlienInfo.CompName + #13#10;
 
           if(AlienInfo.Faculty=1)then
-              s:=s+'Факультет: АВТ'+#13#10
+              s:=s+'Факультет: АВТ' + #13#10
           else
-              s:=s+'Факультет: МС'+#13#10;
+              s:=s+'Факультет: МС'  + #13#10;
 
-          s:=s+'Комната: '+AlienInfo.Room+#13#10;
-          s:=s+'Информация: '+AlienInfo.Info+#13#10;
-          s:=s+'Версия: '+AlienInfo.Version+#13#10;
-          s:=s+'IP-адрес : '+AlienInfo.IPAddress;
+          s:=s+'Комната: '    + AlienInfo.Room    + #13#10;
+          s:=s+'Информация: ' + AlienInfo.Info    + #13#10;
+          s:=s+'Версия: '     + AlienInfo.Version + #13#10;
+          s:=s+'IP-адрес : '  + AlienInfo.IPAddress;
           ShowMessage(s);
 
       end
@@ -1004,26 +985,6 @@ end;
 
 //-----------------------------------------------------------------
 
-function  TMainForm.GetIndexByID(ID: integer): integer;
-var
-  Buf1: string;
-  i:   integer;
-begin
-  result:=-1;
-  for i:=2 to Userlist.Items.Count-1 do
-  begin
-    Buf1 := Userlist.Items[i].SubItems[1];
-    if(StrToInt(Buf1)=ID) then
-      begin
-        result:=i;
-        break;
-      end;
-  end;
-  if SpeekerSettings.Debug then
-      LogVariable('GetIndexByID', IntToStr(result));
-end;
-
-//-----------------------------------------------------------------
 procedure TMainForm.GetUsernameMy();// 6
 var
   tmpIndex: integer;
@@ -1147,7 +1108,7 @@ begin
          InBufer.SetNextLength;
       end
    else
-      begin //Reconnect;
+      begin
         ClientSocket1.Socket.Close;
         //ShowMessage('DelUserByID: Индекс вышел за границы! Index='+IntToStr(tmpIndex));
         InBufer.CurrentOperation := BC_STATE_RECONNECT;
@@ -1319,26 +1280,10 @@ begin
             end
           else
             begin
-     { MessageMemo.Clear;
-      MessageMemo.Text:= MessagesListView.Items[0].SubItems[3];
-      WhomEdit.Text := MessagesListView.Items[0].SubItems[6]
-                     + MessagesListView.Items[0].SubItems[7];
-      if(StrToInt(MessagesListView.Items[0].SubItems[0])=1)then
-        if(StrToInt(MessagesListView.Items[0].SubItems[1])=0)then
-            WhomEdit.Text := WhomEdit.Text + ' -> ' + SpeekerSettings.UserName
-        else
-            WhomEdit.Text := WhomEdit.Text + ' Печатникам'
-      else
-            WhomEdit.Text := WhomEdit.Text + ' Всем';
-      WhomEdit.Text := WhomEdit.Text+' в '+ MessagesListView.Items[0].SubItems[4]+
-      ', '+ MessagesListView.Items[0].SubItems[5];
-      MesnumberLabel.Caption:='Сообщение: 1/1';
-                                 }
-      MessagesListView.Items[0].Selected:=true;
-      MessagesListView.Items[0].Checked:=false;
-      CoolTrayIcon.IconIndex:=4;
+              MessagesListView.Items[0].Selected:=true;
+              MessagesListView.Items[0].Checked:=false;
+              CoolTrayIcon.IconIndex:=4;
             end;
-          //if(MainForm.Visible)then MessagesListView.Items[0].Checked:=true;
         end;
       if(N5.Checked)then
         begin
@@ -1392,7 +1337,6 @@ begin
     end;
 end;
 
-//-------  Интересно, а нахрена оно тут?  -------------------------
 //-----------------------------------------------------------------
 procedure TMainForm.GetZero(); // 14
 begin
@@ -1555,7 +1499,7 @@ begin
         begin
           //InBufer.CurrentOperation:=21;
           //InBufer.HowmanyNeedRec := ord(InBufer.Bufer[1]);
-          Reconnect;
+          ClientSocket1.Socket.Close;
         end;
     end;
   InBufer.SetNextLength;
@@ -1670,7 +1614,7 @@ begin
   begin
     if SpeekerSettings.Debug then
       LogVariable('CurrentOperation out of range', IntToStr(InBufer.CurrentOperation));
-    //Reconnect;
+
     ClientSocket1.Socket.Close;
   end;
 end;
@@ -1736,7 +1680,6 @@ begin
         BalloonMessage:='Разъединено';
         StatusBar1.Panels[0].Text:='Разъединено';
 
-        //Reconnect;
     end;
   
 
@@ -1753,7 +1696,7 @@ begin
       begin
         StatusBar1.Panels[0].Text:=StatusBar1.Panels[0].Text+' [Основной]';
       end;
-  //CoolTrayIcon.ShowBalloonHint('Соединение', BalloonMessage, bitInfo, 10);
+
   noPong := False;
   Pilingator.Enabled := True;
 end;
@@ -1887,7 +1830,7 @@ begin
       ClientSocket1.Socket.Close;
 
       // Через две секунды опять вызвать ConDisconExecute
-      ReconnectTimer.Enabled := True;
+      //ReconnectTimer.Enabled := True;
     end
   // Не подключены
   else
@@ -3068,7 +3011,6 @@ procedure TMainForm.PingMSClientSocketConnect(Sender: TObject;
 begin
   PingMSTimer.Enabled := false;
   Socket.Close;
-  //ReconnectTimer.Enabled:=true;
   ClientSocket1.Socket.Close;
   if SpeekerSettings.Debug then
       LogVariable('Ping MS server connect', 'timer off, sockets close');

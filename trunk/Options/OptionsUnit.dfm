@@ -24,7 +24,7 @@ object OptionsForm: TOptionsForm
     Top = 1
     Width = 425
     Height = 329
-    ActivePage = TabSheet2
+    ActivePage = sTabSheet1
     TabOrder = 0
     SkinData.SkinSection = 'PAGECONTROL'
     object TabSheet1: TsTabSheet
@@ -417,6 +417,17 @@ object OptionsForm: TOptionsForm
           Checked = True
           State = cbChecked
           TabOrder = 5
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+        end
+        object SkinOnChkBox: TsCheckBox
+          Left = 264
+          Top = 72
+          Width = 91
+          Height = 20
+          Caption = #1042#1082#1083#1102#1095#1080#1090#1100' skin'
+          TabOrder = 6
           SkinData.SkinSection = 'CHECKBOX'
           ImgChecked = 0
           ImgUnchecked = 0
@@ -3705,6 +3716,93 @@ object OptionsForm: TOptionsForm
         TabOrder = 5
       end
     end
+    object sTabSheet1: TsTabSheet
+      Caption = #1057#1086#1086#1073#1097#1077#1085#1080#1103
+      SkinData.CustomColor = False
+      SkinData.CustomFont = False
+      object sLabelFX1: TsLabelFX
+        Left = 16
+        Top = 16
+        Width = 100
+        Height = 21
+        Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1096#1088#1080#1092#1090#1072
+      end
+      object sLabelFX2: TsLabelFX
+        Left = 16
+        Top = 80
+        Width = 75
+        Height = 21
+        Caption = #1062#1074#1077#1090' '#1096#1088#1080#1092#1090#1072
+      end
+      object sLabelFX3: TsLabelFX
+        Left = 200
+        Top = 16
+        Width = 89
+        Height = 21
+        Caption = #1056#1072#1079#1084#1077#1088' '#1096#1088#1080#1092#1090#1072
+      end
+      object sColorSelect1: TsColorSelect
+        Left = 96
+        Top = 80
+        Width = 23
+        Height = 22
+        Glyph.Data = {
+          06030000424D060300000000000036000000280000000F0000000F0000000100
+          180000000000D002000000000000000000000000000000000000FF00FF000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000FF00FF00000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          0000000000000000000000000000000000000000000000000000FF00FF000000
+          0000000000000000000000000000000000000000000000000000000000000000
+          00000000FF00FF000000}
+        SkinData.SkinSection = 'SPEEDBUTTON'
+        ColorValue = clBlack
+      end
+      object sFontComboBox1: TsFontComboBox
+        Left = 16
+        Top = 40
+        Width = 145
+        Height = 22
+        Alignment = taLeftJustify
+        BoundLabel.Indent = 0
+        BoundLabel.Font.Charset = DEFAULT_CHARSET
+        BoundLabel.Font.Color = clWindowText
+        BoundLabel.Font.Height = -11
+        BoundLabel.Font.Name = 'MS Sans Serif'
+        BoundLabel.Font.Style = []
+        BoundLabel.Layout = sclLeft
+        BoundLabel.MaxWidth = 0
+        BoundLabel.UseSkinColor = True
+        SkinData.SkinSection = 'COMBOBOX'
+        ItemHeight = 16
+        TabOrder = 0
+      end
+      object sTrackBar1: TsTrackBar
+        Left = 200
+        Top = 40
+        Width = 150
+        Height = 45
+        TabOrder = 1
+        SkinData.SkinSection = 'TRACKBAR'
+      end
+    end
   end
   object Button1: TsButton
     Left = 192
@@ -3748,5 +3846,9 @@ object OptionsForm: TOptionsForm
       Caption = 'SaveOptions'
       OnExecute = SaveOptionsExecute
     end
+  end
+  object sColorDialog1: TsColorDialog
+    Left = 53
+    Top = 329
   end
 end

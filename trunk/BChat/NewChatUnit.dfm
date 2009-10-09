@@ -28,7 +28,7 @@ object BChatForm: TBChatForm
     Panels = <
       item
         Alignment = taCenter
-        Text = 'Copyright '#169' 2009 Peek. All rights reserved.'
+        Text = #169' 2009 '#1058#1103#1085' '#1057#1077#1084#1105#1085'. '#1042#1089#1077' '#1087#1088#1072#1074#1072' '#1085#1077' '#1079#1072#1097#1080#1097#1077#1085#1099'.'
         Width = 50
       end>
     SkinData.SkinSection = 'STATUSBAR'

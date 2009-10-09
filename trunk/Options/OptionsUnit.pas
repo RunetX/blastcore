@@ -6,7 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList, IniFiles, 
   MMSystem, Registry, sDialogs, sMemo, sComboBox, sCheckBox,
-  sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl;
+  sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl, sFontCtrls,
+  sTrackBar, sPanel, sColorSelect;
 
 type
   TOptionsForm = class(TForm)
@@ -55,6 +56,15 @@ type
     LabeledEdit2: TsEdit;
     RoomCmbBox: TsComboBox;
     Label5: TsLabel;
+    SkinOnChkBox: TsCheckBox;
+    sTabSheet1: TsTabSheet;
+    sFontComboBox1: TsFontComboBox;
+    sLabelFX1: TsLabelFX;
+    sLabelFX2: TsLabelFX;
+    sLabelFX3: TsLabelFX;
+    sTrackBar1: TsTrackBar;
+    sColorDialog1: TsColorDialog;
+    sColorSelect1: TsColorSelect;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
@@ -142,6 +152,7 @@ begin
   MinSTChkBox.Checked        := MainForm.SpeekerSettings.OptDelastmin;
   SoundsEnableChkBox.Checked := MainForm.SpeekerSettings.OptEnablesounds;
   ShowPanelChkBox.Checked    := MainForm.SpeekerSettings.OptShowpanel;
+  SkinOnChkBox.Checked       := MainForm.sSkinManager1.Active;
 end;
 
 procedure TOptionsForm.SpeedButton2Click(Sender: TObject);
@@ -200,6 +211,9 @@ begin
   // Enable\Disable sounds
   MainForm.SpeekerSettings.OptEnablesounds := SoundsEnableChkBox.Checked;
 
+  if MainForm.sSkinManager1.Active <> SkinOnChkBox.Checked then
+    MainForm.sSkinManager1.Active := SkinOnChkBox.Checked;
+
   if MainForm.SpeekerSettings.OptShowpanel then
         MainForm.DownPanel.Height := 150
   else
@@ -250,6 +264,7 @@ begin
     sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
 
     sIniFile.WriteBool( 'Programm', 'ShowPanel', ShowPanelChkBox.Checked);
+    sIniFile.WriteBool( 'Programm', 'Skinned',   SkinOnChkBox.Checked);
 
     sIniFile.WriteString( 'User', 'UserName', LabeledEdit7.Text);
     sIniFile.WriteString( 'User', 'Room',     MainForm.SpeekerSettings.Room);

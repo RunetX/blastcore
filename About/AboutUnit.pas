@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ExtCtrls, StdCtrls, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel;
+  IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel, sLabel;
 
 type
   TAboutForm = class(TForm)

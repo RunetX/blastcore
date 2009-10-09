@@ -300,6 +300,7 @@ end;
     NewmessageTPM: TMenuItem;
     AWAY1: TMenuItem;
     N20: TMenuItem;
+    SkinMgrMenuitem: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -387,6 +388,9 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure DebugActionExecute(Sender: TObject);
     procedure OptionsTPMClick(Sender: TObject);
     procedure MessagesListViewClick(Sender: TObject);
+    procedure SkinMgrMenuitemClick(Sender: TObject);
+    procedure MainMenu1Change(Sender: TObject; Source: TMenuItem;
+      Rebuild: Boolean);
   private
     { Private declarations }
   public
@@ -441,7 +445,7 @@ var
 implementation
 
 uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
-  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit;
+  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit, acSelectSkin;
 
 {$R *.dfm}
 
@@ -2873,6 +2877,18 @@ begin
   AboutForm.Show;
 end;
 
+procedure TMainForm.SkinMgrMenuitemClick(Sender: TObject);
+var
+  SkinName, Skindir : string;
+begin
+  SkinName := 'Office2007 Blue.asz';
+  SkinDir := ExtractFilePath(GetCurrentDir() + '\Skins\');
+  if SelectSkin(SkinName, SkinDir, stPacked) then begin
+    sSkinManager1.SkinName := SkinName;
+    sSkinManager1.UpdateSkin;
+  end;
+end;
+
 // Send "Ping" every 2 minutes
 procedure TMainForm.PilingatorTimer(Sender: TObject);
 var
@@ -3062,6 +3078,12 @@ begin
         MesnumberLabel.Caption:='Не выбрано';
     end;
   EnDisButtons.Execute;
+end;
+
+procedure TMainForm.MainMenu1Change(Sender: TObject; Source: TMenuItem;
+  Rebuild: Boolean);
+begin
+  SkinMgrMenuitem.Enabled := sSkinManager1.Active;
 end;
 
 end.

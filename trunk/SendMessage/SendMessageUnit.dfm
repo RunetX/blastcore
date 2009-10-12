@@ -1,6 +1,6 @@
 object SendMessageForm: TSendMessageForm
-  Left = 575
-  Top = 154
+  Left = 804
+  Top = 215
   ActiveControl = Memo1
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle

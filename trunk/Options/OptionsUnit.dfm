@@ -1,6 +1,6 @@
 object OptionsForm: TOptionsForm
-  Left = 269
-  Top = 258
+  Left = 784
+  Top = 170
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
@@ -3708,7 +3708,7 @@ object OptionsForm: TOptionsForm
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 13
+        ItemHeight = 0
         ItemIndex = -1
         MaxLength = 5
         ParentFont = False
@@ -3721,31 +3721,31 @@ object OptionsForm: TOptionsForm
       SkinData.CustomColor = False
       SkinData.CustomFont = False
       object sLabelFX1: TsLabelFX
-        Left = 16
-        Top = 16
+        Left = 8
+        Top = 8
         Width = 100
         Height = 21
         Caption = #1053#1072#1079#1074#1072#1085#1080#1077' '#1096#1088#1080#1092#1090#1072
       end
       object sLabelFX2: TsLabelFX
-        Left = 16
-        Top = 80
+        Left = 160
+        Top = 8
         Width = 75
         Height = 21
         Caption = #1062#1074#1077#1090' '#1096#1088#1080#1092#1090#1072
       end
       object sLabelFX3: TsLabelFX
-        Left = 200
-        Top = 16
+        Left = 8
+        Top = 64
         Width = 89
         Height = 21
         Caption = #1056#1072#1079#1084#1077#1088' '#1096#1088#1080#1092#1090#1072
       end
       object sColorSelect1: TsColorSelect
-        Left = 96
-        Top = 80
-        Width = 23
-        Height = 22
+        Left = 184
+        Top = 32
+        Width = 26
+        Height = 26
         Glyph.Data = {
           06030000424D060300000000000036000000280000000F0000000F0000000100
           180000000000D002000000000000000000000000000000000000FF00FF000000
@@ -3773,12 +3773,55 @@ object OptionsForm: TOptionsForm
           0000000000000000000000000000000000000000000000000000000000000000
           00000000FF00FF000000}
         SkinData.SkinSection = 'SPEEDBUTTON'
+        OnChange = sColorSelect1Change
         ColorValue = clBlack
+      end
+      object sLabel1: TsLabel
+        Left = 18
+        Top = 127
+        Width = 6
+        Height = 13
+        Caption = '6'
+      end
+      object sLabel2: TsLabel
+        Left = 54
+        Top = 127
+        Width = 12
+        Height = 13
+        Caption = '12'
+      end
+      object sLabel3: TsLabel
+        Left = 91
+        Top = 127
+        Width = 12
+        Height = 13
+        Caption = '18'
+      end
+      object sLabel4: TsLabel
+        Left = 130
+        Top = 127
+        Width = 12
+        Height = 13
+        Caption = '24'
+      end
+      object sLabel5: TsLabel
+        Left = 168
+        Top = 127
+        Width = 12
+        Height = 13
+        Caption = '30'
+      end
+      object sLabel6: TsLabel
+        Left = 206
+        Top = 127
+        Width = 12
+        Height = 13
+        Caption = '36'
       end
       object sFontComboBox1: TsFontComboBox
         Left = 16
-        Top = 40
-        Width = 145
+        Top = 32
+        Width = 137
         Height = 22
         Alignment = taLeftJustify
         BoundLabel.Indent = 0
@@ -3793,14 +3836,143 @@ object OptionsForm: TOptionsForm
         SkinData.SkinSection = 'COMBOBOX'
         ItemHeight = 16
         TabOrder = 0
+        OnChange = sFontComboBox1Change
       end
       object sTrackBar1: TsTrackBar
-        Left = 200
-        Top = 40
-        Width = 150
-        Height = 45
+        Left = 8
+        Top = 88
+        Width = 217
+        Height = 41
+        LineSize = 10
+        Max = 36
+        Min = 6
+        ParentShowHint = False
+        Frequency = 6
+        Position = 8
+        ShowHint = False
         TabOrder = 1
+        OnChange = sTrackBar1Change
         SkinData.SkinSection = 'TRACKBAR'
+      end
+      object FontSetsMemo: TMemo
+        Left = 8
+        Top = 160
+        Width = 401
+        Height = 105
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Pitch = fpVariable
+        Font.Style = []
+        Lines.Strings = (
+          
+            'Dikobraz: '#1103' '#1074#1086#1086#1073#1097#1077' '#1095#1077#1083#1086#1074#1077#1082' '#1087#1086' '#1078#1080#1079#1085#1080' '#1073#1086#1076#1088#1099#1081', '#1085#1086' '#1089#1091#1090#1088#1072' '#1089#1087#1088#1086#1089#1086#1085#1100#1103' '#1073 +
+            #1099#1074#1072#1102' '
+          #1074#1077#1077#1077#1089#1100#1084#1072' '#1085#1077#1072#1076#1077#1082#1074#1072#1090#1085#1099#1084'=) '#1050#1086#1088#1086#1095#1077', '#1079#1072#1074#1090#1088#1072#1082' '#1089' '#1088#1086#1076#1080#1090#1077#1083#1103#1084#1080'. '#1071' '#1089#1080#1078#1091' '
+          
+            #1073#1083#1080#1078#1077' '#1074#1089#1077#1093' '#1082' '#1093#1086#1083#1086#1076#1080#1083#1100#1085#1080#1082#1091'. '#1042#1089#1077' '#1091#1078#1077' '#1087#1086#1077#1083#1080', '#1103', '#1082#1072#1082' '#1074#1089#1077#1075#1076#1072', '#1087#1086#1089#1083#1077#1076#1085 +
+            #1080#1081'. '#1058#1091#1090' '
+          
+            #1084#1077#1085#1103' '#1086#1090#1077#1094' '#1087#1088#1086#1089#1080#1090', '#1084#1086#1083', '#1074#1089#1077' '#1088#1072#1074#1085#1086' '#1073#1083#1080#1078#1077' '#1074#1089#1077#1093' '#1082' '#1093#1086#1083#1086#1076#1080#1083#1100#1085#1080#1082#1091' '#1089#1080#1076#1080#1096 +
+            #1100', '
+          '"'#1082#1080#1085#1100' '#1084#1072#1089#1083#1086' '#1074' '#1093#1086#1083#1086#1076#1080#1083#1100#1085#1080#1082'". '#1041#1077#1088#1091' '#1080' '#1085#1077' '#1075#1083#1103#1076#1103'...'#1050#1048#1044#1040#1070' '#1041#1056#1048#1050#1045#1058' '#1042' '
+          #1044#1042#1045#1056#1062#1059' '#1061#1054#1051#1054#1044#1048#1051#1068#1053#1048#1050#1040'!'
+          #1090#1091#1090' '#1076#1086#1093#1086#1076#1080#1090', '#1095#1090#1086' '#1095#1090#1086'-'#1090#1086' '#1085#1077' '#1090#1086'...')
+        ParentFont = False
+        ScrollBars = ssVertical
+        TabOrder = 2
+      end
+      object FontSetsResetBtn: TsButton
+        Left = 8
+        Top = 272
+        Width = 129
+        Height = 25
+        Caption = #1057#1073#1088#1086#1089#1080#1090#1100' '#1085#1072#1089#1090#1088#1086#1081#1082#1080
+        TabOrder = 3
+        OnClick = FontSetsResetBtnClick
+        SkinData.SkinSection = 'BUTTON'
+      end
+      object sGroupBox1: TsGroupBox
+        Left = 248
+        Top = 16
+        Width = 161
+        Height = 129
+        Caption = #1057#1090#1080#1083#1100
+        TabOrder = 4
+        SkinData.SkinSection = 'GROUPBOX'
+        object sCheckBox1: TsCheckBox
+          Left = 16
+          Top = 21
+          Width = 69
+          Height = 20
+          Caption = #1046#1080#1088#1085#1099#1081
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsBold]
+          ParentFont = False
+          TabOrder = 0
+          OnClick = sCheckBox1Click
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+        end
+        object sCheckBox2: TsCheckBox
+          Left = 16
+          Top = 45
+          Width = 56
+          Height = 20
+          Caption = #1050#1091#1088#1089#1080#1074
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsItalic]
+          ParentFont = False
+          TabOrder = 1
+          OnClick = sCheckBox2Click
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+        end
+        object sCheckBox3: TsCheckBox
+          Left = 16
+          Top = 69
+          Width = 93
+          Height = 20
+          Caption = #1055#1086#1076#1095#1105#1088#1082#1085#1091#1090#1099#1081
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsUnderline]
+          ParentFont = False
+          TabOrder = 2
+          OnClick = sCheckBox3Click
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+        end
+        object sCheckBox4: TsCheckBox
+          Left = 16
+          Top = 93
+          Width = 99
+          Height = 20
+          Caption = #1055#1077#1088#1077#1095#1105#1088#1082#1085#1091#1090#1099#1081
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = [fsStrikeOut]
+          ParentFont = False
+          TabOrder = 3
+          OnClick = sCheckBox4Click
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+        end
       end
     end
   end
@@ -3846,9 +4018,5 @@ object OptionsForm: TOptionsForm
       Caption = 'SaveOptions'
       OnExecute = SaveOptionsExecute
     end
-  end
-  object sColorDialog1: TsColorDialog
-    Left = 53
-    Top = 329
   end
 end

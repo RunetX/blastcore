@@ -7,7 +7,7 @@ uses
   Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList, IniFiles, 
   MMSystem, Registry, sDialogs, sMemo, sComboBox, sCheckBox,
   sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl, sFontCtrls,
-  sTrackBar, sPanel, sColorSelect;
+  sTrackBar, sPanel, sColorSelect, sBitBtn;
 
 type
   TOptionsForm = class(TForm)
@@ -63,8 +63,20 @@ type
     sLabelFX2: TsLabelFX;
     sLabelFX3: TsLabelFX;
     sTrackBar1: TsTrackBar;
-    sColorDialog1: TsColorDialog;
     sColorSelect1: TsColorSelect;
+    FontSetsMemo: TMemo;
+    FontSetsResetBtn: TsButton;
+    sGroupBox1: TsGroupBox;
+    sCheckBox1: TsCheckBox;
+    sCheckBox2: TsCheckBox;
+    sCheckBox3: TsCheckBox;
+    sCheckBox4: TsCheckBox;
+    sLabel1: TsLabel;
+    sLabel2: TsLabel;
+    sLabel3: TsLabel;
+    sLabel4: TsLabel;
+    sLabel5: TsLabel;
+    sLabel6: TsLabel;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
@@ -81,6 +93,14 @@ type
     procedure SpeedButton6Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure sFontComboBox1Change(Sender: TObject);
+    procedure sTrackBar1Change(Sender: TObject);
+    procedure sColorSelect1Change(Sender: TObject);
+    procedure sCheckBox1Click(Sender: TObject);
+    procedure sCheckBox2Click(Sender: TObject);
+    procedure sCheckBox3Click(Sender: TObject);
+    procedure sCheckBox4Click(Sender: TObject);
+    procedure FontSetsResetBtnClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -120,6 +140,8 @@ begin
 end;
 
 procedure TOptionsForm.FormShow(Sender: TObject);
+var
+  i: Integer;
 begin
   PageControl1.ActivePage:=TabSheet1;
 
@@ -153,6 +175,23 @@ begin
   SoundsEnableChkBox.Checked := MainForm.SpeekerSettings.OptEnablesounds;
   ShowPanelChkBox.Checked    := MainForm.SpeekerSettings.OptShowpanel;
   SkinOnChkBox.Checked       := MainForm.sSkinManager1.Active;
+
+  for i:=0 to sFontComboBox1.Items.Count-1 do
+    begin
+      if sFontComboBox1.Items[i] = MainForm.SpeekerSettings.FontName then break;
+    end;
+
+  sFontComboBox1.ItemIndex := i;
+
+  sColorSelect1.ColorValue := MainForm.SpeekerSettings.FontColor;
+  sTrackBar1.Position := MainForm.SpeekerSettings.FontSize;
+
+  sCheckBox1.Checked := MainForm.SpeekerSettings.FontBold;
+  sCheckBox2.Checked := MainForm.SpeekerSettings.FontItalic;
+  sCheckBox3.Checked := MainForm.SpeekerSettings.FontUnderline;
+  sCheckBox4.Checked := MainForm.SpeekerSettings.FontStrikeOut;
+
+  FontSetsMemo.Font.Color := MainForm.SpeekerSettings.FontColor;
 end;
 
 procedure TOptionsForm.SpeedButton2Click(Sender: TObject);
@@ -257,6 +296,15 @@ begin
   ns:=#0+Char(j div 256)+Char(j mod 256)+ns;
   MainForm.ClientSocket1.Socket.SendBuf(ns[1],length(ns));
 
+  MainForm.MessageMemo.Font.Color := FontSetsMemo.Font.Color;
+  MainForm.MessageMemo.Font.Size  := FontSetsMemo.Font.Size;
+  MainForm.MessageMemo.Font.Name  := FontSetsMemo.Font.Name;
+  MainForm.MessageMemo.Font.Style := FontSetsMemo.Font.Style;
+
+  MainForm.SpeekerSettings.FontColor := FontSetsMemo.Font.Color;
+  MainForm.SpeekerSettings.FontSize  := FontSetsMemo.Font.Size;
+  MainForm.SpeekerSettings.FontName  := FontSetsMemo.Font.Name;
+
 // Save to Ini
     if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
         CreateDir(MainForm.SpeekerSettings.UserAppdataDir);
@@ -283,6 +331,54 @@ begin
 
     sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
     sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);
+
+    sIniFile.WriteInteger( 'Font', 'Color' ,    FontSetsMemo.Font.Color);
+    sIniFile.WriteInteger( 'Font', 'Size' ,     FontSetsMemo.Font.Size);
+    sIniFile.WriteString(  'Font', 'Name' ,     FontSetsMemo.Font.Name);
+
+    if fsBold in FontSetsMemo.Font.Style then
+      begin
+        sIniFile.WriteBool( 'Font', 'Bold', true);
+        MainForm.SpeekerSettings.FontBold := true;
+      end
+    else
+      begin
+        sIniFile.WriteBool( 'Font', 'Bold', false);
+        MainForm.SpeekerSettings.FontBold := false;
+      end;
+
+    if fsItalic in FontSetsMemo.Font.Style then
+      begin
+        sIniFile.WriteBool( 'Font', 'Italic', true);
+        MainForm.SpeekerSettings.FontItalic := true;
+      end
+    else
+      begin
+        sIniFile.WriteBool( 'Font', 'Italic', false);
+        MainForm.SpeekerSettings.FontItalic := false;
+      end;
+
+    if fsUnderline in FontSetsMemo.Font.Style then
+      begin
+        sIniFile.WriteBool( 'Font', 'Underline', true);
+        MainForm.SpeekerSettings.FontUnderline := true;
+      end
+    else
+      begin
+        sIniFile.WriteBool( 'Font', 'Underline', false);
+        MainForm.SpeekerSettings.FontUnderline := false;
+      end;
+
+    if fsStrikeOut in FontSetsMemo.Font.Style then
+      begin
+        sIniFile.WriteBool( 'Font', 'StrikeOut', true);
+        MainForm.SpeekerSettings.FontStrikeOut := true;
+      end
+    else
+      begin
+        sIniFile.WriteBool( 'Font', 'StrikeOut', false);
+        MainForm.SpeekerSettings.FontStrikeOut := false;
+      end;
 
     sIniFile.Free;
 
@@ -364,6 +460,80 @@ begin
   RoomCmbBox.Items.Add('408-á');
   RoomCmbBox.Items.Add('508-à');
   RoomCmbBox.Items.Add('508-á');
+end;
+
+procedure TOptionsForm.sFontComboBox1Change(Sender: TObject);
+begin
+  FontSetsMemo.Font.Name := sFontComboBox1.Items[sFontComboBox1.ItemIndex];
+end;
+
+procedure TOptionsForm.sTrackBar1Change(Sender: TObject);
+begin
+  FontSetsMemo.Font.Size := sTrackBar1.Position;
+end;
+
+procedure TOptionsForm.sColorSelect1Change(Sender: TObject);
+begin
+  FontSetsMemo.Font.Color := sColorSelect1.ColorValue;
+end;
+
+procedure TOptionsForm.sCheckBox1Click(Sender: TObject);
+begin
+  if sCheckBox1.Checked then
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style + [fsBold]
+  else
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style - [fsBold];
+end;
+
+procedure TOptionsForm.sCheckBox2Click(Sender: TObject);
+begin
+  if sCheckBox2.Checked then
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style + [fsItalic]
+  else
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style - [fsItalic];
+end;
+
+procedure TOptionsForm.sCheckBox3Click(Sender: TObject);
+begin
+  if sCheckBox3.Checked then
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style + [fsUnderline]
+  else
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style - [fsUnderline];
+end;
+
+procedure TOptionsForm.sCheckBox4Click(Sender: TObject);
+begin
+  if sCheckBox4.Checked then
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style + [fsStrikeOut]
+  else
+    FontSetsMemo.Font.Style := FontSetsMemo.Font.Style - [fsStrikeOut];
+end;
+
+procedure TOptionsForm.FontSetsResetBtnClick(Sender: TObject);
+var
+  i: Integer;
+begin
+
+  for i:=0 to sFontComboBox1.Items.Count-1 do
+    begin
+      if sFontComboBox1.Items[i] = 'MS Sans Serif' then break;
+    end;
+
+  sFontComboBox1.ItemIndex := i;
+
+  sColorSelect1.ColorValue := clWindowText;
+  sTrackBar1.Position := 8;
+
+  sCheckBox1.Checked := false;
+  sCheckBox2.Checked := false;
+  sCheckBox3.Checked := false;
+  sCheckBox4.Checked := false;
+
+  FontSetsMemo.Font.Name  := 'MS Sans Serif';
+  FontSetsMemo.Font.Color := clWindowText;
+  FontSetsMemo.Font.Size  := 8;
+  FontSetsMemo.Font.Style := [];
+
 end;
 
 end.

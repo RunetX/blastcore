@@ -123,10 +123,11 @@ begin
   Result := -1;
 
   MeslistCompname  := MainForm.MessagesListView.Selected.SubItems[7];
-  UserlistCompname := MainForm.UserList.Items[i].SubItems[0];
 
   // Пробегаем по всему списку пользователей
   for i:=0 to MainForm.UserList.Items.Count-1 do
+    begin
+      UserlistCompname := MainForm.UserList.Items[i].SubItems[0];
       // Сравниваем имя компьютера автора сообщения (поле в списке сообщений)
       // с именем компьютера текущего пользователя из списка
       if(StringCompare(MeslistCompname, UserlistCompname))then
@@ -140,6 +141,8 @@ begin
           ccIndexes[ccNumber]:=i;
         end;
       end;
+    end;
+
   if(ccNumber=0)then
   begin
       result:=-1;

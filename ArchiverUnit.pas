@@ -158,6 +158,14 @@ end;
       OptPopup, OptDelastmin,
       OptShowpanel, OptEnablesounds:  boolean;
       OptUpdate:    integer;  // from 1 to 6
+// Messages Font
+      FontColor:     integer;
+      FontSize:      integer;
+      FontName:      string;
+      FontBold:      boolean;
+      FontItalic:    boolean;
+      FontUnderline: boolean;
+      FontStrikeOut: boolean;
 
   end;
 
@@ -391,6 +399,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure SkinMgrMenuitemClick(Sender: TObject);
     procedure MainMenu1Change(Sender: TObject; Source: TMenuItem;
       Rebuild: Boolean);
+    procedure FormShow(Sender: TObject);
   private
     { Private declarations }
   public
@@ -435,6 +444,8 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
      function  GetIndexByID(ID: integer): integer;
      function  StringCompare(s1, s2: string): boolean;
      function  AssignIndex:integer;
+
+     procedure SetMemoFont;
   end;
 
 var
@@ -449,6 +460,31 @@ uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
 
 {$R *.dfm}
 
+
+procedure TMainForm.SetMemoFont;
+begin
+  MessageMemo.Font.Color := clBlack;
+  MessageMemo.Font.Size  := 8;
+  MessageMemo.Font.Name  := 'MS Sans Serif';
+  MessageMemo.Font.Style := [];
+
+    with MessageMemo do
+    begin
+
+    Font.Color := SpeekerSettings.FontColor;
+    Font.Size  := SpeekerSettings.FontSize;
+    Font.Name  := SpeekerSettings.FontName;
+
+    if SpeekerSettings.FontBold then
+      Font.Style := Font.Style + [fsBold];
+    if SpeekerSettings.FontItalic then
+      Font.Style := Font.Style + [fsItalic];
+    if SpeekerSettings.FontUnderline then
+      Font.Style := Font.Style + [fsUnderline];
+    if SpeekerSettings.FontStrikeOut then
+      Font.Style := Font.Style + [fsStrikeOut];
+    end;
+end;
 
 procedure TMainForm.UMMymessage(var Message: TMessage);
 begin
@@ -642,6 +678,14 @@ begin
 //    SpeekerSettings.OptShowpanel    := Ini.ReadBool( 'Options', 'Debug',  false);
     SpeekerSettings.OptEnablesounds := Ini.ReadBool( 'Options', 'EnableSounds',  false);
 //    SpeekerSettings.OptUpdate:    integer;  // from 1 to 6
+
+    SpeekerSettings.FontColor     := Ini.ReadInteger('Font', 'Color', clBlack);
+    SpeekerSettings.FontSize      := Ini.ReadInteger('Font', 'Size', 8);
+    SpeekerSettings.FontName      := Ini.ReadString('Font', 'Name', 'MS Sans Serif');
+    SpeekerSettings.FontBold      := Ini.ReadBool('Font', 'Bold',      false);
+    SpeekerSettings.FontItalic    := Ini.ReadBool('Font', 'Italic',    false);
+    SpeekerSettings.FontUnderline := Ini.ReadBool('Font', 'Underline', false);
+    SpeekerSettings.FontStrikeOut := Ini.ReadBool('Font', 'StrikeOut', false);
 
     PanelState := SpeekerSettings.OptShowpanel;
   finally
@@ -1902,6 +1946,7 @@ begin
     PopupMenu:=RichEditPopupMenu;
   end;
 
+  sSkinManager1.SkinDirectory := ExtractFilePath(GetCurrentDir() + '\Skins\');
 
   SpeekerSettings:= TProgSettings.Create;
   ClientProperties:= TClientProperties.Create;
@@ -1930,7 +1975,6 @@ begin
             Rewrite(ignorfile);
           end;
         end;
-     //for i:=0 to ClientProperties.IgnoreList.Items.Count-1 do
   end;
 
   // Debug Time
@@ -1948,6 +1992,11 @@ begin
   CoolTrayIcon.IconIndex:=3;
 
   ConDiscon.Execute;
+end;
+
+procedure TMainForm.FormShow(Sender: TObject);
+begin
+  SetMemoFont;
 end;
 
 //-----------------------------------------------------------------
@@ -2221,6 +2270,7 @@ begin
   end;
   CheckSelected.Execute;
   EnDisButtons.Execute;
+
 end;
 
 procedure TMainForm.JumpDownExecute(Sender: TObject);
@@ -2371,11 +2421,10 @@ end;
 procedure TMainForm.ReplyAuthorExecute(Sender: TObject);
 var
     SendMessageForm: TSendMessageForm;
-    foundIndex, id : integer;
+    foundIndex, id: integer;
     onChat: string;
 begin
 // Ответ на чат
-
   if ((MessagesListView.Selected<>nil)and(UserList.Selected<>nil)) then
     if(MessagesListView.Selected.SubItems[2]<>'CHR')then
       begin
@@ -2913,6 +2962,7 @@ end;
 // Enable\Disable ToolButtons when receive or delete messages
 procedure TMainForm.EnDisButtonsExecute(Sender: TObject);
 begin
+  SetMemoFont;
   if MessagesListView.Selected <> nil then
     begin
       if MessagesListView.Items.Count=0 then

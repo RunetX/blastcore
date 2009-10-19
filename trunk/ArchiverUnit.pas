@@ -220,7 +220,6 @@ end;
     SelectAll1: TMenuItem;
     N7: TMenuItem;
     CoolTrayIcon: TCoolTrayIcon;
-    PingTcpClient: TTcpClient;
     ReplyAuthor: TAction;
     ReplyGroup: TAction;
     CreateChatWindow: TAction;
@@ -623,7 +622,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.21 beta';
+   ClientProperties.Version:='BlastCore v0.3 RC1';
 
    ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////
@@ -2919,6 +2918,7 @@ begin
               break;
           end;
     end;
+  ClientProperties.IgnoreList.Items.SaveToFile(SpeekerSettings.UserAppdataDir + '\Ignorlist.txt');
 end;
 
 procedure TMainForm.N19Click(Sender: TObject);
@@ -3088,6 +3088,7 @@ procedure TMainForm.PingMSClientSocketError(Sender: TObject;
 begin
   ErrorCode := 0;
   PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
+
   if SpeekerSettings.Debug then
       LogVariable('Ping main server', 'socket error');
 end;

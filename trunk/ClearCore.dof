@@ -94,7 +94,7 @@ OutputDir=
 UnitOutputDir=
 PackageDLLOutputDir=
 PackageDCPOutputDir=
-SearchPath=F:\BlastCore\CoolTrayIcon;F:\BlastCore\AlphaSkins\acnt_reg7\D7
+SearchPath=D:\Distr\_SND\ClearCore\CoolTrayIcon;D:\Distr\_SND\ClearCore\AlphaSkins\acnt_reg7\D7
 Packages=vcl;rtl;vclx;indy;inet;xmlrtl;vclie;inetdbbde;inetdbxpress;dbrtl;dsnap;dsnapcon;vcldb;soaprtl;VclSmp;dbexpress;dbxcds;inetdb;bdertl;vcldbx;webdsnap;websnap;adortl;ibxpress;teeui;teedb;tee;dss;visualclx;visualdbclx;vclactnband;vclshlctrls;IntrawebDB_50_70;Intraweb_50_70;Rave50CLX;Rave50VCL;dclOfficeXP
 Conditionals=
 DebugSourceDirs=
@@ -113,7 +113,7 @@ RootDir=F:\Program Files\Borland\Delphi7\Bin\
 IncludeVerInfo=1
 AutoIncBuild=0
 MajorVer=0
-MinorVer=2
+MinorVer=3
 Release=0
 Build=59
 Debug=0
@@ -126,17 +126,18 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=Peek's Webware
 FileDescription=BlastCore Sender - SEA Protocol Client
-FileVersion=0.2.0.59
+FileVersion=0.3.0.59
 InternalName=BlastCore
 LegalCopyright=Peek's Webware
 LegalTrademarks=BlastCore
 OriginalFilename=ClearCore.exe
 ProductName=BlastCore
-ProductVersion=0.2
+ProductVersion=0.3
 Comments=Alt SEA Client
 [HistoryLists\hlUnitAliases]
 Count=1
 Item0=WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;
 [HistoryLists\hlSearchPath]
-Count=1
-Item0=F:\BlastCore\CoolTrayIcon;F:\BlastCore\AlphaSkins\acnt_reg7\D7
+Count=2
+Item0=D:\Distr\_SND\ClearCore\CoolTrayIcon;D:\Distr\_SND\ClearCore\AlphaSkins\acnt_reg7\D7
+Item1=F:\BlastCore\CoolTrayIcon;F:\BlastCore\AlphaSkins\acnt_reg7\D7

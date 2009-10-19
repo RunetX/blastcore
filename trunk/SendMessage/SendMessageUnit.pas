@@ -85,9 +85,9 @@ begin
   AuthorName := MainForm.MessagesListView.Selected.SubItems[6];
   MText := Memo1.Text;
 
-  if Length(MText) > 2000 then
+  if Length(MText) > 1000 then
     begin
-      delete(MText, 1, Length(MText)-2000);
+      delete(MText, 1, Length(MText)-1000);
       MText:='...' + #13#10 + MText;
     end;
 

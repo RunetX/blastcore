@@ -243,6 +243,7 @@ begin
   MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
 
   index := MainForm.GetIndexByID(id);
+
   if index <> -1 then
       with SentMesForm.SentMesLV do
           begin

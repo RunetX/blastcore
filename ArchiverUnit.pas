@@ -577,7 +577,7 @@ var
   i:   integer;
 begin
   result:=-1;
-  for i:=2 to Userlist.Items.Count-1 do
+  for i:=0 to Userlist.Items.Count-1 do
   begin
     Buf1 := Userlist.Items[i].SubItems[1];
     if(StrToInt(Buf1)=ID) then

@@ -56,10 +56,10 @@ object DebugForm: TDebugForm
       43)
     object DebugClearBtn: TsButton
       Left = 712
-      Top = 8
+      Top = 11
       Width = 75
       Height = 25
-      Anchors = [akTop, akRight]
+      Anchors = [akRight, akBottom]
       Caption = 'Clear'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clBtnText
@@ -103,9 +103,10 @@ object DebugForm: TDebugForm
     end
     object DebugSaveToFileBtn: TsButton
       Left = 624
-      Top = 8
+      Top = 11
       Width = 75
       Height = 25
+      Anchors = [akRight, akBottom]
       Caption = 'Save to file'
       TabOrder = 3
       OnClick = DebugSaveToFileBtnClick

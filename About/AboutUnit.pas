@@ -5,13 +5,23 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ExtCtrls, StdCtrls, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel, sLabel;
+  IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel, sLabel,
+  acPNG;
 
 type
   TAboutForm = class(TForm)
-    Panel1: TsPanel;
+    Panel1: TPanel;
     Image1: TImage;
+    sPanel1: TsPanel;
     OkBtn: TsButton;
+    sLabelFX1: TsLabelFX;
+    sLabel1: TsLabel;
+    sWebLabel1: TsWebLabel;
+    sLabel2: TsLabel;
+    sLabel3: TsLabel;
+    sLabel4: TsLabel;
+    sLabel5: TsLabel;
+    sLabel6: TsLabel;
     procedure FormCreate(Sender: TObject);
     procedure OkBtnClick(Sender: TObject);
   private
@@ -45,6 +55,7 @@ begin
   'Особая благодарность моей половинке'+#13#10+
   'Zebrе aka [Соловьёвой Марии]';  }
   Caption:= Caption + MainForm.ClientProperties.Version;
+  sLabelFX1.Caption := MainForm.ClientProperties.Version;
 end;
 
 procedure TAboutForm.OkBtnClick(Sender: TObject);

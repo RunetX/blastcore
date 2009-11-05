@@ -459,6 +459,7 @@ uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
 
 {$R *.dfm}
 
+//-----------------------------------------------------------------
 
 procedure TMainForm.SetMemoFont;
 begin
@@ -588,7 +589,7 @@ begin
   if SpeekerSettings.Debug then
       LogVariable('GetIndexByID', IntToStr(result));
 end;
-
+          
 //-----------------------------------------------------------------
 
 procedure TMainForm.NullVaribles;
@@ -2087,7 +2088,10 @@ begin
   if (tmpListItem <> nil) then
   begin
       MessageMemo.Clear;
+      //MessageMemo.Lines.LoadFromStream(TStringStream.Create(MessagesListView.Selected.SubItems[3]));
+
       MessageMemo.Text:= MessagesListView.Selected.SubItems[3];
+
       //MessageMemo.SelStart:=Length(MessageMemo.Text);
       WhomEdit.Text := MessagesListView.Selected.SubItems[6]
                      + MessagesListView.Selected.SubItems[7];
@@ -2260,6 +2264,7 @@ procedure TMainForm.JumpUpExecute(Sender: TObject);
 var
   LastIndex, UpIndex: integer;
 begin
+
  if  (MessagesListView.Items.Count>1) and (MessagesListView.Selected<>nil) then
   begin
   LastIndex := MessagesListView.Items.Count-1;
@@ -3087,7 +3092,8 @@ procedure TMainForm.PingMSClientSocketError(Sender: TObject;
   var ErrorCode: Integer);
 begin
   ErrorCode := 0;
-  PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
+  //PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
+  PingMSClientSocket.Close;
 
   if SpeekerSettings.Debug then
       LogVariable('Ping main server', 'socket error');

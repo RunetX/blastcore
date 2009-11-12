@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, ExtCtrls, StdCtrls, IdBaseComponent, IdComponent,
   IdTCPConnection, IdTCPClient, IdHTTP, jpeg, sButton, sPanel, sLabel,
-  acPNG;
+  acPNG, sMemo;
 
 type
   TAboutForm = class(TForm)
@@ -15,13 +15,9 @@ type
     sPanel1: TsPanel;
     OkBtn: TsButton;
     sLabelFX1: TsLabelFX;
-    sLabel1: TsLabel;
     sWebLabel1: TsWebLabel;
-    sLabel2: TsLabel;
-    sLabel3: TsLabel;
-    sLabel4: TsLabel;
-    sLabel5: TsLabel;
     sLabel6: TsLabel;
+    sMemo1: TsMemo;
     procedure FormCreate(Sender: TObject);
     procedure OkBtnClick(Sender: TObject);
   private

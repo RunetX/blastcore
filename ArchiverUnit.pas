@@ -1658,7 +1658,7 @@ begin
   if(InBufer.CurrentOperation=22)then GetNewAltIP     else   // 22. Change Alternative Server IP
   if(InBufer.CurrentOperation=23)then GetLinkLength   else   // 23. GetLinkLength
   if(InBufer.CurrentOperation=24)then GetLink         else   // 24. GetLink
-  if((InBufer.CurrentOperation<1)or(InBufer.CurrentOperation>22))then
+  if((InBufer.CurrentOperation<1)or(InBufer.CurrentOperation>24))then
   begin
     if SpeekerSettings.Debug then
       LogVariable('CurrentOperation out of range', IntToStr(InBufer.CurrentOperation));
@@ -1982,10 +1982,10 @@ begin
       Caption := Caption + ' '+TimeToStr(Time)+' '+DateToStr(Date)+' [DEBUG MODE]';
   // Set Hints --------------
 
-  FirsmesToolButton.Hint   := FirsmesToolButton.Hint+' (Alt + <-)';
-  BackToolButton.Hint      := BackToolButton.Hint+' (Ctrl + <-)';
-  ForwardToolButton.Hint   := ForwardToolButton.Hint+' (Ctrl + ->)';
-  LastmesToolButton.Hint   := LastmesToolButton.Hint+' (Alt + ->)';
+  FirsmesToolButton.Hint   := FirsmesToolButton.Hint+' (Alt + Left)';
+  BackToolButton.Hint      := BackToolButton.Hint+' (Ctrl + Left)';
+  ForwardToolButton.Hint   := ForwardToolButton.Hint+' (Ctrl + Right)';
+  LastmesToolButton.Hint   := LastmesToolButton.Hint+' (Alt + Right)';
 
   //-------------------------
 
@@ -3072,6 +3072,7 @@ end;
 
 procedure TMainForm.PingMSTimerTimer(Sender: TObject);
 begin
+  PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
   PingMSClientSocket.Open;
   if SpeekerSettings.Debug then
           LogVariable('Ping main server timer ', 'Try to connect...');
@@ -3092,8 +3093,8 @@ procedure TMainForm.PingMSClientSocketError(Sender: TObject;
   var ErrorCode: Integer);
 begin
   ErrorCode := 0;
-  //PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
-  PingMSClientSocket.Close;
+  PingMSClientSocket.Socket.Disconnect(PingMSClientSocket.Socket.SocketHandle);
+  //PingMSClientSocket.Close;
 
   if SpeekerSettings.Debug then
       LogVariable('Ping main server', 'socket error');

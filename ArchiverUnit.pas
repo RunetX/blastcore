@@ -245,7 +245,7 @@ end;
     ToolButton14: TToolButton;
     AwayTB: TToolButton;
     PrinterTB: TToolButton;
-    N5: TMenuItem;
+    ShowMesBaloon: TMenuItem;
     N8: TMenuItem;
     N9: TMenuItem;
     N10: TMenuItem;
@@ -364,7 +364,7 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure SeaTimer1Timer(Sender: TObject);
     procedure SeaTimer2Timer(Sender: TObject);
     procedure SeaTimer3Timer(Sender: TObject);
-    procedure N5Click(Sender: TObject);
+    procedure ShowMesBaloonClick(Sender: TObject);
     procedure N10Click(Sender: TObject);
     procedure GoToFromAwayExecute(Sender: TObject);
     procedure GoToFromPrinterExecute(Sender: TObject);
@@ -709,6 +709,8 @@ begin
 
 end;
 
+// Функция закрытия всех активных чатов.
+// Применяется, например, при разрыве соединения
 procedure CloseAllChats;
 var
   i: integer;
@@ -1333,7 +1335,7 @@ begin
               CoolTrayIcon.IconIndex:=4;
             end;
         end;
-      if(N5.Checked)then
+      if(ShowMesBaloon.Checked)then
         begin
           toBalloonHint:= ClientProperties.Messag;
           MessageLen := ClientProperties.Meslen;
@@ -1349,27 +1351,13 @@ begin
     // Если найден в заигноренных
     else
       begin
-  {toSendIgn:= '==============================================================='+#13#10+
-  '                                      Говорит MUTE:'+#13#10+
-  ' Товарищ, по всей видимости ты меня чем-то конкретно задолбал и'+
-  ' я поставил на тебя MUTE! Ты только не обижайся, потому что это могло'+
-  ' случиться не потому, что ты мне не нравишься, противен или я тебя ненавижу, а'+
-  ' просто потому, что ты мог долго и много писать всякую чушь, которая в конечном'+
-  ' итоге мне пришлась не по нраву и я сделал то, что должен был сделать, хотя...'+
-  ' возможен тот факт, что ты меня просто ЗА@БАЛ! Не грузись!!!'+#13#10+
-  '===============================================================';
-  toSendIgn:=Char(Length(toSendIgn) div 256)+
-     Char(Length(toSendIgn) mod 256)+
-     toSendIgn;
-  toSendIgn:=#2+Char(ClientProperties.AlienID div 256)+
-                Char(ClientProperties.AlienID mod 256)+#0#0+toSendIgn; }
-  if(ClientProperties.Privat=1)then
-  begin
-    toSendIgn:=#10+Char(ClientProperties.AlienID div 256)+
-                   Char(ClientProperties.AlienID mod 256);
-    toSendIgn:=#0+Char(length(toSendIgn) div 256)+Char(length(toSendIgn) mod 256)+toSendIgn;
-        ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
-  end;
+        if(ClientProperties.Privat=1)then
+          begin
+            toSendIgn:=#10+Char(ClientProperties.AlienID div 256)+
+                           Char(ClientProperties.AlienID mod 256);
+            toSendIgn:=#0+Char(length(toSendIgn) div 256)+Char(length(toSendIgn) mod 256)+toSendIgn;
+            ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
+          end;
       end;
     if ClientProperties.ownID = ClientProperties.AlienID then
       JumpToLast.Execute;
@@ -1521,12 +1509,14 @@ begin
                     break;
                   end;
               end;
+
+              CoolTrayIcon.ShowMainForm;
+
               if(ChatListView.Items.Count>0)then
                 begin
-                if(tmpChatForm[i]=nil)then
-                  ChatYESNOForm.Show
-                else if(not(tmpChatForm[i].Visible))then ChatYESNOForm.Show;
-
+                  if(tmpChatForm[i]=nil)then
+                    ChatYESNOForm.Show
+                  else if(not(tmpChatForm[i].Visible))then ChatYESNOForm.Show;
                 end
               else
                 ChatYESNOForm.Show;
@@ -2643,9 +2633,9 @@ begin
 
 end;
 
-procedure TMainForm.N5Click(Sender: TObject);
+procedure TMainForm.ShowMesBaloonClick(Sender: TObject);
 begin
-  N5.Checked := not(N5.Checked);
+  ShowMesBaloon.Checked := not(ShowMesBaloon.Checked);
 end;
 
 procedure TMainForm.N13Click(Sender: TObject);

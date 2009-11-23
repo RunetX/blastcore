@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 387
-  Top = 215
+  Left = 344
+  Top = 263
   Width = 658
   Height = 572
   AlphaBlendValue = 100
@@ -485,9 +485,9 @@ object MainForm: TMainForm
     object N20: TMenuItem
       Caption = '-'
     end
-    object N5: TMenuItem
+    object ShowMesBaloon: TMenuItem
       Caption = #1042#1089#1087#1083#1099#1074#1072#1102#1097#1080#1077' '#1057#1086#1086#1073#1097#1077#1085#1080#1103
-      OnClick = N5Click
+      OnClick = ShowMesBaloonClick
     end
     object N13: TMenuItem
       Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1079#1074#1091#1082#1080

@@ -1721,7 +1721,7 @@ begin
     end;
   
 
-  if(ClientSocket1.Address=SpeekerSettings.AltServerIP)then
+  if(ClientSocket1.Host=SpeekerSettings.AltServerIP)then
       begin
         //PingTimer.Enabled:=true;
         StatusBar1.Panels[0].Text:=StatusBar1.Panels[0].Text+' [Альтернативный]';
@@ -1895,13 +1895,13 @@ begin
         end;
 
       try
-        if ClientSocket1.Address=SpeekerSettings.MainServerIP then
+        if ClientSocket1.Host=SpeekerSettings.MainServerIP then
           begin
-            ClientSocket1.Address := SpeekerSettings.AltServerIP;
-            PingMSClientSocket.Address := SpeekerSettings.MainServerIP;
+            ClientSocket1.Host := SpeekerSettings.AltServerIP;
+            PingMSClientSocket.Host := SpeekerSettings.MainServerIP;
           end
         else
-          ClientSocket1.Address:=SpeekerSettings.MainServerIP;
+          ClientSocket1.Host := SpeekerSettings.MainServerIP;
 
         ClientSocket1.Open;
       except

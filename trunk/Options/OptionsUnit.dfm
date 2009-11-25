@@ -1,5 +1,5 @@
 object OptionsForm: TOptionsForm
-  Left = 784
+  Left = 609
   Top = 170
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
@@ -24,7 +24,7 @@ object OptionsForm: TOptionsForm
     Top = 1
     Width = 425
     Height = 329
-    ActivePage = sTabSheet1
+    ActivePage = TabSheet2
     TabOrder = 0
     SkinData.SkinSection = 'PAGECONTROL'
     object TabSheet1: TsTabSheet
@@ -37,7 +37,7 @@ object OptionsForm: TOptionsForm
         Width = 269
         Height = 145
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1079#1074#1091#1082#1072
-        TabOrder = 2
+        TabOrder = 1
         SkinData.SkinSection = 'GROUPBOX'
         object SpeedButton1: TsSpeedButton
           Left = 184
@@ -350,7 +350,7 @@ object OptionsForm: TOptionsForm
         Width = 409
         Height = 121
         Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080' '#1087#1086#1074#1077#1076#1077#1085#1080#1103' '#1080' '#1074#1080#1076#1072
-        TabOrder = 1
+        TabOrder = 2
         SkinData.SkinSection = 'GROUPBOX'
         object StartMinChkBox: TsCheckBox
           Left = 264
@@ -358,7 +358,7 @@ object OptionsForm: TOptionsForm
           Width = 132
           Height = 20
           Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1089#1074#1105#1088#1085#1091#1090#1099#1084
-          TabOrder = 0
+          TabOrder = 4
           SkinData.SkinSection = 'CHECKBOX'
           ImgChecked = 0
           ImgUnchecked = 0
@@ -369,7 +369,7 @@ object OptionsForm: TOptionsForm
           Width = 313
           Height = 20
           Caption = #1057#1074#1086#1088#1072#1095#1080#1074#1072#1090#1100' '#1074' '#1090#1088#1077#1081' '#1087#1088#1080' '#1091#1076#1072#1083#1077#1085#1080#1080' '#1087#1086#1089#1083#1077#1076#1085#1077#1075#1086' '#1089#1086#1086#1073#1097#1077#1085#1080#1103
-          TabOrder = 1
+          TabOrder = 3
           SkinData.SkinSection = 'CHECKBOX'
           ImgChecked = 0
           ImgUnchecked = 0
@@ -391,7 +391,7 @@ object OptionsForm: TOptionsForm
           Width = 237
           Height = 20
           Caption = #1047#1072#1087#1091#1089#1082#1072#1090#1100' '#1087#1088#1086#1075#1088#1072#1084#1084#1091' '#1087#1088#1080' '#1089#1090#1072#1088#1090#1077' Windows'
-          TabOrder = 3
+          TabOrder = 1
           SkinData.SkinSection = 'CHECKBOX'
           ImgChecked = 0
           ImgUnchecked = 0
@@ -402,7 +402,7 @@ object OptionsForm: TOptionsForm
           Width = 182
           Height = 20
           Caption = #1055#1086#1082#1072#1079#1099#1074#1072#1090#1100' '#1087#1072#1085#1077#1083#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1081
-          TabOrder = 4
+          TabOrder = 0
           SkinData.SkinSection = 'CHECKBOX'
           ImgChecked = 0
           ImgUnchecked = 0
@@ -3623,7 +3623,7 @@ object OptionsForm: TOptionsForm
         ItemHeight = 13
         ItemIndex = -1
         ParentFont = False
-        TabOrder = 1
+        TabOrder = 3
         Items.Strings = (
           'ABT'
           'MC')
@@ -3634,7 +3634,7 @@ object OptionsForm: TOptionsForm
         Width = 75
         Height = 25
         Caption = #1048#1079#1084#1077#1085#1080#1090#1100
-        TabOrder = 2
+        TabOrder = 1
         OnClick = Button4Click
         SkinData.SkinSection = 'BUTTON'
       end
@@ -3650,7 +3650,7 @@ object OptionsForm: TOptionsForm
         Font.Style = []
         MaxLength = 255
         ParentFont = False
-        TabOrder = 3
+        TabOrder = 5
         BoundLabel.Indent = 0
         BoundLabel.Font.Charset = DEFAULT_CHARSET
         BoundLabel.Font.Color = clWindowText
@@ -3674,7 +3674,7 @@ object OptionsForm: TOptionsForm
         Font.Style = []
         ParentFont = False
         ReadOnly = True
-        TabOrder = 4
+        TabOrder = 2
         SkinData.SkinSection = 'EDIT'
         BoundLabel.Indent = 0
         BoundLabel.Font.Charset = DEFAULT_CHARSET
@@ -3708,12 +3708,12 @@ object OptionsForm: TOptionsForm
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 0
+        ItemHeight = 13
         ItemIndex = -1
         MaxLength = 5
         ParentFont = False
         Sorted = True
-        TabOrder = 5
+        TabOrder = 4
       end
     end
     object sTabSheet1: TsTabSheet

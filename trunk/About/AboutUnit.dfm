@@ -36,6 +36,7 @@ object AboutForm: TAboutForm
       Top = 0
       Width = 128
       Height = 128
+      Hint = #1061#1080#1090' '#1084#1080'!'
       Picture.Data = {
         0B54504E474772617068696336000100424D3600010000000000360000002800
         0000800000008000000001002000000000000000010000000000000000000000
@@ -2090,6 +2091,7 @@ object AboutForm: TAboutForm
         000000000000}
       Proportional = True
       Stretch = True
+      OnClick = Image1Click
     end
     object sLabelFX1: TsLabelFX
       Left = 1
@@ -2133,6 +2135,7 @@ object AboutForm: TAboutForm
       Caption = #1058#1077#1093#1085#1080#1095#1077#1089#1082#1072#1103' '#1087#1086#1076#1076#1077#1088#1078#1082#1072':'
     end
     object sMemo1: TsMemo
+      Tag = 1
       Left = 8
       Top = 184
       Width = 256
@@ -2211,5 +2214,11 @@ object AboutForm: TAboutForm
       OnClick = OkBtnClick
       SkinData.SkinSection = 'BUTTON'
     end
+  end
+  object CreditsAnimTimer: TTimer
+    Enabled = False
+    OnTimer = CreditsAnimTimerTimer
+    Left = 72
+    Top = 385
   end
 end

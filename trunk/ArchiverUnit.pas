@@ -2114,7 +2114,7 @@ begin
       WhomEdit.Text := WhomEdit.Text+' в '+ MessagesListView.Selected.SubItems[4]+
       ', '+ MessagesListView.Selected.SubItems[5];
       //MessagesListView.Items[MessagesListView.Selected.Index].Checked:=true;
-      MesnumberLabel.Caption:='Сообщение: '+IntToStr(MessagesListView.Selected.Index+1)+
+      MesnumberLabel.Caption:='Сообщ.: '+IntToStr(MessagesListView.Selected.Index+1)+
                                     '/'+IntToStr(MessagesListView.Items.Count);
       CheckedNumber:=0;
       for i:=0 to MessagesListView.Items.Count-1 do

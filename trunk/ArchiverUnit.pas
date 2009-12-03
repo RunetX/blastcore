@@ -3,7 +3,7 @@ unit ArchiverUnit;
 interface
 
 uses
-  Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus, 
+  Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus,
   shellapi, ToolWin, ImgList, IniFiles, RichEdit, sListView, 
   Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages,
   Variants, Graphics, ScktComp, ActnList, Sockets, Registry,
@@ -311,6 +311,7 @@ end;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
+procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 ////////////////////////////////////////////////////////////////////
     procedure ClientSocket1Connect(Sender: TObject;
       Socket: TCustomWinSocket);
@@ -361,9 +362,6 @@ procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
     procedure UserListDblClick(Sender: TObject);
     procedure CreateChatWindowExecute(Sender: TObject);
     procedure ChatClick(Sender: TObject);
-    procedure SeaTimer1Timer(Sender: TObject);
-    procedure SeaTimer2Timer(Sender: TObject);
-    procedure SeaTimer3Timer(Sender: TObject);
     procedure ShowMesBaloonClick(Sender: TObject);
     procedure N10Click(Sender: TObject);
     procedure GoToFromAwayExecute(Sender: TObject);
@@ -535,16 +533,7 @@ var
   logfile: TextFile;
   logstring: string;
 begin
-  {AssignFile(logfile, 'clearlog.txt');
-  try
-    Append(logfile);
-  except
-    Rewrite(logfile);
-  end; }
   logstring:='['+DateToStr(Date)+']['+TimeToStr(Time)+'] '+Varname+' = '+Variable;
-  {Writeln(logfile, logstring);
-  CloseFile(logfile);}
-
   DebugForm.DebugMemo.Lines.Add(logstring);
 end;
 //-----------------------------------------------------------------
@@ -1919,6 +1908,7 @@ var
     ignorfile: TextFile;
 begin
   Application.ProcessMessages;
+  Application.OnMessage := AppMessage;
 
   MessageMemo:=TRichEdit.Create(Self);
   with MessageMemo do begin
@@ -2349,9 +2339,23 @@ begin
     ConDiscon.Execute;
 end;
 
+procedure TMainForm.AppMessage(var Msg: TMsg; var Handled: Boolean);
+begin
+  if Msg.message = WM_SYSCOMMAND then
+  begin
+    case Msg.wParam of
+      SC_CLOSE:
+        begin
+          Application.Minimize;
+          Handled := True;
+        end;
+    end;
+  end;
+end;
+
 procedure TMainForm.WMSYSCOMMAND(var msg: TMessage);
 begin
-  if (msg.WParam=SC_MINIMIZE) or (msg.WParam=SC_CLOSE)then
+  if (msg.WParam=SC_MINIMIZE) or (msg.WParam=SC_CLOSE) then
   begin
     //HideMainForm;  //  минимизируемся
     Application.Minimize;
@@ -2586,51 +2590,6 @@ begin
     end
   else
     ShowMessage('Чат с этим пользователем уже установлен!');
-end;
-
-procedure TMainForm.SeaTimer1Timer(Sender: TObject);
-var
-  onChat: string;
-  id: integer;
-begin
-    id := StrToInt(MainForm.UserList.Selected.SubItems[1]);
-    onChat:=#7+Char(id div 256)+
-              Char(id mod 256);
-    onChat:=#0+Char(Length(onChat) div 256)+
-              Char(Length(onChat) mod 256)+onChat;
-    //onChat:=onChat+onChat+onChat+'#0#0#3#8'+Char(id div 256)+Char(id mod 256);
-    ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));
-
-end;
-
-procedure TMainForm.SeaTimer2Timer(Sender: TObject);
-var
-  onChat: string;
-  id: integer;
-begin
-    id := StrToInt(MainForm.UserList.Selected.SubItems[1]);
-    onChat:=#7+Char(id div 256)+
-              Char(id mod 256);
-    onChat:=#0+Char(Length(onChat) div 256)+
-              Char(Length(onChat) mod 256)+onChat;
-    //onChat:=onChat+'#0#0#3#8'+Char(id div 256)+Char(id mod 256);
-    ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));
-
-end;
-
-procedure TMainForm.SeaTimer3Timer(Sender: TObject);
-var
-  onChat: string;
-  id: integer;
-begin
-    id := StrToInt(MainForm.UserList.Selected.SubItems[1]);
-    onChat:=#7+Char(id div 256)+
-              Char(id mod 256);
-    onChat:=#0+Char(Length(onChat) div 256)+
-              Char(Length(onChat) mod 256)+onChat;
-    onChat:=onChat+'#0#0#3#8'+Char(id div 256)+Char(id mod 256);
-    ClientSocket1.Socket.SendBuf(onChat[1],length(onChat));
-
 end;
 
 procedure TMainForm.ShowMesBaloonClick(Sender: TObject);

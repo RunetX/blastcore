@@ -156,6 +156,7 @@ end;
 // Options
       OptStartmin, OptAutostart,
       OptPopup, OptDelastmin,
+      OptJumpOwnMessage,
       OptShowpanel, OptEnablesounds:  boolean;
       OptUpdate:    integer;  // from 1 to 6
 // Messages Font
@@ -308,6 +309,7 @@ end;
     AWAY1: TMenuItem;
     N20: TMenuItem;
     SkinMgrMenuitem: TMenuItem;
+    OpenSkinManager: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -397,6 +399,8 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure MainMenu1Change(Sender: TObject; Source: TMenuItem;
       Rebuild: Boolean);
     procedure FormShow(Sender: TObject);
+    procedure sSkinManager1AfterChange(Sender: TObject);
+    procedure OpenSkinManagerExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -612,7 +616,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.3 RC1';
+   ClientProperties.Version:='BlastCore v0.4';
 
    ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////
@@ -655,18 +659,22 @@ begin
     SpeekerSettings.Debug       :=   Ini.ReadBool( 'Programm', 'Debug',  false);
     SpeekerSettings.OptShowpanel :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
     SpeekerSettings.Skinned :=  Ini.ReadBool( 'Programm', 'Skinned', false);
+
+    sSkinManager1.SkinName      := Ini.ReadString( 'Programm', 'SkinName', 'Office2007 Blue');
+
 // Program Sounds
     SpeekerSettings.PrivateSound    := Ini.ReadString( 'Sounds', 'PrivateSound','Sounds\message.wav');
     SpeekerSettings.GroupSound      := Ini.ReadString( 'Sounds', 'GroupSound','Sounds\message.wav');
     SpeekerSettings.ChatSound       := Ini.ReadString( 'Sounds', 'ChatSound','Sounds\ringin.wav');
 // Options
-    SpeekerSettings.OptStartmin     := Ini.ReadBool( 'Options', 'StartMinimized',  false);
-    SpeekerSettings.OptAutostart    := Ini.ReadBool( 'Options', 'AutoStart',  false);
-    SpeekerSettings.OptPopup        := Ini.ReadBool( 'Options', 'WinPopup',  false);
-    SpeekerSettings.OptDelastmin    := Ini.ReadBool( 'Options', 'MinimizeWhenDelast',  false);
+    SpeekerSettings.OptStartmin       := Ini.ReadBool( 'Options', 'StartMinimized',  false);
+    SpeekerSettings.OptAutostart      := Ini.ReadBool( 'Options', 'AutoStart',  false);
+    SpeekerSettings.OptPopup          := Ini.ReadBool( 'Options', 'WinPopup',  false);
+    SpeekerSettings.OptDelastmin      := Ini.ReadBool( 'Options', 'MinimizeWhenDelast',  false);
 //    SpeekerSettings.OptShowpanel    := Ini.ReadBool( 'Options', 'Debug',  false);
-    SpeekerSettings.OptEnablesounds := Ini.ReadBool( 'Options', 'EnableSounds',  false);
+    SpeekerSettings.OptEnablesounds   := Ini.ReadBool( 'Options', 'EnableSounds',  false);
 //    SpeekerSettings.OptUpdate:    integer;  // from 1 to 6
+    SpeekerSettings.OptJumpOwnMessage := Ini.ReadBool( 'Options', 'JumpOwnMessages', false);
 
     SpeekerSettings.FontColor     := Ini.ReadInteger('Font', 'Color', clBlack);
     SpeekerSettings.FontSize      := Ini.ReadInteger('Font', 'Size', 8);
@@ -1348,7 +1356,7 @@ begin
             ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
           end;
       end;
-    if ClientProperties.ownID = ClientProperties.AlienID then
+    if (ClientProperties.ownID = ClientProperties.AlienID) and SpeekerSettings.OptJumpOwnMessage then
       JumpToLast.Execute;
     EnDisButtons.Execute;
     end
@@ -2473,14 +2481,14 @@ procedure TMainForm.WriteNewMessageExecute(Sender: TObject);
 var
     SendMessageForm: TSendMessageForm;
 begin
-  if(UserList.Selected<>nil)then
+  if(UserList.Items.Count > 0)then
     begin
       SendMessageFlag := 3;
       SendMessageForm := TSendMessageForm.Create(Self);
       SendMessageForm.Show;
     end
   else
-    ShowMessage('Выберите пользователя из списка для отправки нового сообщения!');
+    ShowMessage('Не найдена группа АВТФ!');
 end;
 
 procedure TMainForm.UserListDblClick(Sender: TObject);
@@ -2881,15 +2889,8 @@ begin
 end;
 
 procedure TMainForm.SkinMgrMenuitemClick(Sender: TObject);
-var
-  SkinName, Skindir : string;
 begin
-  SkinName := 'Office2007 Blue.asz';
-  SkinDir := ExtractFilePath(GetCurrentDir() + '\Skins\');
-  if SelectSkin(SkinName, SkinDir, stPacked) then begin
-    sSkinManager1.SkinName := SkinName;
-    sSkinManager1.UpdateSkin;
-  end;
+
 end;
 
 // Send "Ping" every 2 minutes
@@ -3091,6 +3092,31 @@ procedure TMainForm.MainMenu1Change(Sender: TObject; Source: TMenuItem;
   Rebuild: Boolean);
 begin
   SkinMgrMenuitem.Enabled := sSkinManager1.Active;
+end;
+
+procedure TMainForm.sSkinManager1AfterChange(Sender: TObject);
+var
+  sIniFile: TIniFile;
+begin
+// Save to Ini
+    if(not(DirectoryExists(MainForm.SpeekerSettings.UserAppdataDir)))then
+        CreateDir(MainForm.SpeekerSettings.UserAppdataDir);
+
+    sIniFile := TIniFile.Create(MainForm.SpeekerSettings.UserAppdataDir + '\Settings.ini');
+    sIniFile.WriteString( 'Programm', 'SkinName', sSkinManager1.SkinName);
+    sIniFile.Free;
+end;
+
+procedure TMainForm.OpenSkinManagerExecute(Sender: TObject);
+var
+  SkinName, Skindir : string;
+begin
+  SkinName := 'Office2007 Blue.asz';
+  SkinDir := ExtractFilePath(GetCurrentDir() + '\Skins\');
+  if SelectSkin(SkinName, SkinDir, stPacked) then begin
+    sSkinManager1.SkinName := SkinName;
+    sSkinManager1.UpdateSkin;
+  end;
 end;
 
 end.

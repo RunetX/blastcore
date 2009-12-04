@@ -7,7 +7,7 @@ uses
   Dialogs, ToolWin, ComCtrls, StdCtrls, ExtCtrls, Buttons, ActnList, IniFiles, 
   MMSystem, Registry, sDialogs, sMemo, sComboBox, sCheckBox,
   sEdit, sButton, sLabel, sSpeedButton, sGroupBox, sPageControl, sFontCtrls,
-  sTrackBar, sPanel, sColorSelect, sBitBtn;
+  sTrackBar, sPanel, sColorSelect, sBitBtn, acPNG;
 
 type
   TOptionsForm = class(TForm)
@@ -18,8 +18,6 @@ type
     LabeledEdit1: TLabeledEdit;
     GroupBox2: TsGroupBox;
     StartMinChkBox: TsCheckBox;
-    MinSTChkBox: TsCheckBox;
-    WinpopupChkBox: TsCheckBox;
     AutorunChkBox: TsCheckBox;
     TabSheet2: TsTabSheet;
     GroupBox3: TsGroupBox;
@@ -41,8 +39,6 @@ type
     Button4: TsButton;
     Memo1: TsMemo;
     Label2: TsLabel;
-    ShowPanelChkBox: TsCheckBox;
-    SoundsEnableChkBox: TsCheckBox;
     SpeedButton7: TsSpeedButton;
     SpeedButton8: TsSpeedButton;
     SpeedButton9: TsSpeedButton;
@@ -56,7 +52,6 @@ type
     LabeledEdit2: TsEdit;
     RoomCmbBox: TsComboBox;
     Label5: TsLabel;
-    SkinOnChkBox: TsCheckBox;
     sTabSheet1: TsTabSheet;
     sFontComboBox1: TsFontComboBox;
     sLabelFX1: TsLabelFX;
@@ -77,6 +72,15 @@ type
     sLabel4: TsLabel;
     sLabel5: TsLabel;
     sLabel6: TsLabel;
+    sGroupBox2: TsGroupBox;
+    SoundsEnableChkBox: TsCheckBox;
+    SkinOnChkBox: TsCheckBox;
+    sGroupBox3: TsGroupBox;
+    ShowPanelChkBox: TsCheckBox;
+    WinpopupChkBox: TsCheckBox;
+    MinSTChkBox: TsCheckBox;
+    JmpownmesChkBox: TsCheckBox;
+    BalloonTipChkBox: TsCheckBox;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
@@ -175,6 +179,7 @@ begin
   SoundsEnableChkBox.Checked := MainForm.SpeekerSettings.OptEnablesounds;
   ShowPanelChkBox.Checked    := MainForm.SpeekerSettings.OptShowpanel;
   SkinOnChkBox.Checked       := MainForm.sSkinManager1.Active;
+  JmpownmesChkBox.Checked    := MainForm.SpeekerSettings.OptJumpOwnMessage;
 
   for i:=0 to sFontComboBox1.Items.Count-1 do
     begin
@@ -249,6 +254,8 @@ begin
   MainForm.SpeekerSettings.OptShowpanel := ShowPanelChkBox.Checked;
   // Enable\Disable sounds
   MainForm.SpeekerSettings.OptEnablesounds := SoundsEnableChkBox.Checked;
+  // Jump when receive own message
+  MainForm.SpeekerSettings.OptJumpOwnMessage := JmpownmesChkBox.Checked;
 
   if MainForm.sSkinManager1.Active <> SkinOnChkBox.Checked then
     MainForm.sSkinManager1.Active := SkinOnChkBox.Checked;
@@ -328,6 +335,7 @@ begin
     sIniFile.WriteBool( 'Options', 'WinPopup',        WinpopupChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'MinimizeWhenDelast',  MinSTChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'EnableSounds',  SoundsEnableChkBox.Checked);
+    sIniFile.WriteBool( 'Options', 'JumpOwnMessages',  JmpownmesChkBox.Checked);
 
     sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
     sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);

@@ -180,6 +180,7 @@ begin
   ShowPanelChkBox.Checked    := MainForm.SpeekerSettings.OptShowpanel;
   SkinOnChkBox.Checked       := MainForm.sSkinManager1.Active;
   JmpownmesChkBox.Checked    := MainForm.SpeekerSettings.OptJumpOwnMessage;
+  BalloonTipChkBox.Checked   := MainForm.ShowMesBaloon.Checked;
 
   for i:=0 to sFontComboBox1.Items.Count-1 do
     begin
@@ -256,6 +257,8 @@ begin
   MainForm.SpeekerSettings.OptEnablesounds := SoundsEnableChkBox.Checked;
   // Jump when receive own message
   MainForm.SpeekerSettings.OptJumpOwnMessage := JmpownmesChkBox.Checked;
+  // Show balloon tip when receive message
+  MainForm.ShowMesBaloon.Checked  :=  BalloonTipChkBox.Checked;
 
   if MainForm.sSkinManager1.Active <> SkinOnChkBox.Checked then
     MainForm.sSkinManager1.Active := SkinOnChkBox.Checked;
@@ -320,6 +323,7 @@ begin
 
     sIniFile.WriteBool( 'Programm', 'ShowPanel', ShowPanelChkBox.Checked);
     sIniFile.WriteBool( 'Programm', 'Skinned',   SkinOnChkBox.Checked);
+    sIniFile.WriteBool( 'Programm', 'ShowBalloon', BalloonTipChkBox.Checked);
 
     sIniFile.WriteString( 'User', 'UserName', LabeledEdit7.Text);
     sIniFile.WriteString( 'User', 'Room',     MainForm.SpeekerSettings.Room);

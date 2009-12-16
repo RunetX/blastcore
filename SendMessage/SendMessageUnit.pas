@@ -73,15 +73,13 @@ end;
 
 procedure  TSendMessageForm.InsertLastName;
 var
-  index, j: integer;
-  tmpShift, Shift, LinesEndIndex: integer;
-  flag: integer;
+  tmpShift, Shift: integer;
   Text2Quote, MText, Delimiter, AuthorName: string;
 
 begin
-  flag := 0;
+
   Delimiter  := '-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
-  Memo1.Text := MainForm.MessageMemo.Text;
+  Memo1.Text := MainForm.MessagesListView.Selected.SubItems[3];//MainForm.MessageMemo.Text;
   AuthorName := MainForm.MessagesListView.Selected.SubItems[6];
   MText := Memo1.Text;
 
@@ -212,6 +210,7 @@ begin
   Memo1.SelStart:=Length(Memo1.Text);
   Memo1.Perform(WM_VScroll, SB_BOTTOM,0);
   Memo1.SetFocus;
+
 end;
 
 procedure TSendMessageForm.FormClose(Sender: TObject;

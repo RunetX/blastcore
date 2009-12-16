@@ -146,7 +146,7 @@ end;
       AwayStatus:   boolean;
       Debug:        boolean;
       Skinned:      boolean;
-
+      Smiled:       boolean;
       OwnID:        integer;
 
 // Program Sounds
@@ -303,13 +303,13 @@ end;
     WhomImage: TImage;
     DebugAction: TAction;
     BigImages: TImageList;
-    KillSEA: TAction;
     OptionsTPM: TMenuItem;
     NewmessageTPM: TMenuItem;
     AWAY1: TMenuItem;
     N20: TMenuItem;
     SkinMgrMenuitem: TMenuItem;
     OpenSkinManager: TAction;
+    SmilesImageList: TImageList;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -395,14 +395,17 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure DebugActionExecute(Sender: TObject);
     procedure OptionsTPMClick(Sender: TObject);
     procedure MessagesListViewClick(Sender: TObject);
-    procedure SkinMgrMenuitemClick(Sender: TObject);
+
     procedure MainMenu1Change(Sender: TObject; Source: TMenuItem;
       Rebuild: Boolean);
     procedure FormShow(Sender: TObject);
     procedure sSkinManager1AfterChange(Sender: TObject);
     procedure OpenSkinManagerExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormDeactivate(Sender: TObject);
   private
     { Private declarations }
+
   public
     { Public declarations }
   ClientProperties: TClientProperties;
@@ -447,6 +450,7 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
      function  AssignIndex:integer;
 
      procedure SetMemoFont;
+     procedure InsertSmiles;
   end;
 
 var
@@ -457,7 +461,7 @@ var
 implementation
 
 uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
-  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit, acSelectSkin;
+  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit, acSelectSkin, re_bmp;
 
 {$R *.dfm}
 
@@ -501,30 +505,8 @@ begin
 end;
 
 function FromEdit2Host(HostEdit: TEdit): Boolean;
-var
-  WSAData: TWSAData;
-  Host: PHostEnt;
-  Destino :in_addr;
-
 begin
-  WSAStartup($0101, WSAData);
 
-  Destino.S_addr := inet_addr(Pchar(HostEdit.text));
-  if (Destino.S_addr = -1) then
-    Host := GetHostbyName(PChar(HostEdit.text))
-  else
-    Host := GetHostbyAddr(@Destino,sizeof(in_addr), AF_INET);
-
-  if (host <> nil) then
-  begin
-    showmessage(inet_ntoa(PInAddr(Host.h_addr_list^)^));
-  end
-  else
-  begin
-    WSACleanup();
-    exit;
-  end;
-  WSACleanup;
 end;
 
 //-----------------------------------------------------------------
@@ -590,6 +572,7 @@ var
   Ini: TIniFile;
   PanelState: boolean;
   ProgramDirectory: string;
+  BFWidth, BFHeight, BFTop, BFLeft: Integer;
 begin
   // TInBufer
   InBufer.HowmanyNeedRec   := 1;
@@ -658,10 +641,26 @@ begin
     SpeekerSettings.PrintUser   :=   Ini.ReadBool( 'User', 'isPrinter', false);
     SpeekerSettings.Debug       :=   Ini.ReadBool( 'Programm', 'Debug',  false);
     SpeekerSettings.OptShowpanel :=  Ini.ReadBool( 'Programm', 'ShowPanel', false);
-    SpeekerSettings.Skinned :=  Ini.ReadBool( 'Programm', 'Skinned', false);
+    SpeekerSettings.Skinned      :=  Ini.ReadBool( 'Programm', 'Skinned', false);
+    SpeekerSettings.Smiled       :=  Ini.ReadBool( 'Programm', 'Smiled', false);
 
     sSkinManager1.SkinName      := Ini.ReadString( 'Programm', 'SkinName', 'Office2007 Blue');
+    ShowMesBaloon.Checked       := Ini.ReadBool( 'Programm', 'ShowBalloon', false);
 
+    BFHeight :=  Ini.ReadInteger('Programm', 'Height', 700);
+    if BFHeight < 654 then
+      MainForm.Height := 654
+    else
+      MainForm.Height := BFHeight;
+
+    BFWidth  :=  Ini.ReadInteger('Programm', 'Width', 660);
+    if BFWidth < 652 then
+      MainForm.Width := 652
+    else
+      MainForm.Width := BFWidth;
+
+    MainForm.Top  :=  Ini.ReadInteger('Programm', 'Top', 150);
+    MainForm.Left :=  Ini.ReadInteger('Programm', 'Left', 360);
 // Program Sounds
     SpeekerSettings.PrivateSound    := Ini.ReadString( 'Sounds', 'PrivateSound','Sounds\message.wav');
     SpeekerSettings.GroupSound      := Ini.ReadString( 'Sounds', 'GroupSound','Sounds\message.wav');
@@ -1291,7 +1290,7 @@ begin
   InBufer.SetNextLength;
 
   tmpIndex := GetIndexByID(ClientProperties.AlienID);
-  if((tmpIndex>1) and (tmpIndex<UserList.Items.Count))then
+  if((tmpIndex>=0) and (tmpIndex<UserList.Items.Count))then
     begin
 
     if(not(FoundInIgnored(UserList.Items[tmpIndex].Caption+
@@ -1929,7 +1928,7 @@ begin
     Align:= alCustom;
     Anchors:=[akTop, akRight, akBottom, akLeft];
     ScrollBars:=ssVertical;
-    Color:=clBtnFace;
+    Color := clWhite;//clBtnFace;
     ReadOnly:=true;
     PopupMenu:=RichEditPopupMenu;
   end;
@@ -1942,7 +1941,7 @@ begin
   AlienInfo:= TAlienInfo.Create;
   NullVaribles;
   Caption:=ClientProperties.Version;
-  sSkinManager1.Active := SpeekerSettings.Skinned;
+  
   if(SpeekerSettings.OptStartmin)then WindowState:= wsMinimized;
 
   ClientProperties.IgnoreList := TListBox.Create(Self);
@@ -1985,6 +1984,7 @@ end;
 procedure TMainForm.FormShow(Sender: TObject);
 begin
   SetMemoFont;
+  sSkinManager1.Active := SpeekerSettings.Skinned;
 end;
 
 //-----------------------------------------------------------------
@@ -2143,7 +2143,7 @@ begin
   end;
     StatusBar1.Panels[1].Text := 'Сообщений: '+IntToStr(MessagesListView.Items.Count);
 
-
+  if(MainForm.Active and SpeekerSettings.Smiled) then InsertSmiles;
 end;
 
 procedure TMainForm.CheckAllMessagesBtnClick(Sender: TObject);
@@ -2252,17 +2252,16 @@ procedure TMainForm.JumpUpExecute(Sender: TObject);
 var
   LastIndex, UpIndex: integer;
 begin
+      if  (MessagesListView.Items.Count>1) and (MessagesListView.Selected<>nil) then
+        begin
+          LastIndex := MessagesListView.Items.Count-1;
+          UpIndex   := MessagesListView.Selected.Index+1;
+          if UpIndex <= LastIndex then
+            MessagesListView.Items[UpIndex].Selected:=true;
+        end;
 
- if  (MessagesListView.Items.Count>1) and (MessagesListView.Selected<>nil) then
-  begin
-  LastIndex := MessagesListView.Items.Count-1;
-  UpIndex   := MessagesListView.Selected.Index+1;
-  if UpIndex <= LastIndex then
-      MessagesListView.Items[UpIndex].Selected:=true;
-  end;
-  CheckSelected.Execute;
-  EnDisButtons.Execute;
-
+        CheckSelected.Execute;
+        EnDisButtons.Execute;
 end;
 
 procedure TMainForm.JumpDownExecute(Sender: TObject);
@@ -2407,7 +2406,14 @@ begin
     if(not(DirectoryExists(SpeekerSettings.UserAppdataDir)))then
         CreateDir(SpeekerSettings.UserAppdataDir);
     sIniFile := TIniFile.Create(SpeekerSettings.UserAppdataDir + '\Settings.ini');
+
     sIniFile.WriteBool('Programm', 'ShowPanel', PanelState);
+
+    sIniFile.WriteInteger('Programm', 'Height', MainForm.Height);
+    sIniFile.WriteInteger('Programm', 'Width',  MainForm.Width);
+    sIniFile.WriteInteger('Programm', 'Top',    MainForm.Top);
+    sIniFile.WriteInteger('Programm', 'Left',   MainForm.Left);
+
     sIniFile.Free;
 
     ClientProperties.IgnoreList.Items.SaveToFile(SpeekerSettings.UserAppdataDir + '\Ignorlist.txt');
@@ -2813,7 +2819,7 @@ begin
               LoadFromFile(SpeekerSettings.UserAppdataDir+'\LastChat.txt');
               ChatText:=text;
             finally
-              Free;
+              Free;             
             end;
 
           with MessagesListView do
@@ -2886,11 +2892,6 @@ end;
 procedure TMainForm.N19Click(Sender: TObject);
 begin
   AboutForm.Show;
-end;
-
-procedure TMainForm.SkinMgrMenuitemClick(Sender: TObject);
-begin
-
 end;
 
 // Send "Ping" every 2 minutes
@@ -3117,6 +3118,76 @@ begin
     sSkinManager1.SkinName := SkinName;
     sSkinManager1.UpdateSkin;
   end;
+end;
+
+procedure TMainForm.InsertSmiles;
+var
+  bmp:TBitmap;
+  i, startpos, Position, endpos: integer;
+  SearchText: String;
+  SmilesArray: array[0..6] of string;
+begin
+
+  //bmp.Transparent := True;
+  //bmp.TransParentColor := bmp.canvas.pixels[50,50];
+
+  SmilesArray[0] := ':)';
+  SmilesArray[1] := ':(';
+  SmilesArray[2] := ':|';
+  SmilesArray[3] := ':!';
+  SmilesArray[4] := '*narik*';
+  SmilesArray[5] := '*wall*';
+  SmilesArray[6] := '*crazy*';
+
+  for i:=0 to 6 do
+    begin
+      try
+        bmp:=TBitmap.Create;
+        SmilesImageList.GetBitmap(i, bmp);
+
+        startpos := 0;
+        SearchText := SmilesArray[i];
+
+        with MessageMemo do
+          begin
+            endpos := Length(MessageMemo.Text);
+            Lines.BeginUpdate;
+
+            while FindText(SearchText, startpos, endpos, [stMatchCase])<>-1 do
+              begin
+                endpos   := Length(MessageMemo.Text) - startpos;
+                Position := FindText(SearchText, startpos, endpos, [stMatchCase]);
+                Inc(startpos, Length(SearchText));
+                SetFocus;
+                SelStart  := Position;
+                SelLength := Length(SearchText);
+                MessageMemo.clearselection;
+                SelText := '';
+                InsertBitmapToRE(MessageMemo.Handle,bmp.Handle);
+                bmp.FreeImage;
+              end;
+
+            Lines.EndUpdate;
+          end;
+       finally
+        bmp.Free;
+       end;
+    end;
+
+end;
+
+procedure TMainForm.FormActivate(Sender: TObject);
+begin
+  JumpUp.ShortCut               := TextToShortCut('Ctrl+Right');
+  JumpDown.ShortCut             := TextToShortCut('Ctrl+Left');
+  DeleteCurrentMessage.ShortCut := TextToShortCut('Ctrl+Del');
+end;
+
+procedure TMainForm.FormDeactivate(Sender: TObject);
+begin
+  JumpUp.ShortCut               := TextToShortCut('(None)');
+  JumpDown.ShortCut             := TextToShortCut('(None)');
+  DeleteCurrentMessage.ShortCut := TextToShortCut('(None)');
 end;
 
 end.

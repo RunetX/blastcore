@@ -12,7 +12,8 @@ uses
   IgnorlistUnit in 'IgnoreManager\IgnorlistUnit.pas' {IgnorelistForm},
   SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm},
   AboutUnit in 'About\AboutUnit.pas' {AboutForm},
-  DebugUnit in 'Debug\DebugUnit.pas' {DebugForm};
+  DebugUnit in 'Debug\DebugUnit.pas' {DebugForm},
+  re_bmp in 'REBmp\re_bmp.pas';
 
 {$R *.res}
 

@@ -13,7 +13,8 @@ uses
   SentMesUnit in 'SentMessages\SentMesUnit.pas' {SentMesForm},
   AboutUnit in 'About\AboutUnit.pas' {AboutForm},
   DebugUnit in 'Debug\DebugUnit.pas' {DebugForm},
-  re_bmp in 'REBmp\re_bmp.pas';
+  re_bmp in 'REBmp\re_bmp.pas',
+  UpdateUnit in 'Update\UpdateUnit.pas' {UpdateForm};
 
 {$R *.res}
 
@@ -49,6 +50,7 @@ begin
   Application.CreateForm(TSentMesForm, SentMesForm);
   Application.CreateForm(TAboutForm, AboutForm);
   Application.CreateForm(TDebugForm, DebugForm);
+  Application.CreateForm(TUpdateForm, UpdateForm);
   Application.Run;
   end;
 end.

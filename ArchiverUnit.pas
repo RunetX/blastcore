@@ -158,7 +158,7 @@ end;
       OptPopup, OptDelastmin,
       OptJumpOwnMessage,
       OptShowpanel, OptEnablesounds:  boolean;
-      OptUpdate:    integer;  // from 1 to 6
+      OptUpdate:    boolean;
 // Messages Font
       FontColor:     integer;
       FontSize:      integer;
@@ -310,6 +310,8 @@ end;
     SkinMgrMenuitem: TMenuItem;
     OpenSkinManager: TAction;
     SmilesImageList: TImageList;
+    N5: TMenuItem;
+    N24: TMenuItem;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -625,13 +627,13 @@ begin
     else
       Ini := TIniFile.Create( GetCurrentDir() + '\' + ParamStr(1) );
   try
-    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','195.208.177.107');
-    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'195.208.177.190');
+    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','nuclight.avtf.net');
+    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'127.0.0.1');
 
     if(SpeekerSettings.MainServerIP=SpeekerSettings.AltServerIP)then
         begin
-            SpeekerSettings.MainServerIP:='195.208.177.107';
-            SpeekerSettings.AltServerIP:='195.208.177.190';
+            SpeekerSettings.MainServerIP:='nuclight.avtf.net';
+            SpeekerSettings.AltServerIP:='127.0.0.1';
         end;
     SpeekerSettings.UserName    := Ini.ReadString( 'User', 'UserName','');
     SpeekerSettings.CompName    := Ini.ReadString( 'User', 'CompName','');
@@ -672,7 +674,7 @@ begin
     SpeekerSettings.OptDelastmin      := Ini.ReadBool( 'Options', 'MinimizeWhenDelast',  false);
 //    SpeekerSettings.OptShowpanel    := Ini.ReadBool( 'Options', 'Debug',  false);
     SpeekerSettings.OptEnablesounds   := Ini.ReadBool( 'Options', 'EnableSounds',  false);
-//    SpeekerSettings.OptUpdate:    integer;  // from 1 to 6
+    SpeekerSettings.OptUpdate         := Ini.ReadBool( 'Options', 'Update',  false);
     SpeekerSettings.OptJumpOwnMessage := Ini.ReadBool( 'Options', 'JumpOwnMessages', false);
 
     SpeekerSettings.FontColor     := Ini.ReadInteger('Font', 'Color', clBlack);
@@ -1928,7 +1930,7 @@ begin
     Align:= alCustom;
     Anchors:=[akTop, akRight, akBottom, akLeft];
     ScrollBars:=ssVertical;
-    Color := clWhite;//clBtnFace;
+    Color := clBtnFace;//clWhite;
     ReadOnly:=true;
     PopupMenu:=RichEditPopupMenu;
   end;
@@ -3125,19 +3127,12 @@ var
   bmp:TBitmap;
   i, startpos, Position, endpos: integer;
   SearchText: String;
-  SmilesArray: array[0..6] of string;
+const
+  SmilesArray: array[0..6] of string = (':)', ':(', ':|', ':!', '*narik*', '*wall*', '*crazy*');
 begin
 
   //bmp.Transparent := True;
   //bmp.TransParentColor := bmp.canvas.pixels[50,50];
-
-  SmilesArray[0] := ':)';
-  SmilesArray[1] := ':(';
-  SmilesArray[2] := ':|';
-  SmilesArray[3] := ':!';
-  SmilesArray[4] := '*narik*';
-  SmilesArray[5] := '*wall*';
-  SmilesArray[6] := '*crazy*';
 
   for i:=0 to 6 do
     begin

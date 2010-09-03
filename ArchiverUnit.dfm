@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 360
-  Top = 150
+  Left = 336
+  Top = 119
   Width = 660
   Height = 700
   AlphaBlendValue = 100
@@ -311,6 +311,7 @@ object MainForm: TMainForm
         Height = 412
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
+        Color = clInactiveCaptionText
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -450,8 +451,8 @@ object MainForm: TMainForm
   end
   object ClientSocket1: TClientSocket
     Active = False
-    Address = '82.117.64.184'
     ClientType = ctNonBlocking
+    Host = 'nuclight.avtf.net'
     Port = 8732
     OnConnecting = ClientSocket1Connecting
     OnConnect = ClientSocket1Connect
@@ -4875,6 +4876,12 @@ object MainForm: TMainForm
         Caption = #1057#1087#1088#1072#1074#1082#1072'...'
         ShortCut = 112
         OnClick = N16Click
+      end
+      object N24: TMenuItem
+        Caption = '-'
+      end
+      object N5: TMenuItem
+        Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1085#1072#1083#1080#1095#1080#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1081'...'
       end
       object N18: TMenuItem
         Caption = '-'

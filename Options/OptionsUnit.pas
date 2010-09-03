@@ -81,6 +81,7 @@ type
     MinSTChkBox: TsCheckBox;
     JmpownmesChkBox: TsCheckBox;
     BalloonTipChkBox: TsCheckBox;
+    UpdateChkBox: TsCheckBox;
     procedure Button2Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
@@ -181,6 +182,7 @@ begin
   SkinOnChkBox.Checked       := MainForm.sSkinManager1.Active;
   JmpownmesChkBox.Checked    := MainForm.SpeekerSettings.OptJumpOwnMessage;
   BalloonTipChkBox.Checked   := MainForm.ShowMesBaloon.Checked;
+  UpdateChkBox.Checked       := MainForm.SpeekerSettings.OptUpdate;
 
   for i:=0 to sFontComboBox1.Items.Count-1 do
     begin
@@ -260,6 +262,8 @@ begin
   // Show balloon tip when receive message
   MainForm.ShowMesBaloon.Checked  :=  BalloonTipChkBox.Checked;
 
+  MainForm.SpeekerSettings.OptUpdate := UpdateChkBox.Checked;
+
   if MainForm.sSkinManager1.Active <> SkinOnChkBox.Checked then
     MainForm.sSkinManager1.Active := SkinOnChkBox.Checked;
 
@@ -338,8 +342,9 @@ begin
     sIniFile.WriteBool( 'Options', 'AutoStart',       AutorunChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'WinPopup',        WinpopupChkBox.Checked);
     sIniFile.WriteBool( 'Options', 'MinimizeWhenDelast',  MinSTChkBox.Checked);
-    sIniFile.WriteBool( 'Options', 'EnableSounds',  SoundsEnableChkBox.Checked);
-    sIniFile.WriteBool( 'Options', 'JumpOwnMessages',  JmpownmesChkBox.Checked);
+    sIniFile.WriteBool( 'Options', 'EnableSounds',        SoundsEnableChkBox.Checked);
+    sIniFile.WriteBool( 'Options', 'JumpOwnMessages',     JmpownmesChkBox.Checked);
+    sIniFile.WriteBool( 'Options', 'Update',              UpdateChkBox.Checked);
 
     sIniFile.WriteString( 'Servers', 'MainServerIP',    LabeledEdit1.Text);
     sIniFile.WriteString( 'Servers', 'AltServerIP' ,    LabeledEdit2.Text);

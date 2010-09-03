@@ -644,6 +644,19 @@ object OptionsForm: TOptionsForm
           ImgUnchecked = 0
           WordWrap = True
         end
+        object UpdateChkBox: TsCheckBox
+          Left = 221
+          Top = 43
+          Width = 190
+          Height = 20
+          Caption = #1055#1088#1086#1074#1077#1088#1103#1090#1100' '#1085#1072#1083#1080#1095#1080#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1081
+          AutoSize = False
+          TabOrder = 5
+          SkinData.SkinSection = 'CHECKBOX'
+          ImgChecked = 0
+          ImgUnchecked = 0
+          WordWrap = True
+        end
       end
     end
     object TabSheet2: TsTabSheet
@@ -7385,7 +7398,7 @@ object OptionsForm: TOptionsForm
         Font.Height = -11
         Font.Name = 'MS Sans Serif'
         Font.Style = []
-        ItemHeight = 0
+        ItemHeight = 13
         ItemIndex = -1
         MaxLength = 5
         ParentFont = False
@@ -7499,7 +7512,7 @@ object OptionsForm: TOptionsForm
         Left = 16
         Top = 32
         Width = 137
-        Height = 26
+        Height = 22
         Alignment = taLeftJustify
         BoundLabel.Indent = 0
         BoundLabel.Font.Charset = DEFAULT_CHARSET

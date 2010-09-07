@@ -1,6 +1,6 @@
 object UpdateForm: TUpdateForm
-  Left = 448
-  Top = 264
+  Left = 793
+  Top = 59
   Width = 400
   Height = 400
   Caption = #1048#1084#1077#1102#1090#1089#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103
@@ -11,6 +11,7 @@ object UpdateForm: TUpdateForm
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poMainFormCenter
   PixelsPerInch = 96
   TextHeight = 13
   object ListBox1: TListBox
@@ -36,6 +37,7 @@ object UpdateForm: TUpdateForm
       Height = 25
       Caption = 'OK'
       TabOrder = 0
+      OnClick = Button1Click
     end
   end
 end

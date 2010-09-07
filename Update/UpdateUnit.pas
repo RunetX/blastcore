@@ -11,6 +11,7 @@ type
     ListBox1: TListBox;
     Panel1: TPanel;
     Button1: TButton;
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -23,5 +24,10 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TUpdateForm.Button1Click(Sender: TObject);
+begin
+  Close;
+end;
 
 end.

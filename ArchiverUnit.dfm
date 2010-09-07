@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 336
-  Top = 119
+  Left = 643
+  Top = 104
   Width = 660
   Height = 700
   AlphaBlendValue = 100
@@ -667,6 +667,10 @@ object MainForm: TMainForm
       ImageIndex = 19
       ShortCut = 117
       OnExecute = OpenSkinManagerExecute
+    end
+    object UpdateAct: TAction
+      Caption = 'UpdateAct'
+      OnExecute = UpdateActExecute
     end
   end
   object IconsImageList: TImageList
@@ -4882,6 +4886,7 @@ object MainForm: TMainForm
       end
       object N5: TMenuItem
         Caption = #1055#1088#1086#1074#1077#1088#1080#1090#1100' '#1085#1072#1083#1080#1095#1080#1077' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1081'...'
+        OnClick = N5Click
       end
       object N18: TMenuItem
         Caption = '-'
@@ -6038,5 +6043,14 @@ object MainForm: TMainForm
       FE3FFFE3FFCE003FC01F0000F94FFF94FFFF007FFFFF0000FFBFFFFBFFFF807F
       FFFF0000FFFFFFFFFFFFFFFFFFFF000000000000000000000000000000000000
       000000000000}
+  end
+  object UpdateClientSocket: TClientSocket
+    Active = False
+    ClientType = ctNonBlocking
+    Port = 9100
+    OnDisconnect = UpdateClientSocketDisconnect
+    OnRead = UpdateClientSocketRead
+    Left = 169
+    Top = 354
   end
 end

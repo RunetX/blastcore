@@ -312,6 +312,8 @@ end;
     SmilesImageList: TImageList;
     N5: TMenuItem;
     N24: TMenuItem;
+    UpdateAct: TAction;
+    UpdateClientSocket: TClientSocket;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -405,6 +407,12 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure OpenSkinManagerExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure UpdateActExecute(Sender: TObject);
+    procedure UpdateClientSocketRead(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure UpdateClientSocketDisconnect(Sender: TObject;
+      Socket: TCustomWinSocket);
+    procedure N5Click(Sender: TObject);
   private
     { Private declarations }
 
@@ -463,7 +471,8 @@ var
 implementation
 
 uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
-  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit, acSelectSkin, re_bmp;
+  IgnorlistUnit, SentMesUnit, AboutUnit, DebugUnit, acSelectSkin, re_bmp,
+  UpdateUnit;
 
 {$R *.dfm}
 
@@ -1943,7 +1952,12 @@ begin
   AlienInfo:= TAlienInfo.Create;
   NullVaribles;
   Caption:=ClientProperties.Version;
-  
+
+  // Init update socket
+  UpdateClientSocket.Host :=  SpeekerSettings.MainServerIP;
+  UpdateAct.Execute;
+  // Init end
+
   if(SpeekerSettings.OptStartmin)then WindowState:= wsMinimized;
 
   ClientProperties.IgnoreList := TListBox.Create(Self);
@@ -3183,6 +3197,30 @@ begin
   JumpUp.ShortCut               := TextToShortCut('(None)');
   JumpDown.ShortCut             := TextToShortCut('(None)');
   DeleteCurrentMessage.ShortCut := TextToShortCut('(None)');
+end;
+
+procedure TMainForm.UpdateActExecute(Sender: TObject);
+begin
+  if SpeekerSettings.OptUpdate then
+    UpdateClientSocket.Active := true;
+end;
+
+procedure TMainForm.UpdateClientSocketRead(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  UpdateForm.ListBox1.Items.Text := UpdateForm.ListBox1.Items.Text + Socket.ReceiveText;
+end;
+
+procedure TMainForm.UpdateClientSocketDisconnect(Sender: TObject;
+  Socket: TCustomWinSocket);
+begin
+  if (ClientProperties.Version+':') <> UpdateForm.ListBox1.Items[0] then
+    UpdateForm.Show;
+end;
+
+procedure TMainForm.N5Click(Sender: TObject);
+begin
+  UpdateAct.Execute;
 end;
 
 end.

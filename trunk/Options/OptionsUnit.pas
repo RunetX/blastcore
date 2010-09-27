@@ -301,7 +301,7 @@ begin
   room:=OptionsForm.RoomCmbBox.Items[StrToInt(MainForm.SpeekerSettings.Room)];
   info:=MainForm.SpeekerSettings.Info;
   ns:= Char(Length(info))+info;
-  ns:= room+ns+#100;//Версия
+  ns:= room+ns+#101;//Версия
   if(MainForm.SpeekerSettings.Faculty)then
     ns:= #4+#1+ns
   else

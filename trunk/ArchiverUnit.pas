@@ -461,6 +461,9 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
      procedure SetMemoFont;
      procedure InsertSmiles;
+     function  ExtractPlainText(Source: string);
+     function  ExtractPlainTextFromSelected(Source: string);
+     function  ExtractRTF((Source: string));
   end;
 
 var
@@ -1693,7 +1696,7 @@ begin
   room:=OptionsForm.RoomCmbBox.Items[StrToInt(SpeekerSettings.Room)];
   info:=SpeekerSettings.Info;
   ns:= Char(Length(info))+info;
-  ns:= room+ns+#100;//Версия
+  ns:= room+ns+#101;//Версия
   if(SpeekerSettings.Faculty)then
     ns:= #4+#1+ns
   else
@@ -2094,7 +2097,7 @@ begin
       MessageMemo.Clear;
       //MessageMemo.Lines.LoadFromStream(TStringStream.Create(MessagesListView.Selected.SubItems[3]));
 
-      MessageMemo.Text:= MessagesListView.Selected.SubItems[3];
+      MessageMemo.Text:= ExtractRTF(MessagesListView.Selected.SubItems[3]);
 
       //MessageMemo.SelStart:=Length(MessageMemo.Text);
       WhomEdit.Text := MessagesListView.Selected.SubItems[6]
@@ -3221,6 +3224,49 @@ end;
 procedure TMainForm.N5Click(Sender: TObject);
 begin
   UpdateAct.Execute;
+end;
+
+//return everything before the first #0 ('\0' in C)
+function ExtractPlainText(Source: string): String;
+begin
+  if Pos(#0, Source) > 0 then
+    Result := Copy(Source, 1, Pos(#0, Source) - 1)
+  else
+    Result := Source;
+end;
+
+//source:='plain text' + #0'{\rtf part...}'+#0'some binary junk'
+//return the '{\rtf' part or the plain text part if no RTF
+function ExtractRTF(Source: string): String;
+var
+  fz,rp: Integer;
+begin
+  fz := Pos(#0, Source);        //first ASCII zero in string
+  rp := Pos(#0'{\rtf', Source); //RTF signature position
+
+  //the entire message is old good plain text
+  if fz = 0 then
+  begin
+    Result := Source;
+    Exit;
+  end;
+
+  //there is ASCIIZ but that is non-RTF junk, return plain text
+  if (fz > 0) and (fz <> rp) then
+  begin
+    Result := Copy(Source, 1, fz - 1);
+    Exit;
+  end;
+
+  //at this point, RTF part is present, delete everything before,
+  //then task for any trailing garbage will be as for plain text
+  Delete(Source, 1, rp);
+  Result := ExtractPlainText(Source);
+end;
+
+function ExtractPlainTextFromSelected: String;
+begin
+  Result := ExtractPlainText(MessagesListView.Selected.SubItems[3]);
 end;
 
 end.

@@ -79,7 +79,7 @@ var
 begin
 
   Delimiter  := '-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
-  Memo1.Text := MainForm.MessagesListView.Selected.SubItems[3];//MainForm.MessageMemo.Text;
+  Memo1.Text := MainForm.ExtractPlainTextFromSelected;//MainForm.MessageMemo.Text;
   AuthorName := MainForm.MessagesListView.Selected.SubItems[6];
   MText := Memo1.Text;
 

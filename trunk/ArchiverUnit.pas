@@ -413,6 +413,9 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure UpdateClientSocketDisconnect(Sender: TObject;
       Socket: TCustomWinSocket);
     procedure N5Click(Sender: TObject);
+    procedure UpdateClientSocketError(Sender: TObject;
+      Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
+      var ErrorCode: Integer);
   private
     { Private declarations }
 
@@ -461,9 +464,9 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
 
      procedure SetMemoFont;
      procedure InsertSmiles;
-     function  ExtractPlainText(Source: string);
-     function  ExtractPlainTextFromSelected(Source: string);
-     function  ExtractRTF((Source: string));
+     function  ExtractPlainText(Source: string): String;
+     function  ExtractPlainTextFromSelected: String;
+     function  ExtractRTF(Source: string): String;
   end;
 
 var
@@ -613,7 +616,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.4';
+   ClientProperties.Version:='BlastCore v0.4'; //BlastCore v0.4     0.3 RC2
 
    ClientProperties.ownID := 0;
 ////////////////////////////////////////////////////////////////////////////////
@@ -1290,8 +1293,8 @@ end;
 procedure TMainForm.GetMessage();    // 13
 var
    tmpListItem: TListItem;
-   tmpIndex: integer;
-   toBalloonHint, toSendIgn: string;
+   tmpIndex, zeroIndex: integer;
+   toBalloonHint, toSendIgn, txtPart, rtfPart, filePart: string;
    MessageLen: integer;
 
 begin
@@ -1302,6 +1305,10 @@ begin
   InBufer.CurrentOperation := BC_STATE_GETZERO;
   InBufer.HowmanyNeedRec := 1;
   InBufer.SetNextLength;
+
+  zeroIndex := pos(#0, ClientProperties.Messag);
+
+  //if(zeroIndex)then 0x0
 
   tmpIndex := GetIndexByID(ClientProperties.AlienID);
   if((tmpIndex>=0) and (tmpIndex<UserList.Items.Count))then
@@ -3216,9 +3223,13 @@ end;
 
 procedure TMainForm.UpdateClientSocketDisconnect(Sender: TObject;
   Socket: TCustomWinSocket);
+var
+  i: Integer;
 begin
-  if (ClientProperties.Version+':') <> UpdateForm.ListBox1.Items[0] then
-    UpdateForm.Show;
+  for i:=0 to UpdateForm.ListBox1.Items.Count-1 do
+    if (ClientProperties.Version+':') = UpdateForm.ListBox1.Items[i] then
+      break;
+  if i <> 0 then UpdateForm.Show;
 end;
 
 procedure TMainForm.N5Click(Sender: TObject);
@@ -3226,8 +3237,15 @@ begin
   UpdateAct.Execute;
 end;
 
+procedure TMainForm.UpdateClientSocketError(Sender: TObject;
+  Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
+  var ErrorCode: Integer);
+begin
+  ErrorCode := 0;
+end;
+
 //return everything before the first #0 ('\0' in C)
-function ExtractPlainText(Source: string): String;
+function TMainForm.ExtractPlainText(Source: string): String;
 begin
   if Pos(#0, Source) > 0 then
     Result := Copy(Source, 1, Pos(#0, Source) - 1)
@@ -3237,7 +3255,7 @@ end;
 
 //source:='plain text' + #0'{\rtf part...}'+#0'some binary junk'
 //return the '{\rtf' part or the plain text part if no RTF
-function ExtractRTF(Source: string): String;
+function TMainForm.ExtractRTF(Source: string): String;
 var
   fz,rp: Integer;
 begin
@@ -3264,7 +3282,7 @@ begin
   Result := ExtractPlainText(Source);
 end;
 
-function ExtractPlainTextFromSelected: String;
+function TMainForm.ExtractPlainTextFromSelected: String;
 begin
   Result := ExtractPlainText(MessagesListView.Selected.SubItems[3]);
 end;

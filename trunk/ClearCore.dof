@@ -115,7 +115,7 @@ AutoIncBuild=0
 MajorVer=0
 MinorVer=4
 Release=0
-Build=77
+Build=79
 Debug=0
 PreRelease=1
 Special=0
@@ -126,13 +126,13 @@ CodePage=1251
 [Version Info Keys]
 CompanyName=Peek's Webware
 FileDescription=BlastCore Sender - SEA Protocol Client
-FileVersion=0.4.0.77
+FileVersion=0.4.0.79
 InternalName=BlastCore
 LegalCopyright=Peek's Webware
 LegalTrademarks=BlastCore
 OriginalFilename=ClearCore.exe
 ProductName=BlastCore
-ProductVersion=0.3
+ProductVersion=0.4
 Comments=Alt SEA Client
 [Excluded Packages]
 C:\Program Files\EldoS\SecureBlackbox\Packages\FTPSBBoxCliD7.bpl=EldoS FTPSBlackbox client

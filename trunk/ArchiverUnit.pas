@@ -485,7 +485,7 @@ uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
 //-----------------------------------------------------------------
 
 procedure TMainForm.SetMemoFont;
-begin
+begin  
   MessageMemo.Font.Color := clBlack;
   MessageMemo.Font.Size  := 8;
   MessageMemo.Font.Name  := 'MS Sans Serif';
@@ -1293,11 +1293,14 @@ end;
 procedure TMainForm.GetMessage();    // 13
 var
    tmpListItem: TListItem;
-   tmpIndex, zeroIndex: integer;
-   toBalloonHint, toSendIgn, txtPart, rtfPart, filePart: string;
+   tmpIndex: integer;
+   toBalloonHint, toSendIgn: string;
    MessageLen: integer;
 
 begin
+
+  EnDisButtons.Execute;
+
   ClientProperties.Messag := InBufer.Bufer;
   if SpeekerSettings.Debug then
       LogVariable('Message', ClientProperties.Messag);
@@ -1305,10 +1308,6 @@ begin
   InBufer.CurrentOperation := BC_STATE_GETZERO;
   InBufer.HowmanyNeedRec := 1;
   InBufer.SetNextLength;
-
-  zeroIndex := pos(#0, ClientProperties.Messag);
-
-  //if(zeroIndex)then 0x0
 
   tmpIndex := GetIndexByID(ClientProperties.AlienID);
   if((tmpIndex>=0) and (tmpIndex<UserList.Items.Count))then
@@ -1378,7 +1377,7 @@ begin
       end;
     if (ClientProperties.ownID = ClientProperties.AlienID) and SpeekerSettings.OptJumpOwnMessage then
       JumpToLast.Execute;
-    EnDisButtons.Execute;
+    //EnDisButtons.Execute;
     end
   else
     begin
@@ -2102,8 +2101,8 @@ begin
   if (tmpListItem <> nil) then
   begin
       MessageMemo.Clear;
-      //MessageMemo.Lines.LoadFromStream(TStringStream.Create(MessagesListView.Selected.SubItems[3]));
-
+      SetMemoFont;
+      EnDisButtons.Execute;
       MessageMemo.Text:= ExtractRTF(MessagesListView.Selected.SubItems[3]);
 
       //MessageMemo.SelStart:=Length(MessageMemo.Text);
@@ -2159,7 +2158,7 @@ begin
       else
           DeleteAllChMessages.Enabled:=true;
 
-      EnDisButtons.Execute;
+      //EnDisButtons.Execute;
   end
   else if(MessagesListView.Items.Count=0)then
   begin
@@ -2285,9 +2284,9 @@ begin
           if UpIndex <= LastIndex then
             MessagesListView.Items[UpIndex].Selected:=true;
         end;
-
-        CheckSelected.Execute;
         EnDisButtons.Execute;
+        CheckSelected.Execute;
+        //EnDisButtons.Execute;
 end;
 
 procedure TMainForm.JumpDownExecute(Sender: TObject);
@@ -2300,8 +2299,9 @@ begin
   if DownIndex >= 0 then
       MessagesListView.Items[DownIndex].Selected:=true;
   end;
-  CheckSelected.Execute;
   EnDisButtons.Execute;
+  CheckSelected.Execute;
+  //EnDisButtons.Execute;
 end;
 
 procedure TMainForm.ForwardToolButtonClick(Sender: TObject);
@@ -2318,16 +2318,20 @@ procedure TMainForm.JumpToLastExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[MessagesListView.Items.Count-1].Selected:=true;
-  CheckSelected.Execute;
+
   EnDisButtons.Execute;
+  CheckSelected.Execute;
+  //EnDisButtons.Execute;
 end;
 
 procedure TMainForm.JumpToFirstExecute(Sender: TObject);
 begin
   if  MessagesListView.Items.Count>1 then
       MessagesListView.Items[0].Selected:=true;
-  CheckSelected.Execute;
+
   EnDisButtons.Execute;
+  CheckSelected.Execute;
+  //EnDisButtons.Execute;
 end;
 
 procedure TMainForm.LastmesToolButtonClick(Sender: TObject);
@@ -2944,7 +2948,7 @@ end;
 // Enable\Disable ToolButtons when receive or delete messages
 procedure TMainForm.EnDisButtonsExecute(Sender: TObject);
 begin
-  SetMemoFont;
+  //SetMemoFont;
   if MessagesListView.Selected <> nil then
     begin
       if MessagesListView.Items.Count=0 then

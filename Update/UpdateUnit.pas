@@ -4,13 +4,15 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls;
+  Dialogs, StdCtrls, ExtCtrls, sMemo, sPanel, sLabel;
 
 type
   TUpdateForm = class(TForm)
-    ListBox1: TListBox;
-    Panel1: TPanel;
+    UpdateText: TsMemo;
+    sPanel1: TsPanel;
     Button1: TButton;
+    sWebLabel1: TsWebLabel;
+    sLabel1: TsLabel;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
@@ -27,6 +29,7 @@ implementation
 
 procedure TUpdateForm.Button1Click(Sender: TObject);
 begin
+  UpdateText.Clear;
   Close;
 end;
 

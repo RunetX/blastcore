@@ -3218,7 +3218,7 @@ end;
 procedure TMainForm.UpdateClientSocketRead(Sender: TObject;
   Socket: TCustomWinSocket);
 begin
-  UpdateForm.ListBox1.Items.Text := UpdateForm.ListBox1.Items.Text + Socket.ReceiveText;
+  UpdateForm.UpdateText.Text := UpdateForm.UpdateText.Text + Socket.ReceiveText;
 end;
 
 procedure TMainForm.UpdateClientSocketDisconnect(Sender: TObject;
@@ -3226,15 +3226,28 @@ procedure TMainForm.UpdateClientSocketDisconnect(Sender: TObject;
 var
   i: Integer;
 begin
-  for i:=0 to UpdateForm.ListBox1.Items.Count-1 do
-    if (ClientProperties.Version+':') = UpdateForm.ListBox1.Items[i] then
-      break;
-  if i <> 0 then UpdateForm.Show;
+  i := Pos(ClientProperties.Version, UpdateForm.UpdateText.Text);
+
+  if i <> 1 then
+    begin
+      UpdateForm.UpdateText.Text := Copy(UpdateForm.UpdateText.Text, 1, i-1);
+      UpdateForm.Show;
+    end
+  else
+    begin
+      if UpdateClientSocket.Tag = 1 then
+        begin
+          UpdateClientSocket.Tag := 0;
+          Application.MessageBox('Вы используете самую последнюю версию BlastCore Sender',
+            'Обновления отсуствуют.', MB_OK)
+        end;
+    end;
 end;
 
 procedure TMainForm.N5Click(Sender: TObject);
 begin
-  UpdateAct.Execute;
+  UpdateClientSocket.Active := true;
+  UpdateClientSocket.Tag := 1;
 end;
 
 procedure TMainForm.UpdateClientSocketError(Sender: TObject;

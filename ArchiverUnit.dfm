@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 643
-  Top = 104
+  Left = 843
+  Top = 142
   Width = 660
   Height = 700
   AlphaBlendValue = 100
@@ -6050,6 +6050,7 @@ object MainForm: TMainForm
     Port = 9100
     OnDisconnect = UpdateClientSocketDisconnect
     OnRead = UpdateClientSocketRead
+    OnError = UpdateClientSocketError
     Left = 169
     Top = 354
   end

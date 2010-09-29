@@ -454,10 +454,12 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
      procedure GetLinkLength();
      procedure GetLink();
      procedure ReceiveForProcessing(ReadyBufer: string);
+     procedure SetUserAppDataDir;
      procedure NullVaribles;
      procedure Reconnect;
      procedure LogVariable(Varname, Variable: string);
 
+     function  GetIniPath: String;
      function  GetIndexByID(ID: integer): integer;
      function  StringCompare(s1, s2: string): boolean;
      function  AssignIndex:integer;
@@ -583,13 +585,35 @@ begin
 end;
           
 //-----------------------------------------------------------------
+procedure TMainForm.SetUserAppDataDir;
+begin
+ with TRegistry.Create do
+ try
+   RootKey := HKEY_CURRENT_USER;
+   OpenKey('\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders', True);
+   SpeekerSettings.UserAppdataDir:=ReadString('AppData');
+ finally
+   CloseKey;
+   Free;
+ end;
+ if (SpeekerSettings.UserAppdataDir<>'') and
+    (SpeekerSettings.UserAppdataDir[length(SpeekerSettings.UserAppdataDir)]<>'\')
+    then SpeekerSettings.UserAppdataDir:=SpeekerSettings.UserAppdataDir+'\';
+ SpeekerSettings.UserAppdataDir := SpeekerSettings.UserAppdataDir+'BlastCore';
+end;
+
+function TMainForm.GetIniPath: String;
+begin
+  if ParamStr(1) = '' then
+    Result := SpeekerSettings.UserAppdataDir+'\Settings.ini'
+  else
+    Result := GetCurrentDir() + '\' + ParamStr(1);
+end;
 
 procedure TMainForm.NullVaribles;
 var
   Ini: TIniFile;
   PanelState: boolean;
-  ProgramDirectory: string;
-  BFWidth, BFHeight, BFTop, BFLeft: Integer;
 begin
   // TInBufer
   InBufer.HowmanyNeedRec   := 1;
@@ -619,36 +643,17 @@ begin
    ClientProperties.Version:='BlastCore v0.4'; //BlastCore v0.4     0.3 RC2
 
    ClientProperties.ownID := 0;
-////////////////////////////////////////////////////////////////////////////////
- with TRegistry.Create do
- try
-   RootKey := HKEY_CURRENT_USER;
-   OpenKey('\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders', True);
-   SpeekerSettings.UserAppdataDir:=ReadString('AppData');
- finally
-   CloseKey;
-   Free;
- end;
- if (SpeekerSettings.UserAppdataDir<>'') and
-    (SpeekerSettings.UserAppdataDir[length(SpeekerSettings.UserAppdataDir)]<>'\')
-    then SpeekerSettings.UserAppdataDir:=SpeekerSettings.UserAppdataDir+'\';
- SpeekerSettings.UserAppdataDir := SpeekerSettings.UserAppdataDir+'BlastCore';
-////////////////////////////////////////////////////////////////////////////////
 
   // TProgSettings.ReadSettings;
-    ProgramDirectory := SpeekerSettings.UserAppdataDir;
-    if ParamStr(1) = '' then
-      Ini := TIniFile.Create( ProgramDirectory+'\Settings.ini' )
-    else
-      Ini := TIniFile.Create( GetCurrentDir() + '\' + ParamStr(1) );
+  Ini := TIniFile.Create( GetIniPath );
   try
-    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','nuclight.avtf.net');
-    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'127.0.0.1');
+    SpeekerSettings.MainServerIP:= Ini.ReadString( 'Servers', 'MainServerIP','hostel.avtf.net');
+    SpeekerSettings.AltServerIP := Ini.ReadString( 'Servers', 'AltServerIP' ,'109.123.180.129');
 
     if(SpeekerSettings.MainServerIP=SpeekerSettings.AltServerIP)then
         begin
-            SpeekerSettings.MainServerIP:='nuclight.avtf.net';
-            SpeekerSettings.AltServerIP:='127.0.0.1';
+            SpeekerSettings.MainServerIP:='hostel.avtf.net';
+            SpeekerSettings.AltServerIP:='109.123.180.129';
         end;
     SpeekerSettings.UserName    := Ini.ReadString( 'User', 'UserName','');
     SpeekerSettings.CompName    := Ini.ReadString( 'User', 'CompName','');
@@ -664,20 +669,6 @@ begin
     sSkinManager1.SkinName      := Ini.ReadString( 'Programm', 'SkinName', 'Office2007 Blue');
     ShowMesBaloon.Checked       := Ini.ReadBool( 'Programm', 'ShowBalloon', false);
 
-    BFHeight :=  Ini.ReadInteger('Programm', 'Height', 700);
-    if BFHeight < 654 then
-      MainForm.Height := 654
-    else
-      MainForm.Height := BFHeight;
-
-    BFWidth  :=  Ini.ReadInteger('Programm', 'Width', 660);
-    if BFWidth < 652 then
-      MainForm.Width := 652
-    else
-      MainForm.Width := BFWidth;
-
-    MainForm.Top  :=  Ini.ReadInteger('Programm', 'Top', 150);
-    MainForm.Left :=  Ini.ReadInteger('Programm', 'Left', 360);
 // Program Sounds
     SpeekerSettings.PrivateSound    := Ini.ReadString( 'Sounds', 'PrivateSound','Sounds\message.wav');
     SpeekerSettings.GroupSound      := Ini.ReadString( 'Sounds', 'GroupSound','Sounds\message.wav');
@@ -719,7 +710,6 @@ begin
     AlienInfo.Faculty  := 1;
     AlienInfo.Version  := '';
     AlienInfo.IPAddress:= '127.0.0.1';
-
 end;
 
 // Функция закрытия всех активных чатов.
@@ -1933,6 +1923,8 @@ end;
 procedure TMainForm.FormCreate(Sender: TObject);
 var
     ignorfile: TextFile;
+    Ini: TIniFile;
+    BFWidth, BFHeight: Integer;
 begin
   Application.ProcessMessages;
   Application.OnMessage := AppMessage;
@@ -1959,6 +1951,27 @@ begin
   ClientProperties:= TClientProperties.Create;
   InBufer:= TInBufer.Create;
   AlienInfo:= TAlienInfo.Create;
+  SetUserAppDataDir;
+  Ini := TIniFile.Create( GetIniPath );
+  try
+    BFHeight :=  Ini.ReadInteger('Programm', 'Height', 700);
+    if BFHeight < 654 then
+      MainForm.Height := 654
+    else
+      MainForm.Height := BFHeight;
+
+    BFWidth  :=  Ini.ReadInteger('Programm', 'Width', 660);
+    if BFWidth < 652 then
+      MainForm.Width := 652
+    else
+      MainForm.Width := BFWidth;
+
+    MainForm.Top  :=  Ini.ReadInteger('Programm', 'Top', 150);
+    MainForm.Left :=  Ini.ReadInteger('Programm', 'Left', 360);
+  finally
+    Ini.Free;
+  end;
+
   NullVaribles;
   Caption:=ClientProperties.Version;
 

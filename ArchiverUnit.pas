@@ -3232,6 +3232,9 @@ var
 begin
   i := Pos(ClientProperties.Version, UpdateForm.UpdateText.Text);
 
+  UpdateForm.sWebLabel1.Caption := UpdateForm.UpdateText.Lines[UpdateForm.UpdateText.Lines.Count-1];
+  UpdateForm.sWebLabel1.URL := UpdateForm.UpdateText.Lines[UpdateForm.UpdateText.Lines.Count-1];
+
   if i <> 1 then
     begin
       UpdateForm.UpdateText.Text := Copy(UpdateForm.UpdateText.Text, 1, i-1);

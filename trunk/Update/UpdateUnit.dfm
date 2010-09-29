@@ -1,6 +1,6 @@
 object UpdateForm: TUpdateForm
-  Left = 797
-  Top = 225
+  Left = 428
+  Top = 158
   Width = 400
   Height = 400
   Caption = #1048#1084#1077#1102#1090#1089#1103' '#1086#1073#1085#1086#1074#1083#1077#1085#1080#1103
@@ -41,8 +41,8 @@ object UpdateForm: TUpdateForm
     TabOrder = 1
     SkinData.SkinSection = 'PANEL'
     object sWebLabel1: TsWebLabel
-      Left = 136
-      Top = 18
+      Left = 16
+      Top = 24
       Width = 135
       Height = 13
       Caption = 'http://hostel.avtf.net/sender'
@@ -60,7 +60,7 @@ object UpdateForm: TUpdateForm
     end
     object sLabel1: TsLabel
       Left = 16
-      Top = 18
+      Top = 11
       Width = 118
       Height = 13
       Caption = #1054#1073#1085#1086#1074#1083#1077#1085#1080#1103' '#1087#1086' '#1072#1076#1088#1077#1089#1091':'

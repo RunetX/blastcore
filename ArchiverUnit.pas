@@ -1307,8 +1307,8 @@ begin
                           UserList.Items[tmpIndex].SubItems[0])))then
     // Если не найден в заигноренных
       begin
-        if(SpeekerSettings.OptPopup)then CoolTrayIcon.ShowMainForm;
-        if(SpeekerSettings.OptEnablesounds)then
+        if(SpeekerSettigs.OptPopup and not SpeekerSettings.AwayStatus)then CoolTrayIcon.ShowMainForm;
+        if(SpeekerSettings.OptEnablesounds and not SpeekerSettings.AwayStatus)then
           if(ClientProperties.Privat=1)then
               PlaySound(PChar(SpeekerSettings.PrivateSound),0,SND_FILENAME)
           else
@@ -1341,7 +1341,7 @@ begin
               CoolTrayIcon.IconIndex:=4;
             end;
         end;
-      if(ShowMesBaloon.Checked)then
+      if(ShowMesBaloon.Checked and not SpeekerSettings.AwayStatus)then
         begin
           toBalloonHint:= ClientProperties.Messag;
           MessageLen := ClientProperties.Meslen;
@@ -2710,7 +2710,6 @@ procedure TMainForm.GoToFromAwayExecute(Sender: TObject);
 var
   s: string;
 begin
-
      if SpeekerSettings.AwayStatus then
       begin
          s := #0#0#1#12;

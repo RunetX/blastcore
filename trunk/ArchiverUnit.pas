@@ -4,11 +4,11 @@ interface
 
 uses
   Windows, SysUtils, Controls, Forms, Dialogs, CoolTrayIcon, Menus,
-  shellapi, ToolWin, ImgList, IniFiles, RichEdit, sListView, 
+  shellapi, ToolWin, ImgList, IniFiles, RichEdit, sListView,
   Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages,
   Variants, Graphics, ScktComp, ActnList, Sockets, Registry,
   MMSystem, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
-  sSplitter, sPanel, sToolBar, sStatusBar, Winsock, NewChatUnit;
+  sSplitter, sPanel, sToolBar, sStatusBar, Winsock, NewChatUnit, XPMan;
 
 const
   UM_MYMESSSAGE = WM_USER+1;
@@ -314,6 +314,8 @@ end;
     N24: TMenuItem;
     UpdateAct: TAction;
     UpdateClientSocket: TClientSocket;
+    ToolButton1: TToolButton;
+    PriorityTB: TToolButton;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -1307,7 +1309,7 @@ begin
                           UserList.Items[tmpIndex].SubItems[0])))then
     // Если не найден в заигноренных
       begin
-        if(SpeekerSettigs.OptPopup and not SpeekerSettings.AwayStatus)then CoolTrayIcon.ShowMainForm;
+        if(SpeekerSettings.OptPopup and not SpeekerSettings.AwayStatus)then CoolTrayIcon.ShowMainForm;
         if(SpeekerSettings.OptEnablesounds and not SpeekerSettings.AwayStatus)then
           if(ClientProperties.Privat=1)then
               PlaySound(PChar(SpeekerSettings.PrivateSound),0,SND_FILENAME)

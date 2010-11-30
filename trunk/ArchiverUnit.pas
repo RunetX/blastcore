@@ -8,7 +8,7 @@ uses
   Classes, StdCtrls, ComCtrls, ExtCtrls, StdActns, Messages,
   Variants, Graphics, ScktComp, ActnList, Sockets, Registry,
   MMSystem, sSkinManager, sSkinProvider, sMemo, sEdit, sLabel,
-  sSplitter, sPanel, sToolBar, sStatusBar, Winsock, NewChatUnit, XPMan;
+  sSplitter, sPanel, sToolBar, sStatusBar, Winsock, NewChatUnit;
 
 const
   UM_MYMESSSAGE = WM_USER+1;
@@ -124,6 +124,7 @@ type
 // LastMessage
       Privat:      integer;
       Printer:     integer;
+      Priority:    integer;
       Meslen:      integer;
       Messag:      string;
 
@@ -316,6 +317,7 @@ end;
     UpdateClientSocket: TClientSocket;
     ToolButton1: TToolButton;
     PriorityTB: TToolButton;
+    OnOffPriority: TAction;
 ////////////////////////////////////////////////////////////////////
 procedure UMMymessage(var Message: TMessage); message UM_MYMESSSAGE;
 procedure WMSysCommand(var Msg: TMessage); message WM_SYSCOMMAND;
@@ -418,6 +420,7 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
     procedure UpdateClientSocketError(Sender: TObject;
       Socket: TCustomWinSocket; ErrorEvent: TErrorEvent;
       var ErrorCode: Integer);
+    procedure OnOffPriorityExecute(Sender: TObject);
   private
     { Private declarations }
 
@@ -471,12 +474,14 @@ procedure AppMessage(var Msg: TMsg; var Handled: Boolean);
      function  ExtractPlainText(Source: string): String;
      function  ExtractPlainTextFromSelected: String;
      function  ExtractRTF(Source: string): String;
+     procedure  ExtractFile(Source: string);
   end;
 
 var
   MainForm: TMainForm;
   tmpChatForm: array[0..9] of TBChatForm;
   noPong: boolean;
+  lenpriterbyte: integer;// Запихни меня в структуру, сука!
 
 implementation
 
@@ -654,8 +659,11 @@ begin
 
     if(SpeekerSettings.MainServerIP=SpeekerSettings.AltServerIP)then
         begin
-            SpeekerSettings.MainServerIP:='hostel.avtf.net';
-            SpeekerSettings.AltServerIP:='109.123.180.129';
+        SpeekerSettings.MainServerIP:='hostel.avtf.net';
+        SpeekerSettings.AltServerIP:='109.123.180.129';
+            //SpeekerSettings.MainServerIP:='router.avtf.net';
+            //SpeekerSettings.AltServerIP:='router.avtf.net';
+
         end;
     SpeekerSettings.UserName    := Ini.ReadString( 'User', 'UserName','');
     SpeekerSettings.CompName    := Ini.ReadString( 'User', 'CompName','');
@@ -1240,9 +1248,18 @@ end;
 
 procedure TMainForm.GetPrinter();    // 11
 begin
-  ClientProperties.Printer := ord(InBufer.Bufer[1]);
+  ClientProperties.Printer := ord(InBufer.Bufer[1]) mod 2;
+  //вот он - дополнительный байт от печатников
+  lenpriterbyte:=ord(InBufer.Bufer[2]);
+   if SpeekerSettings.Debug then
+      LogVariable('lenprinterbyte', IntToStr(lenpriterbyte));
+  if SpeekerSettings.Debug then
+      LogVariable('bufer', IntToStr(ord(InBufer.Bufer[1])));
   if SpeekerSettings.Debug then
       LogVariable('Printer', IntToStr(ClientProperties.Printer));
+  ClientProperties.Priority:=(ord(InBufer.Bufer[1])div 2) mod 2;
+  if SpeekerSettings.Debug then
+      LogVariable('Priority', IntToStr(ClientProperties.Priority));
   if((ClientProperties.Printer=0)or(ClientProperties.Printer=1))then
     begin
       InBufer.isReadyForProc := false;
@@ -1251,14 +1268,14 @@ begin
       InBufer.SetNextLength;
     end
   else
-    ClientSocket1.Socket.Close;
-end;
+    ClientSocket1.Socket.Close; //косяк, рассинхронизация
+  end;
 
 //-----------------------------------------------------------------
 
 procedure TMainForm.GetMeslen();     // 12
 begin
-  ClientProperties.Meslen := TwoBytesToInt(InBufer.Bufer);
+  ClientProperties.Meslen :=65536*lenpriterbyte+TwoBytesToInt(InBufer.Bufer);
   if SpeekerSettings.Debug then
       LogVariable('Meslen', IntToStr(ClientProperties.Meslen));
   InBufer.isReadyForProc := false;
@@ -1304,7 +1321,7 @@ begin
   tmpIndex := GetIndexByID(ClientProperties.AlienID);
   if((tmpIndex>=0) and (tmpIndex<UserList.Items.Count))then
     begin
-
+  if(not PriorityTB.Down or (ClientProperties.Priority=1) or  (ClientProperties.Printer=1) or (ClientProperties.Privat=1) ) then
     if(not(FoundInIgnored(UserList.Items[tmpIndex].Caption+
                           UserList.Items[tmpIndex].SubItems[0])))then
     // Если не найден в заигноренных
@@ -1321,7 +1338,7 @@ begin
             tmpListItem := Items.Add;
             tmpListItem.Caption := IntToStr(ClientProperties.AlienID);
             tmpListItem.SubItems.Add(IntToStr(ClientProperties.Privat));
-            tmpListItem.SubItems.Add(IntToStr(ClientProperties.Printer));
+            tmpListItem.SubItems.Add(IntToStr(ClientProperties.Printer+ClientProperties.Priority*2));
             tmpListItem.SubItems.Add(IntToStr(ClientProperties.Meslen));
             tmpListItem.SubItems.Add(ClientProperties.Messag);
             tmpListItem.SubItems.Add(TimeToStr(Time));
@@ -1343,10 +1360,11 @@ begin
               CoolTrayIcon.IconIndex:=4;
             end;
         end;
+        ExtractFile(ClientProperties.Messag);
       if(ShowMesBaloon.Checked and not SpeekerSettings.AwayStatus)then
         begin
-          toBalloonHint:= ClientProperties.Messag;
-          MessageLen := ClientProperties.Meslen;
+          toBalloonHint:= ExtractPlainText(ClientProperties.Messag);
+          MessageLen :=  Length(ExtractPlainText(ClientProperties.Messag));//  MessageLen := ClientProperties.Meslen;
           if MessageLen>255 then
             begin
               delete(toBalloonHint, 1, 256*(MessageLen div 256));
@@ -1367,6 +1385,7 @@ begin
             ClientSocket1.Socket.SendBuf(toSendIgn[1], length(toSendIgn));
           end;
       end;
+
     if (ClientProperties.ownID = ClientProperties.AlienID) and SpeekerSettings.OptJumpOwnMessage then
       JumpToLast.Execute;
     //EnDisButtons.Execute;
@@ -1694,7 +1713,7 @@ begin
   room:=OptionsForm.RoomCmbBox.Items[StrToInt(SpeekerSettings.Room)];
   info:=SpeekerSettings.Info;
   ns:= Char(Length(info))+info;
-  ns:= room+ns+#101;//Версия
+  ns:= room+ns+#102;//Версия
   if(SpeekerSettings.Faculty)then
     ns:= #4+#1+ns
   else
@@ -3316,9 +3335,51 @@ begin
   Result := ExtractPlainText(Source);
 end;
 
+procedure TMainForm.ExtractFile(Source: string);
+var
+fp,FileNameLen,i:integer;
+filelen:longint;
+filename:string;
+tmpFile,debug:file;
+tStr:TStringStream;
+mStr:TMemoryStream;
+begin
+{assignfile(debug,'debug.txt');
+ReWrite(debug,1);
+Write(debug,Source);
+CloseFile(tmpFile);
+    fp := Pos(#0'FILE', Source); //начало строки с файлом
+    if fp>0 then
+      begin
+        fp:=fp+5;// пропускаем #0FILE
+        fp:=fp+4;//пропустим время модификации файла ибо _нефиг_ =)
+        FileNameLen:= ord(fp);
+        fp:=fp+1;  //длинна имени файла
+        filename:=copy(Source, fp, ord(Source[FileNameLen]));//получаем имя файла
+        fp:=fp+FileNameLen;
+        Delete(Source, 1, fp);
+        if SpeekerSettings.Debug then
+              LogVariable('source', source);
+        filelen:=length(source);
+        while(FileExists(filename))do
+        begin
+          i:=i+1;
+          filename:=inttostr(i)+filename;
+        end;
+     }
+end;
+
 function TMainForm.ExtractPlainTextFromSelected: String;
 begin
   Result := ExtractPlainText(MessagesListView.Selected.SubItems[3]);
+end;
+
+procedure TMainForm.OnOffPriorityExecute(Sender: TObject);
+begin
+     if  PriorityTB.Down then
+        PriorityTB.Hint :='Принимать все сообщения'
+     else
+        PriorityTB.Hint := 'Принимать сообщения только с высоким приоритетом';
 end;
 
 end.

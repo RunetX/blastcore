@@ -110,7 +110,7 @@ begin
               MainForm.UserList.Items[foundIndex].Selected:=true;
               MainForm.SendMessageFlag := 4;
               SendMessageForm := TSendMessageForm.Create(Self);
-              SendMessageForm.Memo1.Text:=SentMesLV.Selected.SubItems[3];
+              SendMessageForm.RichEdit1.lines.Text:=SentMesLV.Selected.SubItems[3];
               SendMessageForm.Show;
             end
           else
@@ -121,7 +121,7 @@ begin
                   MainForm.UserList.Items[0].Selected:=true;
                   MainForm.SendMessageFlag := 3;
                   SendMessageForm := TSendMessageForm.Create(Self);
-                  SendMessageForm.Memo1.Text:=SentMesLV.Selected.SubItems[3];
+                  SendMessageForm.RichEdit1.lines.Text:=SentMesLV.Selected.SubItems[3];
                   SendMessageForm.Show;
                 end
               else

@@ -4,7 +4,9 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
-  Dialogs, StdCtrls, ActnList, ComCtrls, sButton, sMemo, StrUtils;
+  Dialogs, StdCtrls, ActnList, ComCtrls, sButton, sMemo, StrUtils,
+  sRichEdit, ImgList, acAlphaImageList, ToolWin, sToolBar,RichEdit,
+  ExtCtrls, sComboBoxes, sPanel, sComboBox;
 
 const
   REPLY_TO_AUTHOR     = 1;
@@ -14,34 +16,64 @@ const
 
 
 type
-  TSendMessageForm = class(TForm)
-    Memo1: TsMemo;
-    Button4: TsButton;
+
+
+   TSendMessageForm = class(TForm)
+    send: TsButton;
     ActionList1: TActionList;
     SendMessage: TAction;
     SendMesCmbBox: TComboBoxEx;
-    Button1: TsButton;
+    clear: TsButton;
     FillComboBox: TAction;
-    procedure Button4Click(Sender: TObject);
+    Priority: TCheckBox;
+    RichEdit1: TsRichEdit;
+    EditToolBar: TsToolBar;
+    boldTB: TToolButton;
+    EditImageList: TsAlphaImageList;
+    spaser: TToolButton;
+    italicTB: TToolButton;
+    underluneTB: TToolButton;
+    spaser1: TToolButton;
+    centerTB: TToolButton;
+    leftTB: TToolButton;
+    rightTB: TToolButton;
+    Pleft: TAction;
+    PCenter: TAction;
+    PRight: TAction;
+    ToolButton1: TToolButton;
+    setButtons: TAction;
+    SizeBox: TsComboBox;
+    sColorBox1: TsColorBox;
+    procedure sendClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure SendMessageExecute(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure clearClick(Sender: TObject);
     procedure FillComboBoxExecute(Sender: TObject);
+    procedure PriorityClick(Sender: TObject);
+    procedure boldTBClick(Sender: TObject);
+    procedure underluneTBClick(Sender: TObject);
+    procedure italicTBClick(Sender: TObject);
+    procedure PleftExecute(Sender: TObject);
+    procedure PCenterExecute(Sender: TObject);
+    procedure PRightExecute(Sender: TObject);
+    procedure RichEdit1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure setButtonsExecute(Sender: TObject);
+    procedure sColorBox1Change(Sender: TObject);
+    procedure SizeBoxChange(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
     procedure InsertLastName;
-
     function  FindUser(): integer;
     function  StringCompare(s1, s2: string): boolean;
 
   end;
-
 var
   SendMessageForm: TSendMessageForm;
-
+  CHBXpriority:boolean;
 
 implementation
 
@@ -79,9 +111,9 @@ var
 begin
 
   Delimiter  := '-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-==-';
-  Memo1.Text := MainForm.ExtractPlainTextFromSelected;//MainForm.MessageMemo.Text;
+  RichEdit1.Text := MainForm.MessageMemo.Text;
   AuthorName := MainForm.MessagesListView.Selected.SubItems[6];
-  MText := Memo1.Text;
+  MText := RichEdit1.Text;
 
   if Length(MText) > 1000 then
     begin
@@ -106,7 +138,7 @@ begin
   Text2Quote := AuthorName + '> ' + stringReplace(Text2Quote, #13#10,
        #13#10 + AuthorName + '> ', [rfReplaceAll]);
 
-  Memo1.Text := MText + Text2Quote + #13#10 + Delimiter + #13#10;
+  RichEdit1.Text := MText + Text2Quote + #13#10 + Delimiter + #13#10;
 end;
 
 function  TSendMessageForm.FindUser(): integer;
@@ -167,7 +199,7 @@ begin
   end;
 end;
 
-procedure TSendMessageForm.Button4Click(Sender: TObject);
+procedure TSendMessageForm.sendClick(Sender: TObject);
 begin
   SendMessage.Execute;
 end;
@@ -207,40 +239,53 @@ begin
       MainForm.UserList.Items[0].Selected:=true;
     end;
   FillComboBox.Execute;
-  Memo1.SelStart:=Length(Memo1.Text);
-  Memo1.Perform(WM_VScroll, SB_BOTTOM,0);
-  Memo1.SetFocus;
+  RichEdit1.SelStart:=Length(RichEdit1.Text);
+  RichEdit1.Perform(WM_VScroll, SB_BOTTOM,0);
+  RichEdit1.SetFocus;
 
-end;
+  end;
 
 procedure TSendMessageForm.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  Memo1.Clear;
+  RichEdit1.Clear;
   Action:=caFree;
 end;
 
-procedure TSendMessageForm.SendMessageExecute(Sender: TObject);
+procedure TSendMessageForm.SendMessageExecute(Sender: TObject); // c2s #2
 var
   tmpListItem: TListItem;
-  s{, tmpStr}:string;
-  i:integer;
-  id:integer;
-  index:integer;
+  s, tmpStr:string;
+  i,il,id,index:integer;
+   StringStream:TStringStream;
 begin
+  StringStream:=TStringStream.Create('');
+  try
+  RichEdit1.Lines.SaveToStream(StringStream);
+  tmpStr:=StringStream.DataString;
+  finally
+  StringStream.destroy;
+  end;
+ // REGetTextRange(richedit1,0,richedit1.MaxLength);
+  richedit1.PlainText:=true ;
+  s:= richedit1.Lines.Text;
+  if length(s)>65536 then ShowMessage('не влазиит!=(');
+  s:=s + #0 + tmpStr;
 
-  s := Memo1.Lines.Text;
-
-  s:=Char(Length(s) div 256) + Char(Length(s) mod 256) + s;
-
-
+  s:=Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256) + s;
+  //Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256);
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));
-  s:=#2+Char(id div 256)+
-        Char(id mod 256)+#0#0+s;
-  i:=length(s);
-  s:=#0+Char(i div 256)+Char(i mod 256)+s;
+  if CHBXpriority then
+      s:=#2+Char(id div 256)+ Char(id mod 256)+#2+s     //  #2|sea user id|priority_0|#0|2 bytes message length | message
+     else
+      s:=#2+Char(id div 256)+ Char(id mod 256)+#0+s;
+  i:=Length(s);
+  //сообщение длинной 3 байта
+  il:=i div 256;
+  //|SEA Package Lenght|#2|sea user id|priority0|#0|2 bytes message length | message
+  s:=Char(il div 256)+ Char(il mod 256) + Char(i mod 256) + s;  //s:=#0+Char(i div 256)+Char(i mod 256)+s;
   MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
-
+  SendMessageForm.Priority.Checked:=false;
   index := MainForm.GetIndexByID(id);
 
   if index <> -1 then
@@ -251,18 +296,18 @@ begin
             tmpListItem.SubItems.Add(TimeToStr(Time));
             tmpListItem.SubItems.Add(MainForm.UserList.Items[index].Caption);
             tmpListItem.SubItems.Add(MainForm.UserList.Items[index].SubItems[0]);
-            tmpListItem.SubItems.Add(Memo1.Text);
+            tmpListItem.SubItems.Add(RichEdit1.Text);
             tmpListItem.SubItems.Add(MainForm.UserList.Items[index].SubItems[1]);
           end;
 
-  Memo1.Clear;
+  RichEdit1.Clear;
   Close;
 end;
 
-procedure TSendMessageForm.Button1Click(Sender: TObject);
+procedure TSendMessageForm.clearClick(Sender: TObject);
 begin
-  Memo1.Clear;
-  Memo1.SetFocus;
+  RichEdit1.Clear;
+  RichEdit1.SetFocus;
 end;
 
 procedure TSendMessageForm.FillComboBoxExecute(Sender: TObject);
@@ -275,6 +320,7 @@ begin
 
 if Visible then
   begin
+  CHBXpriority:=false;
   SendMesCmbBox.Clear;
   for i:=0 to MainForm.UserList.Items.Count-1 do
   begin
@@ -288,5 +334,111 @@ if Visible then
   SendMesCmbBox.ItemIndex:=MainForm.UserList.Selected.Index;
   end;
 end;
+//
+procedure TSendMessageForm.PriorityClick(Sender: TObject);
+begin
+CHBXpriority:= not CHBXpriority;
+end;
+//меняет выделенный текст на жирный
+procedure TSendMessageForm.boldTBClick(Sender: TObject);
+begin
+   RichEdit1.SetFocus;
+    if fsBold in Richedit1.SelAttributes.Style then
+      Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style - [fsBold]
+    else
+      Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style + [fsBold];
+    RichEdit1.SetFocus;
+end;
+//меняет выделенный текст на курсивный
+procedure TSendMessageForm.italicTBClick(Sender: TObject);
+begin
+RichEdit1.SetFocus;
+  if fsItalic in Richedit1.SelAttributes.Style then
+    Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style - [fsItalic]
+  else
+    Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style + [fsItalic];
+  RichEdit1.SetFocus;
+end;
+//меняет выделенный текст на подчеркнутый
+procedure TSendMessageForm.underluneTBClick(Sender: TObject);
+begin
+RichEdit1.SetFocus;
+  if fsUnderline in Richedit1.SelAttributes.Style then
+    Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style - [fsUnderline]
+  else
+    Richedit1.SelAttributes.Style :=Richedit1.SelAttributes.Style + [fsUnderline];
+  RichEdit1.SetFocus;
+end;
+//paragrph to left
+procedure TSendMessageForm.PleftExecute(Sender: TObject);
+begin
+   RichEdit1.Paragraph.Alignment:=taLeftJustify;
+   Pleft.Checked:=true;
+   setButtonsExecute(sender);
+end;
+//paragrph to center
+procedure TSendMessageForm.PCenterExecute(Sender: TObject);
+begin
+   RichEdit1.Paragraph.Alignment:=taCenter;
+   PCenter.Checked:=true;
+   setButtonsExecute(sender);
+end;
+//paragrph to right
+procedure TSendMessageForm.PRightExecute(Sender: TObject);
+begin
+  RichEdit1.Paragraph.Alignment:=taRightJustify;
+  PRight.Checked:=true;
+  setButtonsExecute(sender);
+end;
+
+procedure TSendMessageForm.RichEdit1MouseDown(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     setButtonsExecute(sender);
+end;
+
+procedure TSendMessageForm.setButtonsExecute(Sender: TObject);
+begin
+    richEdit1.SetFocus;
+    PLeft.Checked:=false;
+    LeftTB.Down:=false;
+    PCenter.Checked:=false;
+    CenterTB.Down:=false;
+    PRight.Checked:=false;
+    RightTB.Down:=false;
+  case (RichEdit1.Paragraph.Alignment) of
+  taLeftJustify:   begin
+                    PLeft.Checked:=true;
+                    LeftTB.Down:=true;
+                   end;
+  taCenter:        begin
+                    PCenter.Checked:=true;
+                    CenterTB.Down:=true;
+                   end;
+  taRightJustify:  begin
+                    PRight.Checked:=true;
+                    RightTB.Down:=true;
+                   end
+    end;
+end;
+
+
+procedure TSendMessageForm.sColorBox1Change(Sender: TObject);
+begin
+     richEdit1.SetFocus;
+     RichEdit1.SelAttributes.Color:=sColorBox1.Selected;
+     richEdit1.SetFocus;
+end;
+
+procedure TSendMessageForm.SizeBoxChange(Sender: TObject);
+var
+i:integer;
+begin
+  richEdit1.SetFocus;
+  RichEdit1.SelAttributes.Size:= strtoint(SizeBox.Items[SizeBox.ItemIndex]);
+  richEdit1.SetFocus;
+  end;
 
 end.
+
+

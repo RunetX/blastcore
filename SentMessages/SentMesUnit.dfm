@@ -21,14 +21,14 @@ object SentMesForm: TSentMesForm
     Left = 0
     Top = 0
     Width = 540
-    Height = 350
+    Height = 343
     Align = alClient
     BorderStyle = bsSingle
     TabOrder = 0
     SkinData.SkinSection = 'PANEL'
     DesignSize = (
       536
-      346)
+      339)
     object SentMesLV: TsListView
       Left = 1
       Top = 1

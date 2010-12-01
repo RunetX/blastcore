@@ -29,7 +29,6 @@ type
     RichEdit1: TsRichEdit;
     EditToolBar: TsToolBar;
     boldTB: TToolButton;
-    EditImageList: TsAlphaImageList;
     spaser: TToolButton;
     italicTB: TToolButton;
     underluneTB: TToolButton;
@@ -44,6 +43,7 @@ type
     setButtons: TAction;
     SizeBox: TsComboBox;
     sColorBox1: TsColorBox;
+    EditorImageList: TImageList;
     procedure sendClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -271,7 +271,6 @@ begin
   s:= richedit1.Lines.Text;
   if length(s)>65536 then ShowMessage('не влазиит!=(');
   s:=s + #0 + tmpStr;
-
   s:=Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256) + s;
   //Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256);
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));
@@ -438,7 +437,6 @@ begin
   RichEdit1.SelAttributes.Size:= strtoint(SizeBox.Items[SizeBox.ItemIndex]);
   richEdit1.SetFocus;
   end;
-
 end.
 
 

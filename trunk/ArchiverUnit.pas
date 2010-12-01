@@ -495,14 +495,13 @@ uses TryChatUnit, ChatYESNOUnit, OptionsUnit, SendMessageUnit,
 
 procedure TMainForm.SetMemoFont;
 begin  
-  MessageMemo.Font.Color := clBlack;
+  MessageMemo.Font.Color := 0;
   MessageMemo.Font.Size  := 8;
   MessageMemo.Font.Name  := 'MS Sans Serif';
   MessageMemo.Font.Style := [];
 
-    with MessageMemo do
+  with MessageMemo do
     begin
-
     Font.Color := SpeekerSettings.FontColor;
     Font.Size  := SpeekerSettings.FontSize;
     Font.Name  := SpeekerSettings.FontName;
@@ -694,7 +693,7 @@ begin
     SpeekerSettings.OptJumpOwnMessage := Ini.ReadBool( 'Options', 'JumpOwnMessages', false);
 
     SpeekerSettings.FontColor     := Ini.ReadInteger('Font', 'Color', clBlack);
-    SpeekerSettings.FontSize      := Ini.ReadInteger('Font', 'Size', 8);
+    SpeekerSettings.FontSize      := Ini.ReadInteger('Font', 'Size', 9);
     SpeekerSettings.FontName      := Ini.ReadString('Font', 'Name', 'MS Sans Serif');
     SpeekerSettings.FontBold      := Ini.ReadBool('Font', 'Bold',      false);
     SpeekerSettings.FontItalic    := Ini.ReadBool('Font', 'Italic',    false);
@@ -704,6 +703,7 @@ begin
     PanelState := SpeekerSettings.OptShowpanel;
   finally
     Ini.Free;
+
   end;
   //----------------------------------------------------------------------------
 
@@ -1846,12 +1846,13 @@ begin
 
       if (MessagesListView.Selected <> nil) then
         MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
-
+        
       if(MessagesListView.Items.Count=1)then
         begin
           MessagesListView.ItemIndex:=0;
           CoolTrayIcon.IconIndex:=5;
         end;
+    
     end
   else
     begin
@@ -1989,6 +1990,7 @@ begin
 
     MainForm.Top  :=  Ini.ReadInteger('Programm', 'Top', 150);
     MainForm.Left :=  Ini.ReadInteger('Programm', 'Left', 360);
+
   finally
     Ini.Free;
   end;
@@ -2201,6 +2203,7 @@ begin
       if(SpeekerSettings.OptDelastmin)then Application.Minimize;
   end;
     StatusBar1.Panels[1].Text := 'Сообщений: '+IntToStr(MessagesListView.Items.Count);
+  
 
   if(MainForm.Active and SpeekerSettings.Smiled) then InsertSmiles;
 end;
@@ -2477,11 +2480,11 @@ begin
     sIniFile.WriteInteger('Programm', 'Width',  MainForm.Width);
     sIniFile.WriteInteger('Programm', 'Top',    MainForm.Top);
     sIniFile.WriteInteger('Programm', 'Left',   MainForm.Left);
-
     sIniFile.Free;
 
     ClientProperties.IgnoreList.Items.SaveToFile(SpeekerSettings.UserAppdataDir + '\Ignorlist.txt');
     Close;
+
     //Application.Terminate;
 end;
 

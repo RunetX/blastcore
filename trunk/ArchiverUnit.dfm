@@ -1,8 +1,8 @@
 object MainForm: TMainForm
-  Left = 314
-  Top = 153
+  Left = 317
+  Top = 174
   Width = 658
-  Height = 704
+  Height = 718
   AlphaBlendValue = 100
   Color = clBtnFace
   Constraints.MinHeight = 534
@@ -27,7 +27,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TsStatusBar
     Left = 0
-    Top = 631
+    Top = 645
     Width = 650
     Height = 19
     Panels = <
@@ -117,7 +117,6 @@ object MainForm: TMainForm
     object ForwardToolButton: TToolButton
       Left = 211
       Top = 0
-      Hint = #1053#1072' 1 '#1089#1086#1086#1073#1097#1077#1085#1080#1077' '#1074#1087#1077#1088#1105#1076
       Action = JumpUp
       Enabled = False
     end
@@ -198,7 +197,7 @@ object MainForm: TMainForm
     Left = 0
     Top = 41
     Width = 650
-    Height = 590
+    Height = 604
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
@@ -206,7 +205,7 @@ object MainForm: TMainForm
       Left = 427
       Top = 1
       Width = 2
-      Height = 438
+      Height = 452
       Align = alRight
       AutoSnap = False
       Beveled = True
@@ -217,7 +216,7 @@ object MainForm: TMainForm
       Left = 429
       Top = 1
       Width = 220
-      Height = 438
+      Height = 452
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
       BoundLabel.Font.Color = clWindowText
@@ -264,14 +263,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 426
-      Height = 438
+      Height = 452
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
         426
-        438)
+        452)
       object MesnumberLabel: TsLabel
         Left = 326
         Top = 8
@@ -322,7 +321,7 @@ object MainForm: TMainForm
         Left = 2
         Top = 28
         Width = 422
-        Height = 410
+        Height = 424
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
         Color = clInactiveCaptionText
@@ -350,7 +349,7 @@ object MainForm: TMainForm
     end
     object DownPanel: TsPanel
       Left = 1
-      Top = 439
+      Top = 453
       Width = 648
       Height = 150
       Align = alBottom

@@ -44,6 +44,7 @@ type
     SizeBox: TsComboBox;
     sColorBox1: TsColorBox;
     EditorImageList: TImageList;
+    sComboBox1: TsComboBox;
     procedure sendClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);

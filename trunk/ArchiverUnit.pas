@@ -2044,8 +2044,8 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-  SetMemoFont;
-  sSkinManager1.Active := SpeekerSettings.Skinned;
+//  SetMemoFont;
+sSkinManager1.Active := SpeekerSettings.Skinned;
 end;
 
 //-----------------------------------------------------------------

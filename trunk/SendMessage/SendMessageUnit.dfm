@@ -86,6 +86,7 @@ object SendMessageForm: TSendMessageForm
     Ctl3D = True
     MaxLength = 1000
     ParentCtl3D = False
+    PopupMenu = MainForm.RichEditPopupMenu
     ScrollBars = ssVertical
     TabOrder = 4
     OnMouseDown = RichEdit1MouseDown
@@ -213,7 +214,7 @@ object SendMessageForm: TSendMessageForm
     object sColorBox1: TsColorBox
       Left = 212
       Top = 2
-      Width = 145
+      Width = 117
       Height = 22
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
@@ -228,6 +229,27 @@ object SendMessageForm: TSendMessageForm
       TabOrder = 1
       OnChange = sColorBox1Change
       SkinData.SkinSection = 'COMBOBOX'
+    end
+    object sComboBox1: TsComboBox
+      Left = 329
+      Top = 2
+      Width = 145
+      Height = 21
+      Alignment = taLeftJustify
+      BoundLabel.Indent = 0
+      BoundLabel.Font.Charset = DEFAULT_CHARSET
+      BoundLabel.Font.Color = clWindowText
+      BoundLabel.Font.Height = -11
+      BoundLabel.Font.Name = 'MS Sans Serif'
+      BoundLabel.Font.Style = []
+      BoundLabel.Layout = sclLeft
+      BoundLabel.MaxWidth = 0
+      BoundLabel.UseSkinColor = True
+      SkinData.SkinSection = 'COMBOBOX'
+      ItemHeight = 13
+      ItemIndex = -1
+      TabOrder = 2
+      Text = 'sComboBox1'
     end
   end
   object ActionList1: TActionList

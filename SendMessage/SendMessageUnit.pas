@@ -6,7 +6,7 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, 
   Dialogs, StdCtrls, ActnList, ComCtrls, sButton, sMemo, StrUtils,
   sRichEdit, ImgList, acAlphaImageList, ToolWin, sToolBar,RichEdit,
-  ExtCtrls, sComboBoxes, sPanel, sComboBox;
+  ExtCtrls, sComboBoxes, sPanel, sComboBox, sDialogs;
 
 const
   REPLY_TO_AUTHOR     = 1;
@@ -44,7 +44,8 @@ type
     SizeBox: TsComboBox;
     sColorBox1: TsColorBox;
     EditorImageList: TImageList;
-    sComboBox1: TsComboBox;
+    sFontBox: TsComboBox;
+    sToolBar1: TsToolBar;
     procedure sendClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -63,6 +64,7 @@ type
     procedure setButtonsExecute(Sender: TObject);
     procedure sColorBox1Change(Sender: TObject);
     procedure SizeBoxChange(Sender: TObject);
+    procedure sFontBoxChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -201,8 +203,26 @@ begin
 end;
 
 procedure TSendMessageForm.sendClick(Sender: TObject);
+var
+tmpStr,s:string;
+StringStream:TStringStream;
 begin
-  SendMessage.Execute;
+StringStream:=TStringStream.Create('');
+  try
+  RichEdit1.Lines.SaveToStream(StringStream);
+  tmpStr:=StringStream.DataString;
+  finally
+  StringStream.destroy;
+  end;
+
+  s:= richedit1.Lines.Text;
+
+if length(s)=0 then
+  ShowMessage('Нельзя отправить пустое сообщение!')
+ else
+  if length(s)> 32768 then   ShowMessage('Слишком длинное сообщение!')
+   else
+   SendMessage.Execute;
 end;
 
 procedure TSendMessageForm.FormShow(Sender: TObject);
@@ -239,6 +259,7 @@ begin
     begin
       MainForm.UserList.Items[0].Selected:=true;
     end;
+  sFontBox.Items:= Screen.Fonts;
   FillComboBox.Execute;
   RichEdit1.SelStart:=Length(RichEdit1.Text);
   RichEdit1.Perform(WM_VScroll, SB_BOTTOM,0);
@@ -256,7 +277,7 @@ end;
 procedure TSendMessageForm.SendMessageExecute(Sender: TObject); // c2s #2
 var
   tmpListItem: TListItem;
-  s, tmpStr:string;
+  s, tmpStr,messageLen:string;
   i,il,id,index:integer;
    StringStream:TStringStream;
 begin
@@ -268,12 +289,13 @@ begin
   StringStream.destroy;
   end;
  // REGetTextRange(richedit1,0,richedit1.MaxLength);
-  richedit1.PlainText:=true ;
+  richedit1.PlainText:=true;
   s:= richedit1.Lines.Text;
-  if length(s)>65536 then ShowMessage('не влазиит!=(');
-  s:=s + #0 + tmpStr;
-  s:=Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256) + s;
-  //Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256);
+  if length(s)+length(tmpStr)+10< 65536 then
+        messageLen:=Char(Length(s+#0+tmpStr) div 65536) + Char((Length(s+#0+tmpStr) mod 65536) div 256) + Char(Length(s+#0+tmpStr) mod 256)
+       else
+        messageLen:=Char(Length(s) div 65536) + Char((Length(s) mod 65536) div 256) + Char(Length(s) mod 256);
+  s:=messageLen + s + #0 + tmpStr;
   id := StrToInt(String(SendMesCmbBox.ItemsEx[SendMesCmbBox.ItemIndex].Data));
   if CHBXpriority then
       s:=#2+Char(id div 256)+ Char(id mod 256)+#2+s     //  #2|sea user id|priority_0|#0|2 bytes message length | message
@@ -285,9 +307,7 @@ begin
   //|SEA Package Lenght|#2|sea user id|priority0|#0|2 bytes message length | message
   s:=Char(il div 256)+ Char(il mod 256) + Char(i mod 256) + s;  //s:=#0+Char(i div 256)+Char(i mod 256)+s;
   MainForm.ClientSocket1.Socket.SendBuf(s[1],length(s));
-  SendMessageForm.Priority.Checked:=false;
   index := MainForm.GetIndexByID(id);
-
   if index <> -1 then
       with SentMesForm.SentMesLV do
           begin
@@ -438,6 +458,34 @@ begin
   RichEdit1.SelAttributes.Size:= strtoint(SizeBox.Items[SizeBox.ItemIndex]);
   richEdit1.SetFocus;
   end;
+procedure TSendMessageForm.sFontBoxChange(Sender: TObject);
+begin
+  richEdit1.SetFocus;
+  RichEdit1.SelAttributes.Name:=sFontBox.Items[sFontBox.ItemIndex];
+  richEdit1.SetFocus;
+end;
+
+
+
+{
+procedure TSendMessageForm.ToolButton2Click(Sender: TObject);
+var
+line:string;
+p:Tpoint;
+begin
+    RichEdit1.SetFocus;
+    p:=richedit1.caretpos;
+    p.x:=p.x+1;
+    line:=richEdit1.Lines[richedit1.caretpos.y];
+    richedit1.Lines.Delete(richedit1.caretpos.y);
+    //преобразуем line
+    Insert(':)',line,p.x);
+    p.x:=p.x+1;
+    richEdit1.Lines.Insert(richedit1.caretpos.y, line);
+    richedit1.caretpos:=p;
+    RichEdit1.SetFocus;
+end;
+}
 end.
 
 

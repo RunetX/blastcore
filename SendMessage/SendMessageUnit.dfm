@@ -1,11 +1,11 @@
 object SendMessageForm: TSendMessageForm
-  Left = 376
-  Top = 309
+  Left = 407
+  Top = 210
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
-  ClientHeight = 393
-  ClientWidth = 478
+  ClientHeight = 394
+  ClientWidth = 455
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,12 @@ object SendMessageForm: TSendMessageForm
   OnClose = FormClose
   OnShow = FormShow
   DesignSize = (
-    478
-    393)
+    455
+    394)
   PixelsPerInch = 96
   TextHeight = 13
   object send: TsButton
-    Left = 317
+    Left = 294
     Top = 5
     Width = 75
     Height = 25
@@ -36,7 +36,7 @@ object SendMessageForm: TSendMessageForm
   object SendMesCmbBox: TComboBoxEx
     Left = 7
     Top = 7
-    Width = 218
+    Width = 195
     Height = 22
     ItemsEx = <>
     Style = csExDropDownList
@@ -47,7 +47,7 @@ object SendMessageForm: TSendMessageForm
     DropDownCount = 8
   end
   object clear: TsButton
-    Left = 396
+    Left = 373
     Top = 5
     Width = 75
     Height = 25
@@ -58,7 +58,7 @@ object SendMessageForm: TSendMessageForm
     SkinData.SkinSection = 'BUTTON'
   end
   object Priority: TCheckBox
-    Left = 232
+    Left = 208
     Top = 8
     Width = 81
     Height = 17
@@ -79,12 +79,12 @@ object SendMessageForm: TSendMessageForm
   end
   object RichEdit1: TsRichEdit
     Left = 0
-    Top = 64
-    Width = 481
-    Height = 329
+    Top = 56
+    Width = 489
+    Height = 337
     Color = clWhite
     Ctl3D = True
-    MaxLength = 1000
+    MaxLength = 30000
     ParentCtl3D = False
     PopupMenu = MainForm.RichEditPopupMenu
     ScrollBars = ssVertical
@@ -104,8 +104,8 @@ object SendMessageForm: TSendMessageForm
   object EditToolBar: TsToolBar
     Left = 0
     Top = 32
-    Width = 478
-    Height = 33
+    Width = 457
+    Height = 25
     Align = alCustom
     Caption = 'EditToolBar'
     Images = EditorImageList
@@ -214,7 +214,7 @@ object SendMessageForm: TSendMessageForm
     object sColorBox1: TsColorBox
       Left = 212
       Top = 2
-      Width = 117
+      Width = 109
       Height = 22
       BoundLabel.Indent = 0
       BoundLabel.Font.Charset = DEFAULT_CHARSET
@@ -230,10 +230,10 @@ object SendMessageForm: TSendMessageForm
       OnChange = sColorBox1Change
       SkinData.SkinSection = 'COMBOBOX'
     end
-    object sComboBox1: TsComboBox
-      Left = 329
+    object sFontBox: TsComboBox
+      Left = 321
       Top = 2
-      Width = 145
+      Width = 128
       Height = 21
       Alignment = taLeftJustify
       BoundLabel.Indent = 0
@@ -249,8 +249,18 @@ object SendMessageForm: TSendMessageForm
       ItemHeight = 13
       ItemIndex = -1
       TabOrder = 2
-      Text = 'sComboBox1'
+      Text = 'MS Sans Serif'
+      OnChange = sFontBoxChange
     end
+  end
+  object sToolBar1: TsToolBar
+    Left = 0
+    Top = 0
+    Width = 455
+    Height = 1
+    Caption = 'sToolBar1'
+    TabOrder = 6
+    SkinData.SkinSection = 'TOOLBAR'
   end
   object ActionList1: TActionList
     Left = 368

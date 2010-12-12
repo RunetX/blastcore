@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 317
-  Top = 174
-  Width = 658
+  Left = 280
+  Top = 153
+  Width = 679
   Height = 718
   AlphaBlendValue = 100
   Color = clBtnFace
@@ -28,7 +28,7 @@ object MainForm: TMainForm
   object StatusBar1: TsStatusBar
     Left = 0
     Top = 645
-    Width = 650
+    Width = 671
     Height = 19
     Panels = <
       item
@@ -54,7 +54,7 @@ object MainForm: TMainForm
   object ToolBar1: TsToolBar
     Left = 0
     Top = 0
-    Width = 650
+    Width = 671
     Height = 41
     ButtonHeight = 38
     ButtonWidth = 39
@@ -196,13 +196,13 @@ object MainForm: TMainForm
   object BigPanel: TsPanel
     Left = 0
     Top = 41
-    Width = 650
+    Width = 671
     Height = 604
     Align = alClient
     TabOrder = 2
     SkinData.SkinSection = 'PANEL'
     object Splitter1: TsSplitter
-      Left = 427
+      Left = 448
       Top = 1
       Width = 2
       Height = 452
@@ -213,7 +213,7 @@ object MainForm: TMainForm
       SkinData.SkinSection = 'SPLITTER'
     end
     object UserList: TsListView
-      Left = 429
+      Left = 450
       Top = 1
       Width = 220
       Height = 452
@@ -262,17 +262,17 @@ object MainForm: TMainForm
     object MiddlePanel: TsPanel
       Left = 1
       Top = 1
-      Width = 426
+      Width = 447
       Height = 452
       Align = alClient
       BevelInner = bvLowered
       TabOrder = 1
       SkinData.SkinSection = 'PANEL'
       DesignSize = (
-        426
+        447
         452)
       object MesnumberLabel: TsLabel
-        Left = 326
+        Left = 347
         Top = 8
         Width = 79
         Height = 13
@@ -295,7 +295,7 @@ object MainForm: TMainForm
       object WhomEdit: TsEdit
         Left = 28
         Top = 4
-        Width = 292
+        Width = 313
         Height = 21
         Anchors = [akLeft, akTop, akRight]
         Font.Charset = DEFAULT_CHARSET
@@ -320,7 +320,7 @@ object MainForm: TMainForm
       object MessageMemo2: TsMemo
         Left = 2
         Top = 28
-        Width = 422
+        Width = 443
         Height = 424
         Align = alCustom
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -350,7 +350,7 @@ object MainForm: TMainForm
     object DownPanel: TsPanel
       Left = 1
       Top = 453
-      Width = 648
+      Width = 669
       Height = 150
       Align = alBottom
       BevelInner = bvLowered
@@ -361,7 +361,7 @@ object MainForm: TMainForm
       object MessagesListView: TsListView
         Left = 2
         Top = 2
-        Width = 644
+        Width = 665
         Height = 146
         BoundLabel.Indent = 0
         BoundLabel.Font.Charset = DEFAULT_CHARSET

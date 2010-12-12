@@ -126,8 +126,8 @@ type
       Printer:     integer;
       Priority:    integer;
       Meslen:      integer;
+      lenpbyte:    integer;// Запихни меня в структуру, сука!
       Messag:      string;
-
 // IgnoreList
       IgnoreList:  TListBox;
 end;
@@ -481,7 +481,6 @@ var
   MainForm: TMainForm;
   tmpChatForm: array[0..9] of TBChatForm;
   noPong: boolean;
-  lenpriterbyte: integer;// Запихни меня в структуру, сука!
 
 implementation
 
@@ -646,7 +645,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.4'; //BlastCore v0.4     0.3 RC2
+   ClientProperties.Version:='BlastCore v0.45 BETA1';
 
    ClientProperties.ownID := 0;
 
@@ -660,8 +659,6 @@ begin
         begin
         SpeekerSettings.MainServerIP:='hostel.avtf.net';
         SpeekerSettings.AltServerIP:='109.123.180.129';
-            //SpeekerSettings.MainServerIP:='router.avtf.net';
-            //SpeekerSettings.AltServerIP:='router.avtf.net';
 
         end;
     SpeekerSettings.UserName    := Ini.ReadString( 'User', 'UserName','');
@@ -706,7 +703,11 @@ begin
 
   end;
   //----------------------------------------------------------------------------
-
+  if SpeekerSettings.PrintUser then
+  begin
+    PrinterTB.Down:=true;
+    GoToFromPrinterExecute(self);
+  end;
   if PanelState then
         DownPanel.Height := 150
   else
@@ -1250,9 +1251,9 @@ procedure TMainForm.GetPrinter();    // 11
 begin
   ClientProperties.Printer := ord(InBufer.Bufer[1]) mod 2;
   //вот он - дополнительный байт от печатников
-  lenpriterbyte:=ord(InBufer.Bufer[2]);
+  ClientProperties.lenpbyte:=ord(InBufer.Bufer[2]);
    if SpeekerSettings.Debug then
-      LogVariable('lenprinterbyte', IntToStr(lenpriterbyte));
+      LogVariable('lenprinterbyte', IntToStr(ClientProperties.lenpbyte));
   if SpeekerSettings.Debug then
       LogVariable('bufer', IntToStr(ord(InBufer.Bufer[1])));
   if SpeekerSettings.Debug then
@@ -1275,7 +1276,7 @@ begin
 
 procedure TMainForm.GetMeslen();     // 12
 begin
-  ClientProperties.Meslen :=65536*lenpriterbyte+TwoBytesToInt(InBufer.Bufer);
+  ClientProperties.Meslen :=65536*ClientProperties.lenpbyte+TwoBytesToInt(InBufer.Bufer);
   if SpeekerSettings.Debug then
       LogVariable('Meslen', IntToStr(ClientProperties.Meslen));
   InBufer.isReadyForProc := false;
@@ -2480,6 +2481,7 @@ begin
     sIniFile.WriteInteger('Programm', 'Width',  MainForm.Width);
     sIniFile.WriteInteger('Programm', 'Top',    MainForm.Top);
     sIniFile.WriteInteger('Programm', 'Left',   MainForm.Left);
+    sIniFile.WriteBool( 'User', 'isPrinter',   SpeekerSettings.PrintUser);
     sIniFile.Free;
 
     ClientProperties.IgnoreList.Items.SaveToFile(SpeekerSettings.UserAppdataDir + '\Ignorlist.txt');
@@ -2763,12 +2765,14 @@ begin
          s := #0#0#1#15;
          ClientSocket1.Socket.SendBuf(s[1],length(s));
          PrinterTB.Hint := 'Выйти из группы "Печатники"';
+         SpeekerSettings.PrintUser:=true;
       end
   else
       begin
          s := #0#0#1#16;
          ClientSocket1.Socket.SendBuf(s[1],length(s));
          PrinterTB.Hint := 'Войти в группу "Печатники"';
+         SpeekerSettings.PrintUser:=false;
       end;
 end;
 
@@ -3355,7 +3359,7 @@ CloseFile(tmpFile);
     if fp>0 then
       begin
         fp:=fp+5;// пропускаем #0FILE
-        fp:=fp+4;//пропустим время модификации файла ибо _нефиг_ =)
+        fp:=fp+4;//пропустим время модификации файла пока-что
         FileNameLen:= ord(fp);
         fp:=fp+1;  //длинна имени файла
         filename:=copy(Source, fp, ord(Source[FileNameLen]));//получаем имя файла

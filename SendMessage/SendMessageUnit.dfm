@@ -1,6 +1,6 @@
 object SendMessageForm: TSendMessageForm
-  Left = 407
-  Top = 210
+  Left = 632
+  Top = 219
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
@@ -79,9 +79,9 @@ object SendMessageForm: TSendMessageForm
   end
   object RichEdit1: TsRichEdit
     Left = 0
-    Top = 56
+    Top = 64
     Width = 489
-    Height = 337
+    Height = 329
     Color = clWhite
     Ctl3D = True
     MaxLength = 30000
@@ -105,7 +105,7 @@ object SendMessageForm: TSendMessageForm
     Left = 0
     Top = 32
     Width = 457
-    Height = 25
+    Height = 33
     Align = alCustom
     Caption = 'EditToolBar'
     Images = EditorImageList

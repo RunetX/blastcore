@@ -645,7 +645,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.45 BETA1';
+   ClientProperties.Version:='BlastCore v0.45 BETA3';
 
    ClientProperties.ownID := 0;
 
@@ -1844,7 +1844,7 @@ begin
   if not(MainForm.Visible) then
     begin
       CoolTrayIcon.ShowMainForm;
-
+      sSkinManager1.Active := SpeekerSettings.Skinned;
       if (MessagesListView.Selected <> nil) then
         MessagesListView.Items[MessagesListView.Selected.Index].Checked := true;
         

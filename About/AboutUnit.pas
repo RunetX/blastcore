@@ -56,6 +56,7 @@ begin
   Caption:= Caption + MainForm.ClientProperties.Version;
   sLabelFX1.Caption := MainForm.ClientProperties.Version;
   ScPosition := 13;
+  CreditsAnimTimer.Enabled := true;
 end;
 
 procedure TAboutForm.OkBtnClick(Sender: TObject);

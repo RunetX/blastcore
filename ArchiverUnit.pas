@@ -126,7 +126,7 @@ type
       Printer:     integer;
       Priority:    integer;
       Meslen:      integer;
-      lenpbyte:    integer;// Запихни меня в структуру, сука!
+      lenpbyte:    integer;
       Messag:      string;
 // IgnoreList
       IgnoreList:  TListBox;
@@ -645,7 +645,7 @@ begin
       ClientProperties.Messag:=  '';
    ClientProperties.LastChatHead:='';
    ClientProperties.LastChatCont:='';
-   ClientProperties.Version:='BlastCore v0.45 BETA3';
+   ClientProperties.Version:='BlastCore v0.45 RC1';
 
    ClientProperties.ownID := 0;
 

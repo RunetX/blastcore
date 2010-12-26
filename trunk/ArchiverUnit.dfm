@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 280
-  Top = 153
+  Left = 202
+  Top = 116
   Width = 679
   Height = 718
   AlphaBlendValue = 100
@@ -43,11 +43,11 @@ object MainForm: TMainForm
         BiDiMode = bdLeftToRight
         ParentBiDiMode = False
         Text = #1042#1072#1096' IP-'#1072#1076#1088#1077#1089': 127.0.0.1'
-        Width = 160
+        Width = 180
       end
       item
         Text = #1050#1086#1083#1080#1095#1077#1089#1090#1074#1086' '#1087#1086#1083#1100#1079#1086#1074#1072#1090#1077#1083#1077#1081': 0'
-        Width = 220
+        Width = 200
       end>
     SkinData.SkinSection = 'STATUSBAR'
   end
@@ -188,6 +188,7 @@ object MainForm: TMainForm
     object PriorityTB: TToolButton
       Left = 508
       Top = 0
+      Hint = #1055#1088#1080#1085#1080#1084#1072#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1103' '#1090#1086#1083#1100#1082#1086' '#1089' '#1074#1099#1089#1086#1082#1080#1084' '#1087#1088#1080#1086#1088#1080#1090#1077#1090#1086#1084
       Action = OnOffPriority
       ImageIndex = 20
       Style = tbsCheck

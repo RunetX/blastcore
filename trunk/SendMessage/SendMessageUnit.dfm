@@ -5,7 +5,7 @@ object SendMessageForm: TSendMessageForm
   BorderStyle = bsSingle
   Caption = #1054#1090#1087#1088#1072#1074#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077
   ClientHeight = 394
-  ClientWidth = 455
+  ClientWidth = 460
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,12 +18,12 @@ object SendMessageForm: TSendMessageForm
   OnClose = FormClose
   OnShow = FormShow
   DesignSize = (
-    455
+    460
     394)
   PixelsPerInch = 96
   TextHeight = 13
   object send: TsButton
-    Left = 294
+    Left = 299
     Top = 5
     Width = 75
     Height = 25
@@ -36,7 +36,7 @@ object SendMessageForm: TSendMessageForm
   object SendMesCmbBox: TComboBoxEx
     Left = 7
     Top = 7
-    Width = 195
+    Width = 200
     Height = 22
     ItemsEx = <>
     Style = csExDropDownList
@@ -47,7 +47,7 @@ object SendMessageForm: TSendMessageForm
     DropDownCount = 8
   end
   object clear: TsButton
-    Left = 373
+    Left = 378
     Top = 5
     Width = 75
     Height = 25
@@ -60,7 +60,7 @@ object SendMessageForm: TSendMessageForm
   object Priority: TCheckBox
     Left = 208
     Top = 8
-    Width = 81
+    Width = 86
     Height = 17
     Hint = #1055#1086#1084#1077#1090#1080#1090#1100' '#1089#1086#1086#1073#1097#1077#1085#1080#1077' '#1082#1072#1082' '#1074#1072#1078#1085#1086#1077'.'
     Anchors = [akLeft, akTop, akRight]
@@ -80,7 +80,7 @@ object SendMessageForm: TSendMessageForm
   object RichEdit1: TsRichEdit
     Left = 0
     Top = 64
-    Width = 489
+    Width = 457
     Height = 329
     Color = clWhite
     Ctl3D = True
@@ -256,7 +256,7 @@ object SendMessageForm: TSendMessageForm
   object sToolBar1: TsToolBar
     Left = 0
     Top = 0
-    Width = 455
+    Width = 460
     Height = 1
     Caption = 'sToolBar1'
     TabOrder = 6
